@@ -7,6 +7,8 @@
 
       <div class="userinfo-nickname">
         <card :text="userInfo.nickName"></card>
+        <circleCard v-bind:text="study.text" v-bind:imgSrc="study.imgSrc" />
+        <circleCard v-bind:text="play.text" v-bind:imgSrc="play.imgSrc" />
       </div>
     </div>
 
@@ -35,6 +37,7 @@
 
 <script>
 import card from '@/components/card'
+import circleCard from '@/components/circleCard'
 
 export default {
   data () {
@@ -43,12 +46,21 @@ export default {
       userInfo: {
         nickName: 'mpvue',
         avatarUrl: 'http://mpvue.com/assets/logo.png'
+      },
+      study: {
+        text: '学习',
+        imgSrc: '/static/images/user.png'
+      },
+      play: {
+        text: '娱乐',
+        imgSrc: '/static/tabs/home.png'
       }
     }
   },
 
   components: {
-    card
+    card,
+    circleCard
   },
 
   methods: {
