@@ -1,19 +1,44 @@
 <template>
-  <div>
-    <p class="card">
-      {{text}}
-    </p>
+  <div class="item">
+    <div class="card">
+      <!-- picture -->
+      <img class="item_image" :src="imgSrc" />
+      <!-- content -->
+      <div class="descript">{{ desc }}</div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['text']
+  props: ['imgSrc', 'desc']
 }
 </script>
 
 <style>
+.item {
+  margin: 5px;
+  position: relative;
+}
 .card {
-  padding: 10px;
+  position: relative;
+  height: 170px;
+  width: 230px;
+  background: #ffffff;
+}
+.item_image {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.descript {
+  font-size: 20px;
+  width: 100%;
+  height: auto;
+  background-color: #DCDCDC;
+  opacity: 0.5;
+  position: absolute;
+  top: 85%;
+  text-align: center;
 }
 </style>

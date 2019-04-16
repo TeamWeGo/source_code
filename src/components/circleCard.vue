@@ -1,6 +1,8 @@
 <template>
   <div class="circleTemplate">
-    <img class="circle" v-if="imgSrc" :src="imgSrc" >
+    <div class="circle">
+      <img v-if="imgSrc" :src="imgSrc" >
+    </div>
     <p class="circle-text">
       {{text}}
     </p>
@@ -16,15 +18,21 @@ export default {
 <style>
 .circle {
   border-radius: 50%;
-  padding: 10px;
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+img {
+  width: 50px;
+  height: 50px;
 }
 .circle-text {
-  size: 20pt;
+  font-size: 12px;
   text-align: center;
 }
 .circleTemplate {
-  float: left;
+  margin: 10px;
 }
 </style>
