@@ -15,7 +15,7 @@
       <circleCard v-bind:text="info.text" v-bind:imgSrc="info.imgSrc" />
     </div>
 
-    
+    <menuItem v-for="(item,index) in menuInfo" :key="index" :mission="item" />
   </div>
 </template>
 
@@ -23,6 +23,7 @@
 import card from '@/components/card'
 import circleCard from '@/components/circleCard'
 import picSlider from '@/components/picSlider'
+import menuItem from '@/components/menuItem'
 
 export default {
   data () {
@@ -48,14 +49,31 @@ export default {
       info: {
         text: '咨询',
         imgSrc: '/static/images/info.png'
-      }
+      },
+      menuInfo: [
+        {
+          imgSrc: '/static/images/info.png',
+          time: '2019-11-11 11:11:11',
+          title: '唱单身情歌',
+          address: '至二712',
+          account: '11'
+        },
+        {
+          imgSrc: '/static/images/play.png',
+          time: '2019-05-20 13:14',
+          title: '给晓帆做一天女朋友',
+          address: '至二712',
+          account: '520'
+        }
+      ]
     }
   },
 
   components: {
     card,
     circleCard,
-    picSlider
+    picSlider,
+    menuItem
   },
 
   methods: {

@@ -1,7 +1,7 @@
 <template>
   <div class="circleTemplate">
     <div class="circle">
-      <img v-if="imgSrc" :src="imgSrc" >
+      <img class="circle-img" v-if="imgSrc" :src="imgSrc" >
     </div>
     <p class="circle-text">
       {{text}}
@@ -24,7 +24,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
-img {
+.circle-img {
   width: 50px;
   height: 50px;
 }
