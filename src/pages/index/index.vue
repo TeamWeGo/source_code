@@ -1,5 +1,6 @@
 <template>
   <div @click="clickHandle">
+    
 
     <div class="userinfo" @click="bindViewTap">
       <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
