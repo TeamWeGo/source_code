@@ -1,67 +1,79 @@
 <template>
-  <div @click="clickHandle">
-    
-
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <img class="userinfo-avatar" src="/static/images/user.png" background-size="cover" />
-
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-        <circleCard v-bind:text="study.text" v-bind:imgSrc="study.imgSrc" />
-        <circleCard v-bind:text="play.text" v-bind:imgSrc="play.imgSrc" />
-      </div>
+  <div>
+    <div class="search-bar">
+      <button class="city-button" >{{ curCity }}</button>
+      <input type="text" class="search-input" placeholder="搜索相关任务" />
+      <img class="search-icon" src="/static/images/search.png" />
     </div>
 
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
+    <picSlider/>
+
+    <div class="choose-tag">
+      <circleCard v-bind:text="study.text" v-bind:imgSrc="study.imgSrc" />
+      <circleCard v-bind:text="live.text" v-bind:imgSrc="live.imgSrc" />
+      <circleCard v-bind:text="play.text" v-bind:imgSrc="play.imgSrc" />
+      <circleCard v-bind:text="info.text" v-bind:imgSrc="info.imgSrc" />
     </div>
 
-    <form class="form-container">
-      <input type="text" class="form-control" :value="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
-
-    <div class="all">
-        <div class="left">
-        </div>
-        <div class="right">
-        </div>
-    </div>
+    <menuItem v-for="(item,index) in menuInfo" :key="index" :mission="item" />
   </div>
 </template>
 
 <script>
 import card from '@/components/card'
 import circleCard from '@/components/circleCard'
+import picSlider from '@/components/picSlider'
+import menuItem from '@/components/menuItem'
 
 export default {
   data () {
     return {
       motto: 'Hello miniprograme',
+      curCity: '广州',
       userInfo: {
         nickName: 'mpvue',
         avatarUrl: 'http://mpvue.com/assets/logo.png'
       },
       study: {
         text: '学习',
-        imgSrc: '/static/images/user.png'
+        imgSrc: '/static/images/study.png'
+      },
+      live: {
+        text: '生活',
+        imgSrc: '/static/images/live.png'
       },
       play: {
         text: '娱乐',
-        imgSrc: '/static/tabs/home.png'
-      }
+        imgSrc: '/static/images/play.png'
+      },
+      info: {
+        text: '咨询',
+        imgSrc: '/static/images/info.png'
+      },
+      menuInfo: [
+        {
+          imgSrc: '/static/images/info.png',
+          time: '2019-11-11 11:11:11',
+          title: '唱单身情歌',
+          address: '至二712',
+          account: '11'
+        },
+        {
+          imgSrc: '/static/images/play.png',
+          time: '2019-05-20 13:14',
+          title: '给晓帆做一天女朋友',
+          address: '至二712',
+          account: '520'
+        }
+      ]
     }
   },
 
   components: {
     card,
-    circleCard
+    circleCard,
+    picSlider,
+    menuItem
   },
 
   methods: {
@@ -86,54 +98,42 @@ export default {
 </script>
 
 <style scoped>
-.userinfo {
+.search-bar {
   display: flex;
-  flex-direction: column;
+  height: 40px;
+  align-items: center;
+  margin-bottom: 10px;
+  /*background-color:burlywood;*/
+}
+
+.city-button {
+  height: 28px;
+  width: auto;
+  margin: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  background: transparent;
+}
+
+.search-input {
+  padding: 0 12px;
+  height: 25px;
+  border: 1px solid black;
+  flex-grow: 1;
+  border-radius: 10px;
+}
+
+.search-icon {
+  height: 25px;
+  width: 25px;
+  margin: 5px;
+}
+
+.choose-tag {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
-.all{
-  width:7.5rem;
-  height:1rem;
-  background-color:blue;
-}
-.all:after{
-  display:block;
-  content:'';
-  clear:both;
-}
-.left{
-  float:left;
-  width:3rem;
-  height:1rem;
-  background-color:red;
-}
-
-.right{
-  float:left;
-  width:4.5rem;
-  height:1rem;
-  background-color:green;
-}
 </style>
