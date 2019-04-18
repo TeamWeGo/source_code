@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "mpvue": "^2.0.0",
+    "swiper": "^4.5.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
