@@ -14,7 +14,7 @@ export var mydb = {
       db.collection('users').add({
         data: user,
         success: res => {
-          callback(null, res)
+          callback(res)
         },
         fail: console.error
       })
@@ -25,13 +25,13 @@ export var mydb = {
   /**
    * delete a user by user id
    * @param {String} userId user _id
-   * @param {Funtfion} callback err,result
+   * @param {Funtfion} callback result
    */
-  deleteOneUser: function (userId, callback) {
+  deleteOneUserByUserId: function (userId, callback) {
     if (userId) {
       db.collection('users').doc(userId).remove({
         success: res => {
-          callback(null, res)
+          callback(res)
         },
         fail: console.error
       })
@@ -43,14 +43,14 @@ export var mydb = {
    * update a user info by user id
    * @param {String} userId user _id
    * @param {Object} updateInfo usr info Object
-   * @param {Function} callback err,result
+   * @param {Function} callback result
    */
-  updateOneUser: function (userId, updateInfo, callback) {
+  updateOneUserByUserId: function (userId, updateInfo, callback) {
     if (userId) {
       db.collection('users').doc(userId).update({
         data: updateInfo,
         success: res => {
-          callback(null, res)
+          callback(res)
         },
         fail: console.error
       })
@@ -60,25 +60,22 @@ export var mydb = {
   },
   /**
    * get a user info by user id
-   * @param {String} userId user _id
-   * @param {Function} callback err,result
+   * @param {String} _id user._id
+   * @param {Function} callback result
    */
-  queryOneUserByUserId: function (userId, callback) {
-    if (userId) {
-      db.collection('users').doc(userId).get({
-        success: res => {
-          callback(null, res.data)
-        },
-        fail: console.error
-      })
-    } else {
-      callback('userId id null or undefined')
-    }
+  queryOneUserByUserId: function (_id, callback) {
+    db.collection('users').doc(_id).get({
+      success: res => {
+        callback(res)
+      },
+      fail: console.error
+    })
+
   },
   /**
    * query user info by user name
    * @param {Sring} userName user name
-   * @param {Function } callback err,result
+   * @param {Function } callback result
    */
   queryOneUserByUserName: function (userName, callback) {
     if (userName) {
@@ -86,7 +83,7 @@ export var mydb = {
         'name': userName
       }).get({
         success: res => {
-          callback(null, res)
+          callback(res)
         },
         fail: console.error
       })
@@ -97,12 +94,12 @@ export var mydb = {
   },
   /**
    * query 20 users
-   * @param {Function} callback err,result
+   * @param {Function} callback result
    */
   queryAllUsers: function (callback) {
     db.collection('users').get({
       success: res => {
-        callback(null, res.data)
+        callback(res)
       },
       fail: console.error
     }
@@ -111,67 +108,55 @@ export var mydb = {
   /**
    * insert a task
    * @param {Object} task task info
-   * @param {Function} callback err,result
+   * @param {Function} callback result
    */
   insertOneTask: function (task, callback) {
-    if (task) {
-      db.collection('tasks').add({
-        data: task,
-        success: res => {
-          callback(null, res)
-        },
-        fail: console.error
-      })
-    } else {
-      callback('task is null or undefined', null)
-    }
+    db.collection('tasks').add({
+      data: task,
+      success: res => {
+        callback(res)
+      },
+      fail: console.error
+    })
   },
   /**
  * delete a task by task id
  * @param {String} taskId task _id
- * @param {Funtfion} callback err,result
+ * @param {Funtfion} callback result
  */
-  deleteOneTask: function (taskId, callback) {
-    if (taskId) {
-      db.collection('tasks').doc(taskId).remove({
-        success: res => {
-          callback(null, res)
-        },
-        fail: console.error
-      })
-    } else {
-      callback('taskId id null or undefined')
-    }
+  deleteOneTaskByTaskId: function (taskId, callback) {
+    db.collection('tasks').doc(taskId).remove({
+      success: res => {
+        callback(res)
+      },
+      fail: console.error
+    })
   },
   /**
    * update a task info by task id
    * @param {String} taskId task _id
    * @param {Object} updateInfo task info Object
-   * @param {Function} callback err,result
+   * @param {Function} callback result
    */
-  updateOneTask: function (taskId, updateInfo, callback) {
-    if (taskId) {
-      db.collection('tasks').doc(taskId).update({
-        data: updateInfo,
-        success: res => {
-          callback(null, res)
-        },
-        fail: console.error
-      })
-    } else {
-      callback('taskId id null or undefined')
-    }
+  updateOneTaskByTaskId: function (taskId, updateInfo, callback) {
+    db.collection('tasks').doc(taskId).update({
+      data: updateInfo,
+      success: res => {
+        callback(res)
+      },
+      fail: console.error
+    })
   },
   /**
    * get a task info by task id
    * @param {String} taskId task _id
-   * @param {Function} callback err,result
+   * @param {Function} callback result
    */
   queryOneTaskByTaskId: function (taskId, callback) {
     if (taskId) {
       db.collection('tasks').doc(taskId).get({
         success: res => {
-          callback(null, res.data)
+          callback(res)
         },
         fail: console.error
       })
@@ -182,30 +167,26 @@ export var mydb = {
   /**
    * query task info by task name
    * @param {Sring} taskName task name
-   * @param {Function } callback err,result
+   * @param {Function } callback result
    */
   queryTasksByTaskName: function (taskName, callback) {
-    if (taskName) {
-      db.collection('tasks').where({
-        name: taskName
-      }).get({
-        success: res => {
-          callback(null, res.data)
-        },
-        fail: console.error
-      })
-    } else {
-      callback('taskName null or undefined')
-    }
+    db.collection('tasks').where({
+      name: taskName
+    }).get({
+      success: res => {
+        callback(res)
+      },
+      fail: console.error
+    })
   },
   /**
    * query 20 tasks
-   * @param {Function} callback err,result
+   * @param {Function} callback result
    */
   queryAllTasks: function (callback) {
     db.collection('tasks').get({
       success: res => {
-        callback(null, res.data)
+        callback(res)
       },
       fail: console.error
     }
