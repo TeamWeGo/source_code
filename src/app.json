@@ -61,5 +61,10 @@
       "activeIcon": "static/tabs/user-active.png"
     }],
     "position": "bottom"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置将用于小程序定位功能"
+    }
   }
 }

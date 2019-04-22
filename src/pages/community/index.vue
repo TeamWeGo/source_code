@@ -47,12 +47,9 @@ export default {
         });
     },
     queryOneUserByUserId() {
-      api
-        .queryOneUserByUserId("ee3099285cbc14b20396f579202a0615")
-        .then(res => {
+      api.queryOneUserByUserId("96c1cbbe5cbdbdc8049b0c3d0f627cab").then(res => {
           console.log(res);
-        })
-        .catch(rej => {
+        }).catch(rej => {
           console.warn(rej);
         });
     },

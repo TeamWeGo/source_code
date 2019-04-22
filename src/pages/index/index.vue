@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search-bar">
-      <button class="city-button" >{{ curCity }}</button>
+      <button class="city-button">{{ curCity }}</button>
       <input type="text" class="search-input" placeholder="搜索相关任务" />
       <img class="search-icon" src="/static/images/search.png" />
     </div>
@@ -25,11 +25,15 @@ import circleCard from '@/components/circleCard'
 import picSlider from '@/components/picSlider'
 import menuItem from '@/components/menuItem'
 
+import { api } from "../../utils/api.js"
+
+
+
 export default {
   data () {
     return {
       motto: 'Hello miniprograme',
-      curCity: '广州',
+      curCity: '深圳',
       userInfo: {
         nickName: 'mpvue',
         avatarUrl: 'http://mpvue.com/assets/logo.png'
@@ -88,11 +92,45 @@ export default {
     clickHandle (ev) {
       console.log('clickHandle:', ev)
       // throw {message: 'custom test'}
+    },
+    getLocation () {
+      wx.getLocation({
+        type: 'wgs84',
+        success(res) {
+          const latitude = res.latitude
+          const longitude = res.longitude
+          const speed = res.speed
+          const accuracy = res.accuracy
+          console.log('-d---------------------')
+          console.log(res)
+          const ak = '71RBASvs1GCE3EwSMOE3Qa1y0sGzSDSr'
+
+          wx.request({
+            url: 'http://api.map.baidu.com/geocoder/v2/?location='+latitude+','+longitude+'&output=json&pois=1&ak='+ak,
+            data: {},
+            header: {'Content-Type':"application/json"},
+            success:function(res){
+              if(res && res.data){
+                console.log(res);
+                curCity = res.data.result.addressComponent.city;
+                console.log(curCity);
+              }else{
+                console.log('地址获取失败')
+              }
+            }
+          })
+        }
+      })
     }
   },
 
   created () {
     // let app = getApp()
+    //getLocation()
+  },
+
+  mounted () {
+    this.getLocation()
   }
 }
 </script>
