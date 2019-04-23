@@ -5,12 +5,14 @@
       <div class="cur-city-name">{{ curCity }}</div>
     </div>
     <div class="all-city">
-
+      <p>所有城市</p>
+      <cityItem v-for="(item,index) in cityList" :key="index" :city="item"/>
     </div>
   </div>
 </template>
 
 <script>
+import cityItem from '@/components/cityItem'
 let pinyin = require("pinyin")
 
 let cityData = require('./city_code.js');
@@ -23,10 +25,10 @@ export default {
       cityList: []
     }
   },
+  components: {
+    cityItem
+  },
   methods: {
-    init () {
-      return 
-    },
     getCityList () {
       for(let i = 0; i < cityData.length; i++){
         let province = cityData[i];
@@ -44,12 +46,12 @@ export default {
           return pinyin.compare(param1, param2);
         }
       )
-      console.log(this.cityList);
+      //console.log(this.cityList);
     }
   },
   onLoad: function(options) {
     this.curCity = options.city;
-    console.log(this.curCity);
+    //console.log(this.curCity);
   },
   created () {
     this.getCityList();
@@ -61,6 +63,5 @@ export default {
 <style scoped>
 .cur-city-name {
   font-size: 20px;
-
 }
 </style>

@@ -128,6 +128,14 @@ export default {
   },
 
   mounted () {
+  },
+
+  onShow () {
+    
+  },
+
+  changeCity: function(city){
+    this.curCity = city;
   }
 }
 </script>
