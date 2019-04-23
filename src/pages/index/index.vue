@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search-bar">
-      <button class="city-button">{{ curCity }}</button>
+      <button class="city-button" @click="chooseCity">{{ curCity }}</button>
       <input type="text" class="search-input" placeholder="搜索相关任务" />
       <img class="search-icon" src="/static/images/search.png" />
     </div>
@@ -89,31 +89,29 @@ export default {
         mpvue.navigateTo({ url })
       }
     },
-    clickHandle (ev) {
-      console.log('clickHandle:', ev)
-      // throw {message: 'custom test'}
+    chooseCity () {
+      let url = '../citySelect/main?city='+this.curCity;
+      wx.navigateTo({ url })
     },
     getLocation () {
+      let ak = '71RBASvs1GCE3EwSMOE3Qa1y0sGzSDSr'
+      let url = 'http://api.map.baidu.com/geocoder/v2/'
       wx.getLocation({
         type: 'wgs84',
-        success(res) {
-          const latitude = res.latitude
-          const longitude = res.longitude
-          const speed = res.speed
-          const accuracy = res.accuracy
-          console.log('-d---------------------')
-          console.log(res)
-          const ak = '71RBASvs1GCE3EwSMOE3Qa1y0sGzSDSr'
-
+        success: geo => {
           wx.request({
-            url: 'http://api.map.baidu.com/geocoder/v2/?location='+latitude+','+longitude+'&output=json&pois=1&ak='+ak,
-            data: {},
-            header: {'Content-Type':"application/json"},
-            success:function(res){
+            url,
+            data: {
+              ak,
+              output: 'json',
+              location: `${geo.latitude},${geo.longitude}`
+            },
+            success:(res) => {
               if(res && res.data){
                 console.log(res);
-                curCity = res.data.result.addressComponent.city;
-                console.log(curCity);
+                let city = res.data.result.addressComponent.city;
+                this.curCity = city.replace("市","");
+                console.log(this.curCity);
               }else{
                 console.log('地址获取失败')
               }
@@ -126,11 +124,10 @@ export default {
 
   created () {
     // let app = getApp()
-    //getLocation()
+    this.getLocation()
   },
 
   mounted () {
-    this.getLocation()
   }
 }
 </script>

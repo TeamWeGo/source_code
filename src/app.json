@@ -3,6 +3,7 @@
     "pages/index/main",
     "pages/logs/main",
     "pages/user/main",
+    "pages/citySelect/main",
     "pages/community/main"
   ],
   "window": {
