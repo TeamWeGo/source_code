@@ -26,14 +26,13 @@ import picSlider from '@/components/picSlider'
 import menuItem from '@/components/menuItem'
 
 import { api } from "../../utils/api.js"
-
-
+import store from '@/components/store'
 
 export default {
   data () {
     return {
       motto: 'Hello miniprograme',
-      curCity: '深圳',
+      curCity: store.state.curCity,
       userInfo: {
         nickName: 'mpvue',
         avatarUrl: 'http://mpvue.com/assets/logo.png'
@@ -111,7 +110,7 @@ export default {
                 console.log(res);
                 let city = res.data.result.addressComponent.city;
                 this.curCity = city.replace("市","");
-                console.log(this.curCity);
+                //console.log(this.curCity);
               }else{
                 console.log('地址获取失败')
               }
@@ -131,11 +130,8 @@ export default {
   },
 
   onShow () {
-    
-  },
-
-  changeCity: function(city){
-    this.curCity = city;
+    //console.log(this.curCity);
+    this.curCity = store.state.curCity;
   }
 }
 </script>
