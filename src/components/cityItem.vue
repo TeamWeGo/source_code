@@ -6,20 +6,19 @@
 </template>
 
 <script>
+import store from './store'
 export default {
   props: ['city'],
   methods: {
     goBack () {
-      console.log("goback");
       let pages = getCurrentPages();
       if(pages.length > 1){
         //上一个页面实例对象
-        var prePage = pages[pages.length - 2];
+        //var prePage = pages[pages.length - 2];
         //关键在这里
-        prePage.changeCity(this.city);
-        wx.navigateBack({
-          delta: 1
-        })
+        store.commit('changeCity', this.city);
+        console.log("goback");
+        wx.navigateBack();
       }else{
         console.log("return page fail!");
       }
