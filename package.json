@@ -27,7 +27,7 @@
     "mpvue": "^2.0.0",
     "pinyin": "^2.8.3",
     "swiper": "^4.5.0",
-    "vuex": "^3.0.1"
+    "vuex": "^3.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",

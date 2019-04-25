@@ -21,7 +21,7 @@ cityData = cityData.dataList;
 export default {
   data () {
     return {
-      curCity: "深圳",
+      curCity: "",
       cityList: []
     }
   },
