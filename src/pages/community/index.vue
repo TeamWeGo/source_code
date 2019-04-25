@@ -7,6 +7,8 @@
     <button @click="insertOneTask">insertOneTask</button>
     <button @click="queryOneTaskByTaskId">queryOneTaskByTaskId</button>
     <button @click="updateOneTaskByTaskId">updateOneTaskByTaskId</button>
+    <button @click="queryAllTasks">queryAllTasks</button>
+    <button @click="queryAllUsers">queryAllUsers</button>
   </div>
 </template>
 
@@ -47,15 +49,18 @@ export default {
         });
     },
     queryOneUserByUserId() {
-      api.queryOneUserByUserId("96c1cbbe5cbdbdc8049b0c3d0f627cab").then(res => {
+      api
+        .queryOneUserByUserId("ee3099285cc1b61506961f552b4d9ce5")
+        .then(res => {
           console.log(res);
-        }).catch(rej => {
+        })
+        .catch(rej => {
           console.warn(rej);
         });
     },
     updateOneUserById() {
       api
-        .updateUserByUserId("ee3099285cbc14b20396f579202a0615", {
+        .updateUserByUserId("ee3099285cc1b61506961f552b4d9ce5", {
           idlePay: 250
         })
         .then(res => {
@@ -75,7 +80,7 @@ export default {
         joiner: [], //String Array the joiners _id array
         location: "广州",
         publish: {
-          publisher: "ee3099285cbc14b20396f579202a0615", //String user._id
+          publisher: "ee3099285cc1b61506961f552b4d9ce5", //String user._id
           beginTime: "",
           endTime: ""
         },
@@ -96,7 +101,7 @@ export default {
     },
     queryOneTaskByTaskId() {
       api
-        .queryOneTaskByTaskId("96c1cbbe5cbc158b039788674988fd4a")
+        .queryOneTaskByTaskId("9c4488c75cc1b95c069ae0d25cb96f2f")
         .then(res => {
           console.log(res);
         })
@@ -106,9 +111,29 @@ export default {
     },
     updateOneTaskByTaskId() {
       api
-        .updateTaskByTaskId("96c1cbbe5cbc158b039788674988fd4a", {
+        .updateTaskByTaskId("9c4488c75cc1b95c069ae0d25cb96f2f", {
           idlePay: 2500
         })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    queryAllTasks() {
+      api
+        .queryAllTasks()
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    queryAllUsers() {
+      api
+        .queryAllUsers()
         .then(res => {
           console.log(res);
         })
