@@ -68,7 +68,14 @@ export var mydb = {
       success: res => {
         callback(res)
       },
-      fail: console.error
+      fail: () => {
+        let msg = {
+          'result': console.error.toString(),
+          'errMsg': 'query a user:eror'
+        }
+        console.log(msg);
+        callback(null)
+      }
     })
 
   },
@@ -85,7 +92,14 @@ export var mydb = {
         success: res => {
           callback(res)
         },
-        fail: console.error
+        fail: () => {
+          let msg = {
+            'result': console.error.toString(),
+            'errMsg': 'query a user:eror'
+          }
+          console.log(msg);
+          callback(null)
+        }
       })
 
     } else {
@@ -100,8 +114,7 @@ export var mydb = {
     db.collection('users').get({
       success: res => {
         callback(res)
-      },
-      fail: console.error
+      }
     }
     )
   },
@@ -158,7 +171,13 @@ export var mydb = {
         success: res => {
           callback(res)
         },
-        fail: console.error
+        fail: () => {
+          let msg = {
+            'result': console.error.toString(),
+            'errMsg': 'query a task:eror'
+          }
+          console.log(msg);
+        }
       })
     } else {
       callback('taskId id null or undefined')
@@ -176,7 +195,45 @@ export var mydb = {
       success: res => {
         callback(res)
       },
-      fail: console.error
+      fail: () => {
+        let msg = {
+          'result': console.error.toString(),
+          'errMsg': 'query a task:eror'
+        }
+        console.log(msg);
+      }
+    })
+  },
+  queryTasksByPublisherId: function (publisherId, callback) {
+    db.collection('tasks').where({
+      publish: {
+        publisher: publisherId
+      }
+    }).get({
+      success: res => {
+        callback(res)
+      },
+      fail: () => {
+        let msg = {
+          'result': console.error.toString(),
+          'errMsg': 'query a task:eror'
+        }
+        console.log(msg);
+      }
+    })
+  },
+  queryTasksModule: function (queryObject, callback) {
+    db.collection('tasks').where(queryObject).get({
+      success: res => {
+        callback(res)
+      },
+      fail: () => {
+        let msg = {
+          'result': console.error.toString(),
+          'errMsg': 'query a task:eror'
+        }
+        console.log(msg);
+      }
     })
   },
   /**
@@ -184,11 +241,10 @@ export var mydb = {
    * @param {Function} callback result
    */
   queryAllTasks: function (callback) {
-    db.collection('tasks').get({
-      success: res => {
+    db.collection('tasks').limit(10).get({
+      success(res) {
         callback(res)
-      },
-      fail: console.error
+      }
     }
     )
   }
