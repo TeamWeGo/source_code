@@ -4,24 +4,34 @@
       <image class="mission-list-item-image" :src="item.image" ></image>
       <div class="mission-list-item-word">
         <ul>
-          <li class="mission-list-item-title">{{item.title}}</li>
+          <li> 
+            <span class="mission-list-item-title">{{item.title}} </span>
+            <span class="mission-list-item-location">{{item.location}}</span>
+          </li>
+          <li><span><mp-rate rateValue=3 rateClass="mission-list-item-star"></mp-rate></span></li>
           <li>
             <span class="mission-list-item-time">{{item.time}}</span>
-            <span class="mission-list-item-location">{{item.location}}</span>
           </li>
           <li class="mission-list-item-intro">{{item.intro}}</li>
           <li class="mission-list-item-price">
+            <span>CNY￥</span>
             <span>{{item.price}}</span>
-            <span>闲钱币</span>
           </li>
         </ul>
       </div>
+      <div class="divideline"></div>
     </div>
   </div>
 </template>
 
 <script>
+
+import mpRate from 'mpvue-weui/src/rate';
+
 export default {
+  components: {
+    mpRate,
+  },
   props: {
     list: {
       type: Array,
@@ -69,9 +79,38 @@ export default {
 
 .mission-list-item-time {
   margin-right: 30rpx;
+  color: red;
 }
 
 .mission-list-item-price {
   float: right;
+  color: brown;
+}
+
+.mission-list-item-location{
+  color: white;
+  float: right;
+  border: 2rpx solid green;
+  background-color: green;
+  border-radius: 5rpx;
+  text-align: center;
+  margin-top:10rpx;
+  width: 100rpx;
+  height: 50rpx;
+  font-size: 25rpx;
+  line-height: 50rpx;
+}
+
+.mission-list-item-star{
+  width: 40rpx !important;
+  height: 40rpx !important;
+}
+
+.divideline{
+  height: 3rpx;
+  width: 100%;
+  float:left;
+  background-color: rgba(155, 146, 146, 0.548);
+  margin: 10rpx;
 }
 </style>
