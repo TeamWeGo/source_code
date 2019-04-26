@@ -15,8 +15,8 @@
 ```javascript
 
   let User = {
-    '_id':'x',//String database main key
-    '_openid':'x'// 
+   // '_id':'x',//String database main key
+    '_openid':'x'//
     'nickName':'x', // String every User need has unique nickName wechat name
     'name':'X',//String real name
     'studentId':'',//String studient id
@@ -33,7 +33,7 @@
   }
 
   let user = {
-    '_id':'4565465',//String database main key
+   // '_id':'4565465',//String database main key
     '_openid':'21313'//
     'nickName':'蚊子', // String every User need has unique nickName wechat name
     'name':'庄蚊子',//String real name
@@ -89,7 +89,7 @@ api.updateUserByUserId(user._id,{'idlePay':212}).then((result)=>{
 ```javascript
 
   let Task = {
-    '_id':'x',//String database main key
+    //'_id':'x',//String database main key
     'title':'x', // String every task need a name Title
     'type':'学习|生活|娱乐|',//String task type
     'description':'XXX',//String task detail description
@@ -111,7 +111,7 @@ api.updateUserByUserId(user._id,{'idlePay':212}).then((result)=>{
   }
 
   let task ={
-        '_id':'21231',//String database main key
+        //'_id':'21231',//String database main key
     'title':'唱歌', // String every task need a name Title
     'type':'娱乐',//String task type
     'description':'唱一首单身情歌',//String task detail description
