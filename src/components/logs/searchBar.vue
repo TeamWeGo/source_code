@@ -7,7 +7,7 @@
           <input
             type="text"
             class="weui-search-bar__input"
-            placeholder="搜索"
+            placeholder="搜索订单"
             v-model="inputVal"
             :focus="inputShowed"
             @input="inputTyping"

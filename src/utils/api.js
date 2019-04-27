@@ -68,6 +68,33 @@ export var api = {
 
     })
   },
+  queryAllUsers: function () {
+    return new Promise((resolve, reject) => {
+      mydb.queryAllUsers((result) => {
+        if (result) {
+          if (result.data.length != 0) {
+            let msg = {
+              'result': result.data,
+              'errMsg': 'query a task:ok'
+            }
+            resolve(msg);
+          } else {
+            let msg = {
+              'result': null,
+              'errMsg': 'query a task:error'
+            }
+            reject(msg);
+          }
+        } else {
+          let msg = {
+            'result': null,
+            'errMsg': 'query a task:error'
+          }
+          reject(msg);
+        }
+      })
+    })
+  },
   /**
    * queryOneUserByUserId
    * @param {String} id user id
@@ -75,12 +102,20 @@ export var api = {
   queryOneUserByUserId: function (id) {
     return new Promise((resolve, reject) => {
       mydb.queryOneUserByUserId(id, function (result) {
-        if (result.data.length != 0) {
-          let msg = {
-            'result': result.data,
-            'errMsg': 'query a user:ok'
+        if (result) {
+          if (result.data.length != 0) {
+            let msg = {
+              'result': result.data,
+              'errMsg': 'query a user:ok'
+            }
+            resolve(msg)
+          } else {
+            let msg = {
+              'result': null,
+              'errMsg': 'query a user:error'
+            }
+            reject(msg)
           }
-          resolve(msg)
         } else {
           let msg = {
             'result': null,
@@ -140,16 +175,31 @@ export var api = {
       error = ref;
     });
     await new Promise((resolve, reject) => {
-      mydb.queryOneUserByUserId(task.publish.publiser, (result) => {
-        if (result.data.length != 0) {
-          resolve(result);
-        }
-        else {
-          reject('error insert task');
+      mydb.queryOneUserByUserId(task.publish.publisher, (result) => {
+        if (result) {
+          if (result.data.length != 0) {
+            let msg = {
+              'result': result.data,
+              'errMsg': 'query a user:ok'
+            }
+            resolve(msg)
+          } else {
+            let msg = {
+              'result': null,
+              'errMsg': 'query a user:error'
+            }
+            reject(msg)
+          }
+        } else {
+          let msg = {
+            'result': null,
+            'errMsg': 'query a user:error'
+          }
+          reject(msg)
         }
       });
     }).then((result) => {
-      user = result.data
+      user = result.result;
     }).catch((ref) => {
       error = ref;
     });;
@@ -157,7 +207,10 @@ export var api = {
     return new Promise((resolve, reject) => {
 
       if (error) {
-        reject(error)
+        mydb.deleteOneTaskByTaskId(task._id, (result) => {
+          reject(error)
+        })
+
       }
       let publishs = user.tasks.published;
       publishs.push(task._id);
@@ -179,7 +232,9 @@ export var api = {
             'result': null,
             'errMsg': 'insert a task:error'
           }
-          reject(msg);
+          mydb.deleteOneTaskByTaskId(task._id, (result) => {
+            reject(error)
+          })
         }
       });
     });
@@ -214,6 +269,84 @@ export var api = {
   queryOneTaskByTaskId: function (id) {
     return new Promise((resolve, reject) => {
       mydb.queryOneTaskByTaskId(id, (result) => {
+        if (result.data.length != 0) {
+          let msg = {
+            'result': result.data,
+            'errMsg': 'query a task:ok'
+          }
+          resolve(msg);
+        } else {
+          let msg = {
+            'result': null,
+            'errMsg': 'query a task:error'
+          }
+          reject(msg);
+        }
+      })
+    })
+  },
+  queryAllTasksByPublisherId: function (publisherId) {
+    return new Promise((resolve, reject) => {
+      mydb.queryTasksByPublisherId(publisherId, (result) => {
+        if (result) {
+          if (result.data.length != 0) {
+            let msg = {
+              'result': result.data,
+              'errMsg': 'query a task:ok'
+            }
+            resolve(msg);
+          } else {
+            let msg = {
+              'result': null,
+              'errMsg': 'query a task:error'
+            }
+            reject(msg);
+          }
+        } else {
+          let msg = {
+            'result': null,
+            'errMsg': 'query a task:error'
+          }
+          reject(msg);
+        }
+      })
+    })
+  },
+  queryAllTasks: function () {
+    return new Promise((resolve, reject) => {
+      mydb.queryAllTasks((result) => {
+        if (result) {
+          if (result.data.length != 0) {
+            let msg = {
+              'result': result.data,
+              'errMsg': 'query a task:ok'
+            }
+            resolve(msg);
+          } else {
+            let msg = {
+              'result': null,
+              'errMsg': 'query a task:error'
+            }
+            reject(msg);
+          }
+        } else {
+          let msg = {
+            'result': null,
+            'errMsg': 'query a task:error'
+          }
+          reject(msg);
+        }
+      })
+    })
+  },
+  queryFinishedTasksByPublisherId: function (publisherId) {
+    return new Promise((resolve, reject) => {
+      mydb.queryTasksModule({
+        state: "finished",
+        publish: {
+          publiser: publisherId
+        }
+      }, (result) => {
         if (result.data.length != 0) {
           let msg = {
             'result': result.data,
