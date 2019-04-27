@@ -188,9 +188,9 @@ export var mydb = {
    * @param {Sring} taskName task name
    * @param {Function } callback result
    */
-  queryTasksByTaskName: function (taskName, callback) {
+  queryTasksByTaskTitle: function (taskTitle, callback) {
     db.collection('tasks').where({
-      name: taskName
+      title: taskTitle
     }).get({
       success: res => {
         callback(res)

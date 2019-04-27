@@ -210,14 +210,19 @@ export var api = {
         mydb.deleteOneTaskByTaskId(task._id, (result) => {
           reject(error)
         })
-
       }
       let publishs = user.tasks.published;
       publishs.push(task._id);
+      if (user.balance - task.payment < 0) {
+        mydb.deleteOneTaskByTaskId(task._id, (result) => {
+          reject('user.balance - task.payment<0')
+        })
+      }
       let updateInfo = {
         'tasks': {
           'published': publishs
-        }
+        },
+        'balance': user.balance - task.payment
       };
       mydb.updateOneUserByUserId(user._id, updateInfo, (result) => {
         if (result.stats.updated == 1) {

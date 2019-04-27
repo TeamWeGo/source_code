@@ -27,7 +27,7 @@
       'doing':[task._id],//String Array the task._id that the user is doing right now
     },
     'balance':21,//Number free money coin
-    'credit':100
+    'credit':100,//诚信度
     'isVerified': True,
     'personalStatement':'Hello World'
   }

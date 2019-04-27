@@ -112,7 +112,7 @@ export default {
     updateOneTaskByTaskId() {
       api
         .updateTaskByTaskId("9c4488c75cc1b95c069ae0d25cb96f2f", {
-          idlePay: 2500
+          payment: 2500
         })
         .then(res => {
           console.log(res);
