@@ -29,6 +29,7 @@ export default {
     insertOneUser() {
       let user = {
         name: "庄蚊子", //String real name
+        wechatopenid: "0001",
         studentId: "16340222", //String studient id
         gender: "male", //String
         tasks: {
@@ -37,7 +38,7 @@ export default {
           finished: [], //String Array the tasks that the user finished
           doing: [] //String Array the tasks that the user is doing right now
         },
-        idlePay: 1000 //Number free money coin
+        balance: 1000 //Number free money coin
       };
       api
         .insertOneUser(user)
@@ -50,7 +51,7 @@ export default {
     },
     queryOneUserByUserId() {
       api
-        .queryOneUserByUserId("ee3099285cc1b61506961f552b4d9ce5")
+        .queryOneUserByUserId("ee3099285cc44cdd07c405e104efb85b")
         .then(res => {
           console.log(res);
         })
@@ -60,8 +61,8 @@ export default {
     },
     updateOneUserById() {
       api
-        .updateUserByUserId("ee3099285cc1b61506961f552b4d9ce5", {
-          idlePay: 250
+        .updateUserByUserId("ee3099285cc44cdd07c405e104efb85b", {
+          balance: 250
         })
         .then(res => {
           console.log(res);
@@ -80,11 +81,11 @@ export default {
         joiner: [], //String Array the joiners _id array
         location: "广州",
         publish: {
-          publisher: "ee3099285cc1b61506961f552b4d9ce5", //String user._id
+          publisher: "ee3099285cc44cdd07c405e104efb85b", //String user._id
           beginTime: "",
           endTime: ""
         },
-        idlePay: 200,
+        payment: 200,
         work: {
           beginTime: "",
           endTime: ""
@@ -101,7 +102,7 @@ export default {
     },
     queryOneTaskByTaskId() {
       api
-        .queryOneTaskByTaskId("9c4488c75cc1b95c069ae0d25cb96f2f")
+        .queryOneTaskByTaskId("96c1cbbe5cc44d7d07c4b4b0572fc005")
         .then(res => {
           console.log(res);
         })
@@ -111,7 +112,7 @@ export default {
     },
     updateOneTaskByTaskId() {
       api
-        .updateTaskByTaskId("9c4488c75cc1b95c069ae0d25cb96f2f", {
+        .updateTaskByTaskId("96c1cbbe5cc44d7d07c4b4b0572fc005", {
           payment: 2500
         })
         .then(res => {
@@ -123,7 +124,7 @@ export default {
     },
     queryAllTasks() {
       api
-        .queryAllTasks()
+        .queryTasksByModel({})
         .then(res => {
           console.log(res);
         })

@@ -16,7 +16,7 @@ export var api = {
         }
         reject(msg)
       }
-      mydb.queryOneUserByUserName(user.name, function (result) {
+      mydb.queryOneUserByUserWeChatOpenId(user.wechatopenid, function (result) {
         if (result.data.length != 0) {
           let msg = {
             'result': 'already has',
@@ -39,30 +39,6 @@ export var api = {
               reject(msg)
             }
           })
-        }
-      })
-
-    })
-  },
-  /**
-    * queryUsersByUserName
-    * @param {String} username user name
-    */
-  queryOneUserByUserName: function (username) {
-    return new Promise((resolve, reject) => {
-      mydb.queryOneUserByUserName(username, function (result) {
-        if (result.data.length != 0) {
-          let msg = {
-            'result': result.data,
-            'errMsg': 'query a user:ok'
-          }
-          resolve(msg)
-        } else {
-          let msg = {
-            'result': null,
-            'errMsg': 'query a user:error'
-          }
-          reject(msg)
         }
       })
 
@@ -217,31 +193,32 @@ export var api = {
         mydb.deleteOneTaskByTaskId(task._id, (result) => {
           reject('user.balance - task.payment<0')
         })
+      } else {
+        let updateInfo = {
+          'tasks': {
+            'published': publishs
+          },
+          'balance': user.balance - task.payment
+        };
+        mydb.updateOneUserByUserId(user._id, updateInfo, (result) => {
+          if (result.stats.updated == 1) {
+            let msg = {
+              'result': task._id,
+              'errMsg': 'insert a task:ok'
+            }
+            resolve(msg);
+          }
+          else {
+            let msg = {
+              'result': null,
+              'errMsg': 'insert a task:error'
+            }
+            mydb.deleteOneTaskByTaskId(task._id, (result) => {
+              reject(error)
+            })
+          }
+        });
       }
-      let updateInfo = {
-        'tasks': {
-          'published': publishs
-        },
-        'balance': user.balance - task.payment
-      };
-      mydb.updateOneUserByUserId(user._id, updateInfo, (result) => {
-        if (result.stats.updated == 1) {
-          let msg = {
-            'result': task._id,
-            'errMsg': 'insert a task:ok'
-          }
-          resolve(msg);
-        }
-        else {
-          let msg = {
-            'result': null,
-            'errMsg': 'insert a task:error'
-          }
-          mydb.deleteOneTaskByTaskId(task._id, (result) => {
-            reject(error)
-          })
-        }
-      });
     });
 
   },
@@ -290,68 +267,61 @@ export var api = {
       })
     })
   },
-  queryAllTasksByPublisherId: function (publisherId) {
+  // queryAllTasksByPublisherId: function (publisherId) {
+  //   return new Promise((resolve, reject) => {
+  //     mydb.queryTasksByPublisherId(publisherId, (result) => {
+  //       if (result) {
+  //         if (result.data.length != 0) {
+  //           let msg = {
+  //             'result': result.data,
+  //             'errMsg': 'query a task:ok'
+  //           }
+  //           resolve(msg);
+  //         } else {
+  //           let msg = {
+  //             'result': null,
+  //             'errMsg': 'query a task:error'
+  //           }
+  //           reject(msg);
+  //         }
+  //       } else {
+  //         let msg = {
+  //           'result': null,
+  //           'errMsg': 'query a task:error'
+  //         }
+  //         reject(msg);
+  //       }
+  //     })
+  //   })
+  // },
+
+  // queryFinishedTasksByPublisherId: function (publisherId) {
+  //   return new Promise((resolve, reject) => {
+  //     mydb.queryTasksModule({
+  //       state: "finished",
+  //       publish: {
+  //         publiser: publisherId
+  //       }
+  //     }, (result) => {
+  //       if (result.data.length != 0) {
+  //         let msg = {
+  //           'result': result.data,
+  //           'errMsg': 'query a task:ok'
+  //         }
+  //         resolve(msg);
+  //       } else {
+  //         let msg = {
+  //           'result': null,
+  //           'errMsg': 'query a task:error'
+  //         }
+  //         reject(msg);
+  //       }
+  //     })
+  //   })
+  // },
+  queryTasksByModel: function (model) {
     return new Promise((resolve, reject) => {
-      mydb.queryTasksByPublisherId(publisherId, (result) => {
-        if (result) {
-          if (result.data.length != 0) {
-            let msg = {
-              'result': result.data,
-              'errMsg': 'query a task:ok'
-            }
-            resolve(msg);
-          } else {
-            let msg = {
-              'result': null,
-              'errMsg': 'query a task:error'
-            }
-            reject(msg);
-          }
-        } else {
-          let msg = {
-            'result': null,
-            'errMsg': 'query a task:error'
-          }
-          reject(msg);
-        }
-      })
-    })
-  },
-  queryAllTasks: function () {
-    return new Promise((resolve, reject) => {
-      mydb.queryAllTasks((result) => {
-        if (result) {
-          if (result.data.length != 0) {
-            let msg = {
-              'result': result.data,
-              'errMsg': 'query a task:ok'
-            }
-            resolve(msg);
-          } else {
-            let msg = {
-              'result': null,
-              'errMsg': 'query a task:error'
-            }
-            reject(msg);
-          }
-        } else {
-          let msg = {
-            'result': null,
-            'errMsg': 'query a task:error'
-          }
-          reject(msg);
-        }
-      })
-    })
-  },
-  queryFinishedTasksByPublisherId: function (publisherId) {
-    return new Promise((resolve, reject) => {
-      mydb.queryTasksModule({
-        state: "finished",
-        publish: {
-          publiser: publisherId
-        }
-      }, (result) => {
+      mydb.queryTasksModel(model, (result) => {
         if (result.data.length != 0) {
           let msg = {
             'result': result.data,
@@ -367,6 +337,65 @@ export var api = {
         }
       })
     })
+  },
+  // queryAllTasks: function () {
+  //   return new Promise((resolve, reject) => {
+  //     mydb.queryAllTasks((result) => {
+  //       if (result) {
+  //         if (result.data.length != 0) {
+  //           let msg = {
+  //             'result': result.data,
+  //             'errMsg': 'query a task:ok'
+  //           }
+  //           resolve(msg);
+  //         } else {
+  //           let msg = {
+  //             'result': null,
+  //             'errMsg': 'query a task:error'
+  //           }
+  //           reject(msg);
+  //         }
+  //       } else {
+  //         let msg = {
+  //           'result': null,
+  //           'errMsg': 'query a task:error'
+  //         }
+  //         reject(msg);
+  //       }
+  //     })
+  //   })
+  // },
+  joinOneTask: function (task, userid) {
+    return new Promise((resolve, reject => {
+      if (task.joiners.length >= task.maxJoiner) {
+        let msg = {
+          'result': null,
+          'errMsg': 'the task already has max number of joiner'
+        }
+        reject(msg);
+      } else {
+        let joiners = task.joiners;
+        joiners.push(userid);
+        mydb.updateOneTaskByTaskId(task._id, {
+          'joiners': joiners
+        }, (result => {
+          if (result.stats.updated == 1) {
+            let msg = {
+              'result': result.stats.updated,
+              'errMsg': 'joiner a task:ok'
+            }
+            task.joiners = joiners;
+            resolve(msg);
+          } else {
+            let msg = {
+              'result': null,
+              'errMsg': 'joiner a task:error'
+            }
+            reject(msg);
+          }
+        }))
+      }
+    }))
   }
 
 

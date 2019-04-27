@@ -12,12 +12,17 @@
   - name -> title
   - idlepay -> payment
 
+更新日期：4.27 17.00
+- User 属性更改
+  - 增加wechatopenid （用于保存微信api 返回的用户标识）
+  -
 ```javascript
 
   let User = {
    // '_id':'x',//String database main key
-    '_openid':'x'//
+    'wechatopenid':'x'//
     'nickName':'x', // String every User need has unique nickName wechat name
+    'avatarUrl':'x',
     'name':'X',//String real name
     'studentId':'',//String studient id
     'gender':'male|famale|*',//String
@@ -91,11 +96,12 @@ api.updateUserByUserId(user._id,{'idlePay':212}).then((result)=>{
   let Task = {
     //'_id':'x',//String database main key
     'title':'x', // String every task need a name Title
+    'avatarId':'',//upload the avatar to server and get an id from the callback
     'type':'学习|生活|娱乐|',//String task type
     'description':'XXX',//String task detail description
     'state':'publishing|doing|finished',//String task state
-    'numberOfJoiner':1,//Number Max Nubmer of joiners
-    'joiner':['x'],//String Array the joiners _id array
+    'maxJoiner':1,//Number Max Nubmer of joiners
+    'joiners':['x'],//String Array the joiners _id array
     'location':'x'
     'publish':{
       'publisher':'X',//String user._id
@@ -161,6 +167,16 @@ api.updateTaskByTaskId(task._id,{
 
 ```
 
+* joinOneTask
+```javascript
+api.joinOneTask(task, user._id).then((result)=>{
+  console.log(result)
+}).catch((error)=>{
+  console.warn(error)
+})
+
+```
+
 * queryOneTaskByTaskId
 ```javascript
 api.queryOneTaskByTaskId(task._id).then((result)=>{
@@ -168,4 +184,80 @@ api.queryOneTaskByTaskId(task._id).then((result)=>{
 }).catch((error)=>{
   console.warn(error)
 })
+```
+
+*  queryTasksByPublisherId
+```javascript
+
+api.queryTasksByModel({
+  'publish':{
+    'publisher':PublisherId
+  }
+}).then((result)=>{
+  console.log(result)
+}).catch((error)=>{
+  console.warn(error)
+})
+
+```
+
+* queryFinishedTasksByPublisherId
+```javascript
+
+api.queryTasksByModel({
+  'state':'finished',
+  'publish':{
+    'publisher':PublisherId
+  }
+}).then((result)=>{
+  console.log(result)
+}).catch((error)=>{
+  console.warn(error)
+})
+
+```
+
+* queryDoingTasksByPublisherId
+```javascript
+
+api.queryTasksByModel({
+  'state':'doing',
+  'publish':{
+    'publisher':PublisherId
+  }
+}).then((result)=>{
+  console.log(result)
+}).catch((error)=>{
+  console.warn(error)
+})
+
+```
+
+* queryPublishingTasksByPublisherId
+```javascript
+
+api.queryTasksByModel({
+  'state':'publishing',
+  'publish':{
+    'publisher':PublisherId
+  }
+}).then((result)=>{
+  console.log(result)
+}).catch((error)=>{
+  console.warn(error)
+})
+
+```
+
+* queryAllPublishingTasks
+```javascript
+
+api.queryTasksByModel({
+  'state':'publishing'
+}).then((result)=>{
+  console.log(result)
+}).catch((error)=>{
+  console.warn(error)
+})
+
 ```

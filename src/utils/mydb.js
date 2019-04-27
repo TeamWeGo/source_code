@@ -11,8 +11,10 @@ export var mydb = {
    */
   insertOneUser: function (user, callback) {
     if (user) {
+      let tem = user;
+      tem.createTime = db.serverDate();
       db.collection('users').add({
-        data: user,
+        data: tem,
         success: res => {
           callback(res)
         },
@@ -80,14 +82,14 @@ export var mydb = {
 
   },
   /**
-   * query user info by user name
-   * @param {Sring} userName user name
+   * query user info by user openid
+   * @param {Sring} openid user openid
    * @param {Function } callback result
    */
-  queryOneUserByUserName: function (userName, callback) {
-    if (userName) {
+  queryOneUserByUserWeChatOpenId: function (wechatopenid, callback) {
+    if (wechatopenid) {
       db.collection('users').where({
-        'name': userName
+        'wechatopenid': wechatopenid
       }).get({
         success: res => {
           callback(res)
@@ -103,7 +105,7 @@ export var mydb = {
       })
 
     } else {
-      callback('userName is null or undefined')
+      callback('wechatopenid is null or undefined')
     }
   },
   /**
@@ -111,7 +113,7 @@ export var mydb = {
    * @param {Function} callback result
    */
   queryAllUsers: function (callback) {
-    db.collection('users').get({
+    db.collection('users').orderBy('createTime', 'desc').get({
       success: res => {
         callback(res)
       }
@@ -124,8 +126,10 @@ export var mydb = {
    * @param {Function} callback result
    */
   insertOneTask: function (task, callback) {
+    let tem = task;
+    tem.createTime = db.serverDate();
     db.collection('tasks').add({
-      data: task,
+      data: tem,
       success: res => {
         callback(res)
       },
@@ -188,42 +192,42 @@ export var mydb = {
    * @param {Sring} taskName task name
    * @param {Function } callback result
    */
-  queryTasksByTaskTitle: function (taskTitle, callback) {
-    db.collection('tasks').where({
-      title: taskTitle
-    }).get({
-      success: res => {
-        callback(res)
-      },
-      fail: () => {
-        let msg = {
-          'result': console.error.toString(),
-          'errMsg': 'query a task:eror'
-        }
-        console.log(msg);
-      }
-    })
-  },
-  queryTasksByPublisherId: function (publisherId, callback) {
-    db.collection('tasks').where({
-      publish: {
-        publisher: publisherId
-      }
-    }).get({
-      success: res => {
-        callback(res)
-      },
-      fail: () => {
-        let msg = {
-          'result': console.error.toString(),
-          'errMsg': 'query a task:eror'
-        }
-        console.log(msg);
-      }
-    })
-  },
-  queryTasksModule: function (queryObject, callback) {
-    db.collection('tasks').where(queryObject).get({
+  // queryTasksByTaskTitle: function (taskTitle, callback) {
+  //   db.collection('tasks').where({
+  //     title: taskTitle
+  //   }).get({
+  //     success: res => {
+  //       callback(res)
+  //     },
+  //     fail: () => {
+  //       let msg = {
+  //         'result': console.error.toString(),
+  //         'errMsg': 'query a task:eror'
+  //       }
+  //       console.log(msg);
+  //     }
+  //   })
+  // },
+  // queryTasksByPublisherId: function (publisherId, callback) {
+  //   db.collection('tasks').orderBy('createTime', 'desc').where({
+  //     publish: {
+  //       publisher: publisherId
+  //     }
+  //   }).get({
+  //     success: res => {
+  //       callback(res)
+  //     },
+  //     fail: () => {
+  //       let msg = {
+  //         'result': console.error.toString(),
+  //         'errMsg': 'query a task:eror'
+  //       }
+  //       console.log(msg);
+  //     }
+  //   })
+  // },
+  queryTasksModel: function (queryObject, callback) {
+    db.collection('tasks').where(queryObject).orderBy('createTime', 'desc').get({
       success: res => {
         callback(res)
       },
@@ -240,12 +244,12 @@ export var mydb = {
    * query 20 tasks
    * @param {Function} callback result
    */
-  queryAllTasks: function (callback) {
-    db.collection('tasks').limit(10).get({
-      success(res) {
-        callback(res)
-      }
-    }
-    )
-  }
+  // queryAllTasks: function (callback) {
+  //   db.collection('tasks').limit(20).orderBy('createTime', 'desc').get({
+  //     success(res) {
+  //       callback(res)
+  //     }
+  //   }
+  //   )
+  // }
 }
