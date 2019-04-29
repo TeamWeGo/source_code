@@ -11,16 +11,20 @@ export var api = {
     return new Promise((resolve, reject) => {
       if (!isVaildUserForm(user)) {
         let msg = {
-          'result': 'userform is invalid ',
-          'errMsg': 'insert a user:error'
+          'result': null,
+          'msg': 'insert a user:error',
+          'errMsg': 'user is not valid'
         }
         reject(msg)
+
       }
-      mydb.queryOneUserByUserName(user.name, function (result) {
+      mydb.queryOneUserByUserWeChatOpenId(user.wechatopenid, function (result) {
         if (result.data.length != 0) {
+
           let msg = {
-            'result': 'already has',
-            'errMsg': 'insert a user:error'
+            'result': null,
+            'msg': 'insert a user:error',
+            'errMsg': 'user has already in db'
           }
           reject(msg)
         } else {
@@ -28,41 +32,19 @@ export var api = {
             if (result._id) {
               let msg = {
                 'result': result._id,
-                'errMsg': 'insert a user:ok'
+                'msg': 'insert a user:ok',
+                'errMsg': null
               }
               resolve(msg)
             } else {
               let msg = {
                 'result': null,
-                'errMsg': 'insert a user:error'
+                'msg': 'insert a user:error',
+                'errMsg': 'user insert  db error'
               }
               reject(msg)
             }
           })
-        }
-      })
-
-    })
-  },
-  /**
-    * queryUsersByUserName
-    * @param {String} username user name
-    */
-  queryOneUserByUserName: function (username) {
-    return new Promise((resolve, reject) => {
-      mydb.queryOneUserByUserName(username, function (result) {
-        if (result.data.length != 0) {
-          let msg = {
-            'result': result.data,
-            'errMsg': 'query a user:ok'
-          }
-          resolve(msg)
-        } else {
-          let msg = {
-            'result': null,
-            'errMsg': 'query a user:error'
-          }
-          reject(msg)
         }
       })
 
@@ -75,20 +57,23 @@ export var api = {
           if (result.data.length != 0) {
             let msg = {
               'result': result.data,
-              'errMsg': 'query a task:ok'
+              'msg': 'query all user:ok',
+              'errMsg': null
             }
             resolve(msg);
           } else {
             let msg = {
               'result': null,
-              'errMsg': 'query a task:error'
+              'msg': 'query all user:error',
+              'errMsg': 'query error in db '
             }
             reject(msg);
           }
         } else {
           let msg = {
             'result': null,
-            'errMsg': 'query a task:error'
+            'msg': 'query all user:error',
+            'errMsg': 'error in db'
           }
           reject(msg);
         }
@@ -106,20 +91,23 @@ export var api = {
           if (result.data.length != 0) {
             let msg = {
               'result': result.data,
-              'errMsg': 'query a user:ok'
+              'msg': 'query a user:ok',
+              'errMsg': null
             }
             resolve(msg)
           } else {
             let msg = {
               'result': null,
-              'errMsg': 'query a user:error'
+              'msg': 'query a user:error',
+              'errMsg': 'error in db'
             }
             reject(msg)
           }
         } else {
           let msg = {
             'result': null,
-            'errMsg': 'query a user:error'
+            'msg': 'query a user:error',
+            'errMsg': 'error in db'
           }
           reject(msg)
         }
@@ -137,13 +125,15 @@ export var api = {
         if (result.stats.updated == 1) {
           let msg = {
             'result': result.stats.updated,
-            'errMsg': 'update a user:ok'
+            'msg': 'update a user:ok',
+            'errMsg': null
           }
           resolve(msg)
         } else {
           let msg = {
             'result': null,
-            'errMsg': 'update a user:error'
+            'msg': 'update a user:error',
+            'errMsg': 'error in db'
           }
           reject(msg)
         }
@@ -151,22 +141,33 @@ export var api = {
     })
   },
   /**
-   * insert a task and update publiser
+   * publish a task and update publiser
    * @param {Object} task task
    */
-  insertOneTask: async function (task) {
+  publishOneTask: async function (task) {
     let user;
     let error;
     await new Promise((resolve, reject) => {
       if (!isVaildTaskForm(task)) {
-        reject('task form is valid' + task);
+        let msg = {
+          'result': null,
+          'msg': 'publish a task:error',
+          'errMsg': 'task is no valid'
+        }
+        reject(msg)
       }
       mydb.insertOneTask(task, (result) => {
         if (result._id) {
           resolve(result);
         }
         else {
-          reject('error insert task');
+          let msg = {
+            'result': null,
+            'msg': 'insert a task:error',
+            'errMsg': 'error in db'
+          }
+          reject(msg)
+
         }
       });
     }).then((result) => {
@@ -180,20 +181,23 @@ export var api = {
           if (result.data.length != 0) {
             let msg = {
               'result': result.data,
-              'errMsg': 'query a user:ok'
+              'msg': 'query a user:ok',
+              'errMsg': null
             }
             resolve(msg)
           } else {
             let msg = {
               'result': null,
-              'errMsg': 'query a user:error'
+              'msg': 'query a user:error',
+              'errMsg': 'error in db'
             }
             reject(msg)
           }
         } else {
           let msg = {
             'result': null,
-            'errMsg': 'query a user:error'
+            'msg': 'query a user:error',
+            'errMsg': 'error in db'
           }
           reject(msg)
         }
@@ -208,35 +212,52 @@ export var api = {
 
       if (error) {
         mydb.deleteOneTaskByTaskId(task._id, (result) => {
-          reject(error)
+          let msg = {
+            'result': null,
+            'msg': 'insert a task:error',
+            'msg': error
+          }
+          reject(msg)
         })
-
       }
       let publishs = user.tasks.published;
       publishs.push(task._id);
-      let updateInfo = {
-        'tasks': {
-          'published': publishs
-        }
-      };
-      mydb.updateOneUserByUserId(user._id, updateInfo, (result) => {
-        if (result.stats.updated == 1) {
-          let msg = {
-            'result': task._id,
-            'errMsg': 'insert a task:ok'
-          }
-          resolve(msg);
-        }
-        else {
+      if (user.balance - task.payment < 0) {
+        mydb.deleteOneTaskByTaskId(task._id, (result) => {
           let msg = {
             'result': null,
-            'errMsg': 'insert a task:error'
+            'msg': 'insert a task:error',
+            'msg': 'user.balance - task.payment < 0'
           }
-          mydb.deleteOneTaskByTaskId(task._id, (result) => {
-            reject(error)
-          })
-        }
-      });
+          reject(msg)
+        })
+      } else {
+        let updateInfo = {
+          'tasks': {
+            'published': publishs
+          }
+        };
+        mydb.updateOneUserByUserId(user._id, updateInfo, (result) => {
+          if (result.stats.updated == 1) {
+            let msg = {
+              'result': task._id,
+              'msg': 'insert a task:ok',
+              'errMsg': null
+            }
+            resolve(msg);
+          }
+          else {
+            let msg = {
+              'result': null,
+              'msg': 'insert a task:error',
+              'errMsg': 'error in db'
+            }
+            mydb.deleteOneTaskByTaskId(task._id, (result) => {
+              reject(msg)
+            })
+          }
+        });
+      }
     });
 
   },
@@ -252,13 +273,15 @@ export var api = {
         if (result.stats.updated == 1) {
           let msg = {
             'result': result.stats.updated,
-            'errMsg': 'update a task:ok'
+            'msg': 'update a task:ok',
+            'errMsg': null
           }
           resolve(msg);
         } else {
           let msg = {
             'result': null,
-            'errMsg': 'update a task:error'
+            'msg': 'update a task:error',
+            'errMsg': 'error in db'
           }
           reject(msg);
         }
@@ -272,95 +295,225 @@ export var api = {
         if (result.data.length != 0) {
           let msg = {
             'result': result.data,
-            'errMsg': 'query a task:ok'
+            'msg': 'query a task:ok',
+            'errMsg': null
           }
           resolve(msg);
         } else {
           let msg = {
             'result': null,
-            'errMsg': 'query a task:error'
+            'msg': 'query a task:error',
+            'errMsg': 'error in db'
           }
           reject(msg);
         }
       })
     })
   },
-  queryAllTasksByPublisherId: function (publisherId) {
+  // queryAllTasksByPublisherId: function (publisherId) {
+  //   return new Promise((resolve, reject) => {
+  //     mydb.queryTasksByPublisherId(publisherId, (result) => {
+  //       if (result) {
+  //         if (result.data.length != 0) {
+  //           let msg = {
+  //             'result': result.data,
+  //             'msg': 'query a task:ok'
+  //           }
+  //           resolve(msg);
+  //         } else {
+  //           let msg = {
+  //             'result': null,
+  //             'msg': 'query a task:error'
+  //           }
+  //           reject(msg);
+  //         }
+  //       } else {
+  //         let msg = {
+  //           'result': null,
+  //           'msg': 'query a task:error'
+  //         }
+  //         reject(msg);
+  //       }
+  //     })
+  //   })
+  // },
+
+  // queryFinishedTasksByPublisherId: function (publisherId) {
+  //   return new Promise((resolve, reject) => {
+  //     mydb.queryTasksModule({
+  //       state: "finished",
+  //       publish: {
+  //         publiser: publisherId
+  //       }
+  //     }, (result) => {
+  //       if (result.data.length != 0) {
+  //         let msg = {
+  //           'result': result.data,
+  //           'msg': 'query a task:ok'
+  //         }
+  //         resolve(msg);
+  //       } else {
+  //         let msg = {
+  //           'result': null,
+  //           'msg': 'query a task:error'
+  //         }
+  //         reject(msg);
+  //       }
+  //     })
+  //   })
+  // },
+  queryTasksByModel: function (model) {
     return new Promise((resolve, reject) => {
-      mydb.queryTasksByPublisherId(publisherId, (result) => {
-        if (result) {
-          if (result.data.length != 0) {
-            let msg = {
-              'result': result.data,
-              'errMsg': 'query a task:ok'
-            }
-            resolve(msg);
-          } else {
-            let msg = {
-              'result': null,
-              'errMsg': 'query a task:error'
-            }
-            reject(msg);
-          }
-        } else {
-          let msg = {
-            'result': null,
-            'errMsg': 'query a task:error'
-          }
-          reject(msg);
-        }
-      })
-    })
-  },
-  queryAllTasks: function () {
-    return new Promise((resolve, reject) => {
-      mydb.queryAllTasks((result) => {
-        if (result) {
-          if (result.data.length != 0) {
-            let msg = {
-              'result': result.data,
-              'errMsg': 'query a task:ok'
-            }
-            resolve(msg);
-          } else {
-            let msg = {
-              'result': null,
-              'errMsg': 'query a task:error'
-            }
-            reject(msg);
-          }
-        } else {
-          let msg = {
-            'result': null,
-            'errMsg': 'query a task:error'
-          }
-          reject(msg);
-        }
-      })
-    })
-  },
-  queryFinishedTasksByPublisherId: function (publisherId) {
-    return new Promise((resolve, reject) => {
-      mydb.queryTasksModule({
-        state: "finished",
-        publish: {
-          publiser: publisherId
-        }
-      }, (result) => {
+      mydb.queryTasksModel(model, (result) => {
         if (result.data.length != 0) {
           let msg = {
             'result': result.data,
-            'errMsg': 'query a task:ok'
+            'msg': 'query a task:ok',
+            'errMsg': null
           }
           resolve(msg);
         } else {
           let msg = {
             'result': null,
-            'errMsg': 'query a task:error'
+            'msg': 'query a task:error',
+            'errMsg': 'error in db'
           }
           reject(msg);
         }
       })
+    })
+  },
+  // queryAllTasks: function () {
+  //   return new Promise((resolve, reject) => {
+  //     mydb.queryAllTasks((result) => {
+  //       if (result) {
+  //         if (result.data.length != 0) {
+  //           let msg = {
+  //             'result': result.data,
+  //             'msg': 'query a task:ok'
+  //           }
+  //           resolve(msg);
+  //         } else {
+  //           let msg = {
+  //             'result': null,
+  //             'msg': 'query a task:error'
+  //           }
+  //           reject(msg);
+  //         }
+  //       } else {
+  //         let msg = {
+  //           'result': null,
+  //           'msg': 'query a task:error'
+  //         }
+  //         reject(msg);
+  //       }
+  //     })
+  //   })
+  // },
+  joinOneTask: function (task, userid) {
+    return new Promise((resolve, reject => {
+      if (task.joiners.length >= task.maxJoiner) {
+        let msg = {
+          'result': null,
+          'msg': 'join a task:error',
+          'errMsg': 'the task already has max number of joiner'
+        }
+        reject(msg);
+      } else {
+        let joiners = task.joiners;
+        joiners.push(userid);
+        mydb.updateOneTaskByTaskId(task._id, {
+          'joiners': joiners
+        }, (result => {
+          if (result.stats.updated == 1) {
+            let msg = {
+              'result': result.stats.updated,
+              'msg': 'joiner a task:ok',
+              'errMsg': null
+            }
+            task.joiners = joiners;
+            resolve(msg);
+          } else {
+            let msg = {
+              'result': null,
+              'msg': 'joiner a task:error',
+              'errMsg': 'error in db'
+            }
+            reject(msg);
+          }
+        }))
+      }
+    }))
+  },
+  verifyOneTask: function (task, user) {
+    return new Promise((resolve, reject) => {
+      if (task.publish.publiser != user._id) {
+        let msg = {
+          'result': null,
+          'msg': 'verify a task:error',
+          'errMsg': 'error in db'
+        }
+        reject(msg);
+      } else {
+        let upTask = new Promise((resolve, reject => {
+          mydb.updateOneTaskByTaskId(task._id, {
+            'state': 'doing'
+          }, (result) => {
+            if (result.stats.updated == 1) {
+              let msg = {
+                'result': result.stats.updated,
+                'msg': 'update a task:ok',
+                'errMsg': null
+              }
+              resolve(msg);
+            } else {
+              let msg = {
+                'result': null,
+                'msg': 'update a task:error',
+                'errMsg': 'error in db'
+              }
+              reject(msg);
+            }
+          })
+        }));
+
+        let upUser = new Promise((resolve, reject => {
+          mydb.updateOneUserByUserId(user._id, {
+            'balance': user.balance - task.payment
+          }, (result) => {
+            if (result.stats.updated == 1) {
+              let msg = {
+                'result': result.stats.updated,
+                'msg': 'update a task:ok'
+              }
+              resolve(msg);
+            } else {
+              let msg = {
+                'result': null,
+                'msg': 'update a task:error'
+              }
+              reject(msg);
+            }
+          })
+        }));
+
+        Promise.all([upTask, upUser]).then((res) => {
+          let msg = {
+            'result': task._id,
+            'msg': 'varify a task:ok',
+            'errMsg': null
+          }
+          resolve(msg);
+        }).catch((rej) => {
+          let msg = {
+            'result': null,
+            'msg': 'varify a task:error',
+            'errMsg': 'error in db'
+          }
+          reject(msg);
+        })
+
+      }
     })
   }
 
