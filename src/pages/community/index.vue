@@ -4,7 +4,7 @@
     <button @click="insertOneUser">insertOneUser</button>
     <button @click="queryOneUserByUserId">queryOneUserByUserId</button>
     <button @click="updateOneUserById">updateOneUserById</button>
-    <button @click="insertOneTask">insertOneTask</button>
+    <button @click="publishOneTask">publishOneTask</button>
     <button @click="queryOneTaskByTaskId">queryOneTaskByTaskId</button>
     <button @click="updateOneTaskByTaskId">updateOneTaskByTaskId</button>
     <button @click="queryAllTasks">queryAllTasks</button>
@@ -71,7 +71,7 @@ export default {
           console.warn(rej);
         });
     },
-    insertOneTask() {
+    publishOneTask() {
       let task = {
         name: "唱歌", // String every task need a name Title
         type: "娱乐", //String task type
@@ -92,7 +92,7 @@ export default {
         }
       };
       api
-        .insertOneTask(task)
+        .publishOneTask(task)
         .then(res => {
           console.log(res);
         })
