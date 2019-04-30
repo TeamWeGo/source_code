@@ -45,7 +45,7 @@
 
   let user = {
    // '_id':'4565465',//String database main key
-    '_openid':'21313'//
+    'wechatopenid':'0001',
     'nickName':'蚊子', // String every User need has unique nickName wechat name
     'name':'庄蚊子',//String real name
     'studentId':'16340222',//String studient id
