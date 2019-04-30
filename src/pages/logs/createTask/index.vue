@@ -27,26 +27,46 @@
           value="Task.startTime"
           start="2019-01-01"
           end="2022-01-01"
-          bindchange='bindDateChange'>
+          @change='bindStartChange'>
           <view class='picker'>开始时间：{{Task.startTime}}</view>
         </picker>
       </view>
+
       <view class='completeTime'>
-        <label>截止时间</label>
-        <input type='date' id='completeTime' placeholder='2019.04.10' v-model='Task.completeTime' />
+        <picker mode='date'
+          value='Task.completeTime'
+          start='2019-01-01'
+          end='2022-01-01'
+          @change='bindCompleteDate'>
+          <view class='picker'>截止时间：{{Task.completeTime}}</view>
+        </picker>
       </view>
+
       <view class='publishTime'>
-        <label>截止时间</label>
-        <input type='date' id='publishTime' placeholder='2019.04.10' v-model='Task.publishTime' />
+        <picker mode='date'
+          value='Task.publishTime'
+          start='2019-01-01'
+          end='2022-01-01'
+          @change='bindPublishDate'>
+          <view class='picker'>报名截止：{{Task.publishTime}}</view>
+        </picker>
       </view>
     </view>
     <view class='Task-tag'>
-      <label>标签</label>
-      <input type="text" id='tag' v-model='Task.tag'/>
+      <picker mode='selector'
+        :value='index'
+        :range='Task.tag'
+        :range-key="'name'"
+        @change='bindTagChange'>
+        <view class='picker'>标签：{{Task.tag[index].name}}</view>
+      </picker>
     </view>
     <view class='Task-location'>
-      <label>地点</label>
-      <input type="text" id='location' V-model='Task.location'/>
+      <picker mode='region'
+        value='Task.location'
+        @change='bindRegionChange'>
+        <view class='picker'>地点：{{Task.location}}</view>
+      </picker>
     </view>
     <view class='publish' @click='publishTask'>
       <button>{{ publish }}</button>
@@ -56,21 +76,22 @@
 
 
 <script>
-import { api } from "../../../utils/api.js";
+import { api } from "../../utils/api.js";
 export default {
   data () {
     return {
       createTask: '创建任务',
+      index: 0,
       Task: {
         name: '',
         participatorNum: '',
         payment: '',
         description: '',
         startTime: '2019-04-25',
-        completeTime: '',
-        publishTime: '',
-        location: '',
-        tag: ''
+        completeTime: '2019-04-25',
+        publishTime: '2019-04-25',
+        location: '北京市,北京市,东城区',
+        tag: [{id: 0, name: '学习'}, {id: 1, name: '娱乐'}, {id: 2, name: '生活'}]
       },
       publish: 'fa♂布'
     }
@@ -105,9 +126,20 @@ export default {
           console.warn(rej);
         });
     },
-    bindDateChange(e){
-      console.log('picker发送选择改变，携带值为', e.detail.value)
-      this.Task.startTime = e.detail.value
+    bindStartChange: function(e){
+      this.Task.startTime = e.mp.detail.value
+    },
+    bindCompleteChange: function(e){
+      this.Task.completeTime = e.mp.detail.value
+    },
+    bindPublishDate: function(e){
+      this.Task.publishTime = e.mp.detail.value
+    },
+    bindRegionChange: function(e){
+      this.Task.location = e.mp.detail.value
+    },
+    bindTagChange: function(e){
+      this.index = e.mp.detail.value
     }
   }
 }
