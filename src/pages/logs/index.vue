@@ -4,7 +4,7 @@
       <searchBar></searchBar>
     </div>
     <div>
-      <mp-navbar :tabs="tabs" activeIndex=0 @tabClick="tabClick"></mp-navbar>
+      <mp-navbar :tabs="tabs" activeIndex="0" @tabClick="tabClick"></mp-navbar>
     </div>
     <div>
       <missionList v-bind:list="missionlist"></missionList>
@@ -14,14 +14,11 @@
 
 
 <script>
+import searchBar from "@/components/logs/searchBar";
+import missionList from "@/components/logs/missionList";
+import mpNavbar from "mpvue-weui/src/navbar";
 
-import searchBar from '@/components/logs/searchBar'
-import missionList from '@/components/logs/missionList'
-import mpNavbar from 'mpvue-weui/src/navbar';
-
-import { api } from "../../utils/api.js"
-
-import { mydb } from '../../utils/mydb.js'
+import { api } from "../../utils/api.js";
 
 export default {
   components: {
@@ -30,64 +27,44 @@ export default {
     mpNavbar
   },
 
-  data () {
+  data() {
     return {
       missionlist: [
         {
-          image: '../../../static/images/user.png',
-          title: '取快递',
-          time: '2019-4-16 15:34',
-          location: '至善园',
-          intro: '从丰巢三号柜取快递送到至善园二号',
-          price: '30'
+          image: "../../../static/images/user.png",
+          title: "取快递",
+          time: "2019-4-16 15:34",
+          location: "至善园",
+          intro: "从丰巢三号柜取快递送到至善园二号",
+          price: "30"
         },
         {
-          image: '../../../static/images/user.png',
-          title: '陪打农药',
-          time: '2019-4-16 15:34',
-          location: '至善园',
-          intro: '从王者一星打到百星王者',
-          price: '10000'
+          image: "../../../static/images/user.png",
+          title: "陪打农药",
+          time: "2019-4-16 15:34",
+          location: "至善园",
+          intro: "从王者一星打到百星王者",
+          price: "10000"
         }
       ],
-      tabs:['待完成','待确认','已确认','已完成']
-    }
+      tabs: ["待完成", "待确认", "已确认", "已完成"]
+    };
   },
-  methods: {
-    queryAllTasks (){
-        return new Promise((resolve, reject) => {
-          mydb.queryAllTasks(function (result) {
-            console.log(result)
-            if (result.data.length != 0) {
-              let msg = {
-                'result': result.data,
-                'errMsg': 'query tasks:ok'
-              }
-              resolve(msg)
-            } else {
-              let msg = {
-                'result': null,
-                'errMsg': 'query tasks:error'
-              }
-              reject(msg)
-            }
-          })
+  methods: {},
 
-        })
-      }
-  },
-
-  created () {
-    console.log('abc');
-    this.queryAllTasks().then(res => {
-          console.log(res);
-          this.missionlist=res.result
-        })
-        .catch(rej => {
-          console.warn(rej);
-        });
+  created() {
+    console.log("abc");
+    api
+      .queryTasksByModel({})
+      .then(res => {
+        console.log(res);
+        this.missionlist = res.result;
+      })
+      .catch(rej => {
+        console.warn(rej);
+      });
   }
-}
+};
 </script>
 
 <style>

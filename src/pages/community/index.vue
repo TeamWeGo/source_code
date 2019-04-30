@@ -4,7 +4,7 @@
     <button @click="insertOneUser">insertOneUser</button>
     <button @click="queryOneUserByUserId">queryOneUserByUserId</button>
     <button @click="updateOneUserById">updateOneUserById</button>
-    <button @click="insertOneTask">insertOneTask</button>
+    <button @click="publishOneTask">publishOneTask</button>
     <button @click="queryOneTaskByTaskId">queryOneTaskByTaskId</button>
     <button @click="updateOneTaskByTaskId">updateOneTaskByTaskId</button>
     <button @click="queryAllTasks">queryAllTasks</button>
@@ -29,6 +29,7 @@ export default {
     insertOneUser() {
       let user = {
         name: "庄蚊子", //String real name
+        wechatopenid: "00020",
         studentId: "16340222", //String studient id
         gender: "male", //String
         tasks: {
@@ -37,7 +38,10 @@ export default {
           finished: [], //String Array the tasks that the user finished
           doing: [] //String Array the tasks that the user is doing right now
         },
-        idlePay: 1000 //Number free money coin
+        balance: 1000, //Number free money coin
+        credit: 100,
+        isVerified: True,
+        personalStatement: "Hello World"
       };
       api
         .insertOneUser(user)
@@ -50,7 +54,7 @@ export default {
     },
     queryOneUserByUserId() {
       api
-        .queryOneUserByUserId("ee3099285cc1b61506961f552b4d9ce5")
+        .queryOneById("users", "")
         .then(res => {
           console.log(res);
         })
@@ -60,8 +64,8 @@ export default {
     },
     updateOneUserById() {
       api
-        .updateUserByUserId("ee3099285cc1b61506961f552b4d9ce5", {
-          idlePay: 250
+        .updateOneById("users", "", {
+          balance: 5000
         })
         .then(res => {
           console.log(res);
@@ -70,60 +74,69 @@ export default {
           console.warn(rej);
         });
     },
-    insertOneTask() {
+    publishOneTask() {
       let task = {
-        name: "唱歌", // String every task need a name Title
+        title: "唱歌", // String every task need a name Title
         type: "娱乐", //String task type
         description: "唱一首单身情歌", //String task detail description
         state: "publishing", //String task state
-        numberOfJoiner: 10, //Number Max Nubmer of joiners
-        joiner: [], //String Array the joiners _id array
+        maxJoiner: 10, //Number Max Nubmer of joiners
+        joiners: [], //String Array the joiners _id array
         location: "广州",
         publish: {
-          publisher: "ee3099285cc1b61506961f552b4d9ce5", //String user._id
+          publisher: "ee3099285cc7c051093255c93e1edebc", //String user._id
           beginTime: "",
           endTime: ""
         },
-        idlePay: 200,
+        payment: 4000,
         work: {
           beginTime: "",
           endTime: ""
         }
       };
       api
-        .insertOneTask(task)
+        .publishOneTask(task)
         .then(res => {
           console.log(res);
         })
-        .catch(rej => {
-          console.warn(rej);
+        .catch(err => {
+          console.warn(err);
         });
     },
     queryOneTaskByTaskId() {
-      api
-        .queryOneTaskByTaskId("9c4488c75cc1b95c069ae0d25cb96f2f")
+      wx.cloud
+        .callFunction({
+          name: "queryOne",
+          data: {
+            colName: "tasks",
+            queryInfo: {
+              _id: ""
+            }
+          }
+        })
         .then(res => {
           console.log(res);
-        })
-        .catch(rej => {
-          console.warn(rej);
         });
     },
     updateOneTaskByTaskId() {
-      api
-        .updateTaskByTaskId("9c4488c75cc1b95c069ae0d25cb96f2f", {
-          idlePay: 2500
+      wx.cloud
+        .callFunction({
+          name: "updateOne",
+          data: {
+            colName: "tasks",
+            _id: "988c1b1b5cc7acc9092ab3cc40fb6b8d",
+            updateInfo: {
+              payment: 3000
+            }
+          }
         })
         .then(res => {
           console.log(res);
-        })
-        .catch(rej => {
-          console.warn(rej);
         });
     },
     queryAllTasks() {
       api
-        .queryAllTasks()
+        .querySomeByModel("tasks", {})
         .then(res => {
           console.log(res);
         })
@@ -132,13 +145,16 @@ export default {
         });
     },
     queryAllUsers() {
-      api
-        .queryAllUsers()
+      wx.cloud
+        .callFunction({
+          name: "querySome",
+          data: {
+            colName: "users",
+            queryInfo: {}
+          }
+        })
         .then(res => {
           console.log(res);
-        })
-        .catch(rej => {
-          console.warn(rej);
         });
     }
   }
