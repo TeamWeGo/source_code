@@ -18,38 +18,60 @@ export var api = {
         reject(msg)
 
       }
-      mydb.queryOneUserByUserWeChatOpenId(user.wechatopenid, function (result) {
-        if (result.data.length != 0) {
-
-          let msg = {
-            'result': null,
-            'msg': 'insert a user:error',
-            'errMsg': 'user has already in db'
+      wx.cloud
+        .callFunction({
+          name: "querySome",
+          data: {
+            colName: "users",
+            queryInfo: {
+              wechatopenid: user.wechatopenid
+            }
           }
-          reject(msg)
-        } else {
-          mydb.insertOneUser(user, function (result) {
-            if (result._id) {
+        })
+        .then(res => {
+          if (res.result.data.length == 0) {
+            wx.cloud.callFunction({
+              name: "insertOne",
+              data: {
+                colName: "users",
+                data: user
+              }
+            }).then((result) => {
               let msg = {
-                'result': result._id,
+                'result': result.result._id,
                 'msg': 'insert a user:ok',
                 'errMsg': null
               }
               resolve(msg)
-            } else {
+            }).catch((err) => {
               let msg = {
                 'result': null,
                 'msg': 'insert a user:error',
-                'errMsg': 'user insert  db error'
+                'errMsg': err
               }
               reject(msg)
+            })
+          } else {
+            let msg = {
+              'result': null,
+              'msg': 'insert a user:error',
+              'errMsg': 'user has already in db'
             }
-          })
-        }
-      })
+            reject(msg)
+          }
+        }).catch((err => {
+          let msg = {
+            'result': null,
+            'msg': 'insert a user:error',
+            'errMsg': err
+          }
+          reject(msg)
+        }));
+
 
     })
   },
+
   queryAllUsers: function () {
     return new Promise((resolve, reject) => {
       mydb.queryAllUsers((result) => {
@@ -147,52 +169,37 @@ export var api = {
   publishOneTask: async function (task) {
     let user;
     let error;
-    await new Promise((resolve, reject) => {
-      if (!isVaildTaskForm(task)) {
-        let msg = {
-          'result': null,
-          'msg': 'publish a task:error',
-          'errMsg': 'task is no valid'
-        }
-        reject(msg)
+    if (!isVaildTaskForm(task)) {
+      let msg = {
+        'result': null,
+        'msg': 'publish a task:error',
+        'errMsg': 'task is no valid'
       }
-      mydb.insertOneTask(task, (result) => {
-        if (result._id) {
-          resolve(result);
-        }
-        else {
-          let msg = {
-            'result': null,
-            'msg': 'insert a task:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg)
+      reject(msg)
+    }
 
-        }
-      });
+    await wx.cloud.callFunction({
+      name: "insertOne",
+      data: {
+        colName: "tasks",
+        data: task
+      }
     }).then((result) => {
       task._id = result._id;
-    }).catch((ref) => {
+    }).catch((err) => {
       error = ref;
-    });
-    await new Promise((resolve, reject) => {
-      mydb.queryOneUserByUserId(task.publish.publisher, (result) => {
-        if (result) {
-          if (result.data.length != 0) {
-            let msg = {
-              'result': result.data,
-              'msg': 'query a user:ok',
-              'errMsg': null
-            }
-            resolve(msg)
-          } else {
-            let msg = {
-              'result': null,
-              'msg': 'query a user:error',
-              'errMsg': 'error in db'
-            }
-            reject(msg)
-          }
+    })
+
+    await wx.cloud
+      .callFunction({
+        name: "queryOne",
+        data: {
+          colName: "users",
+          _id: task.publish.publiser
+        }
+      }).then((result) => {
+        if (result.data.length != 0) {
+          user = result.data;
         } else {
           let msg = {
             'result': null,
@@ -201,12 +208,10 @@ export var api = {
           }
           reject(msg)
         }
-      });
-    }).then((result) => {
-      user = result.result;
-    }).catch((ref) => {
-      error = ref;
-    });;
+      }).catch((err) => {
+        error = ref;
+      })
+
 
     return new Promise((resolve, reject) => {
 

@@ -29,7 +29,7 @@ export default {
     insertOneUser() {
       let user = {
         name: "庄蚊子", //String real name
-        wechatopenid: "0001",
+        wechatopenid: "00020",
         studentId: "16340222", //String studient id
         gender: "male", //String
         tasks: {
@@ -50,25 +50,32 @@ export default {
         });
     },
     queryOneUserByUserId() {
-      api
-        .queryOneUserByUserId("ee3099285cc44cdd07c405e104efb85b")
+      wx.cloud
+        .callFunction({
+          name: "queryOne",
+          data: {
+            colName: "users",
+            _id: "96c1cbbe5cc7ac420928f5b7449fdd"
+          }
+        })
         .then(res => {
           console.log(res);
-        })
-        .catch(rej => {
-          console.warn(rej);
         });
     },
     updateOneUserById() {
-      api
-        .updateUserByUserId("ee3099285cc44cdd07c405e104efb85b", {
-          balance: 250
+      wx.cloud
+        .callFunction({
+          name: "updateOne",
+          data: {
+            colName: "users",
+            _id: "9c4488c75cc720cc090e539350a9e278",
+            updateInfo: {
+              balance: 3000
+            }
+          }
         })
         .then(res => {
           console.log(res);
-        })
-        .catch(rej => {
-          console.warn(rej);
         });
     },
     publishOneTask() {
@@ -91,35 +98,47 @@ export default {
           endTime: ""
         }
       };
-      api
-        .publishOneTask(task)
+      wx.cloud
+        .callFunction({
+          name: "insertOne",
+          data: {
+            colName: "tasks",
+            data: task
+          }
+        })
         .then(res => {
           console.log(res);
-        })
-        .catch(rej => {
-          console.warn(rej);
         });
     },
     queryOneTaskByTaskId() {
-      api
-        .queryOneTaskByTaskId("96c1cbbe5cc44d7d07c4b4b0572fc005")
+      wx.cloud
+        .callFunction({
+          name: "queryOne",
+          data: {
+            colName: "tasks",
+            queryInfo: {
+              _id: ""
+            }
+          }
+        })
         .then(res => {
           console.log(res);
-        })
-        .catch(rej => {
-          console.warn(rej);
         });
     },
     updateOneTaskByTaskId() {
-      api
-        .updateTaskByTaskId("96c1cbbe5cc44d7d07c4b4b0572fc005", {
-          payment: 2500
+      wx.cloud
+        .callFunction({
+          name: "updateOne",
+          data: {
+            colName: "tasks",
+            _id: "988c1b1b5cc7acc9092ab3cc40fb6b8d",
+            updateInfo: {
+              payment: 3000
+            }
+          }
         })
         .then(res => {
           console.log(res);
-        })
-        .catch(rej => {
-          console.warn(rej);
         });
     },
     queryAllTasks() {
@@ -133,13 +152,16 @@ export default {
         });
     },
     queryAllUsers() {
-      api
-        .queryAllUsers()
+      wx.cloud
+        .callFunction({
+          name: "querySome",
+          data: {
+            colName: "users",
+            queryInfo: {}
+          }
+        })
         .then(res => {
           console.log(res);
-        })
-        .catch(rej => {
-          console.warn(rej);
         });
     }
   }
