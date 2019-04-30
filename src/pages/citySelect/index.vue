@@ -10,15 +10,14 @@ import store from '@/components/store'
 import cityList from './cityList'
 // import cityAlphabet from './cityAlphabet'
 
-export default {
-  data () {
-    return {
 
-    }
+export default {
+  data() {
+    return {};
   },
   components: {
     cityList
     // cityAlphabet
   }
-}
+};
 </script>
