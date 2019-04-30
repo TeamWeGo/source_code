@@ -20,6 +20,8 @@
   - 增加 state 的选择 增加 verifying
   - 修改numberOfJoiner 为 maxJoiner 代表 最多参加的人数
   - 增加 avatarId 标识任务的封面图片的 存入数据库后得到的id
+
+
 ```javascript
 
   let User = {
@@ -38,12 +40,12 @@
     'balance':21,//Number free money coin
     'credit':100,//诚信度
     'isVerified': True,
-    'personalStatement':'Hello World'
+    'personalStatement':'Hello World',
   }
 
   let user = {
    // '_id':'4565465',//String database main key
-    '_openid':'21313'//
+    'wechatopenid':'0001',
     'nickName':'蚊子', // String every User need has unique nickName wechat name
     'name':'庄蚊子',//String real name
     'studentId':'16340222',//String studient id
@@ -76,7 +78,7 @@ api.insertOneUser(user).then((result)=>{
 * queryOneUserByUserId
 ```javascript
 
-api.queryOneUserByUserId(user._id).then((result)=>{
+api.queryOneById("users",user._id).then((result)=>{
   console.log(result)
 }).catch((error)=>{
   console.warn(error)
@@ -86,7 +88,7 @@ api.queryOneUserByUserId(user._id).then((result)=>{
 * updateUserByUserId
 ```javascript
 
-api.updateUserByUserId(user._id,{'idlePay':212}).then((result)=>{
+api.updateOneById("users",user._id,{'balance':212}).then((result)=>{
   console.log(result)
 }).catch((error)=>{
   console.warn(error)
@@ -164,7 +166,7 @@ api.insertOneTask(task).then((result)=>{
 通过任务_id 更新任务的信息
 ```javascript
 
-api.updateTaskByTaskId(task._id,{
+api.updateOneById("tasks",task._id,{
   'payment':256
 }).then((result)=>{
   console.log(result)
@@ -187,17 +189,28 @@ api.joinOneTask(task, user._id).then((result)=>{
 
 * queryOneTaskByTaskId
 ```javascript
-api.queryOneTaskByTaskId(task._id).then((result)=>{
+api.queryOneById("tasks",task._id).then((result)=>{
   console.log(result)
 }).catch((error)=>{
   console.warn(error)
 })
 ```
 
+*  queryAllTasks
+```javascript
+
+api.querySomeByModel("tasks",{}).then((result)=>{
+  console.log(result)
+}).catch((error)=>{
+  console.warn(error)
+})
+
+```
+
 *  queryTasksByPublisherId
 ```javascript
 
-api.queryTasksByModel({
+api.querySomeByModel("tasks",{
   'publish':{
     'publisher':PublisherId
   }
@@ -212,7 +225,7 @@ api.queryTasksByModel({
 * queryFinishedTasksByPublisherId
 ```javascript
 
-api.queryTasksByModel({
+api.querySomeByModel("tasks",{
   'state':'finished',
   'publish':{
     'publisher':PublisherId
@@ -228,7 +241,7 @@ api.queryTasksByModel({
 * queryDoingTasksByPublisherId
 ```javascript
 
-api.queryTasksByModel({
+api.querySomeByModel("tasks",{
   'state':'doing',
   'publish':{
     'publisher':PublisherId
@@ -244,7 +257,7 @@ api.queryTasksByModel({
 * queryPublishingTasksByPublisherId
 ```javascript
 
-api.queryTasksByModel({
+api.querySomeByModel("tasks",{
   'state':'publishing',
   'publish':{
     'publisher':PublisherId
@@ -260,7 +273,7 @@ api.queryTasksByModel({
 * queryAllPublishingTasks
 ```javascript
 
-api.queryTasksByModel({
+api.querySomeByModel("tasks",{
   'state':'publishing'
 }).then((result)=>{
   console.log(result)

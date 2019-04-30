@@ -1,6 +1,7 @@
 /* eslint-disable standard/no-callback-literal */
 /* eslint-disable space-before-function-paren */
 import { mydb } from './mydb.js'
+
 export var api = {
 
   /**
@@ -72,6 +73,11 @@ export var api = {
     })
   },
 
+  /**
+   * querysome
+   * @param {string} colName table
+   * @param {object} queryInfo query object
+   */
   querySomeByModel: function (colName, queryInfo) {
     return new Promise((resolve, reject) => {
       wx.cloud
@@ -110,9 +116,11 @@ export var api = {
         });
     })
   },
+
   /**
-   * queryOneUserByUserId
-   * @param {String} id user id
+   * query one doc by id
+   * @param {String} colName table name
+   * @param {String} _id _id
    */
   queryOneById: function (colName, _id) {
     return new Promise((resolve, reject) => {
@@ -152,10 +160,12 @@ export var api = {
         })
     });
   },
+
   /**
-   * updateUserByUserId
-   * @param {String} _id user _id
-   * @param {Object} updateInfo update user info
+   * update a doc by id
+   * @param {String} colName table
+   * @param {string} _id _id
+   * @param {Object} updateInfo update object
    */
   updateOneById: function (colName, _id, updateInfo) {
     return new Promise((resolve, reject) => {
@@ -193,142 +203,119 @@ export var api = {
    * @param {Object} task task
    */
   publishOneTask: async function (task) {
-    return new Promise((resolve, reject) => {
-      if (!isVaildTaskForm(task)) {
-        let msg = {
-          'result': null,
-          'msg': 'publish a task:error',
-          'errMsg': 'task is no valid'
+
+    let user;
+    let p1 = new Promise((resolve, reject) => {
+      wx.cloud.callFunction({
+        name: "insertOne",
+        data: {
+          colName: "tasks",
+          data: task
         }
-        reject(msg)
-      } else {
-        resolve();
-      }
-
-
-    }).then((result => {
-      return new Promise((resolve, reject) => {
-        wx.cloud.callFunction({
-          name: "insertOne",
-          data: {
-            colName: "tasks",
-            data: task
-          }
-        }).then((result) => {
-          resolve(result.result._id);
-        }).catch((err) => {
-          let msg = {
-            'result': null,
-            'msg': 'publish a task:error',
-            'errMsg': err
-          }
-          reject(msg)
-        })
       }).then((result) => {
-        task._id = result;
-        return new Promise((resolve, reject => {
+        task._id = result.result._id;
+        resolve(task)
+      })
+    })
+
+    let p2 = new Promise((resolve, reject) => {
+      wx.cloud.callFunction({
+        name: "queryOne",
+        data: {
+          colName: 'users',
+          _id: task.publish.publisher
+        }
+
+      }).then((result => {
+        resolve(result.result.data[0])
+      }))
+    })
+
+
+
+    return new Promise((resolve, reject) => {
+      Promise.all([p1, p2]).then((res) => {
+        console.log(res);
+        user = res[1];
+
+        if (user.balance - task.payment > 0) {
+
+          let published = user.tasks.published;
+          published.push(task._id);
+
+          let updateInfo = {
+            tasks: {
+              published: published
+            }
+          }
           wx.cloud.callFunction({
-            name: "queryOne",
+            name: "updateOne",
             data: {
               colName: "users",
-              _id: task.publish.publiser
+              _id: user._id,
+              updateInfo: updateInfo
             }
           }).then((result => {
-            if (result.result.data.length != 0) {
-              resolve(result.result.data);
+            if (result && result.result.stats.updated == 1) {
+              let msg = {
+                'result': task._id,
+                'msg': 'publish a task:ok',
+                'errMsg': null
+              }
+              resolve(msg);
             } else {
               let msg = {
                 'result': null,
                 'msg': 'publish a task:error',
-                'errMsg': 'no publisher in db'
+                'errMsg': 'insert to db error'
               }
-              reject(msg)
+              reject(msg);
             }
-          })).catch((err) => {
-            let msg = {
-              'result': null,
-              'msg': 'publish a task:error',
-              'errMsg': err
-            }
-            reject(msg)
-          })
-        })).then((result => {
-          return new Promise((resolve, reject) => {
-            let user = result;
-            if (user.balance - task.payment < 0) {
-              let msg = {
-                'result': null,
-                'msg': 'insert a task:error',
-                'msg': 'user.balance - task.payment < 0'
-              }
-              reject(msg)
-            }
-            let published = user.tasks.published;
-            published.push(task._id);
+
+          }
+          )).catch((err) => {
             wx.cloud.callFunction({
-              name: "updateOne",
+              name: "deleteOne",
               data: {
-                colName: 'users',
-                _id: user._id,
-                updateInfo: {
-                  tasks: {
-                    published: published
-                  }
-                }
+                colName: "tasks",
+                _id: task._id
               }
             }).then((result => {
-              if (result.result.state.update == 1) {
-                let msg = {
-                  'result': result.result.state.update,
-                  'msg': 'publish a task:ok',
-                  'errMsg': null
-                }
-                resolve(msg)
-              } else {
-                let msg = {
-                  'result': null,
-                  'msg': 'publish a task:error',
-                  'errMsg': 'update publisher error'
-                }
-                reject(msg)
-              }
-            })).catch((err => {
               let msg = {
                 'result': null,
                 'msg': 'publish a task:error',
                 'errMsg': err
               }
-              reject(msg)
+              reject(msg);
             }))
-          }).catch((err) => {
-            new Promise((resolve, reject) => {
-              wx.cloud.callFunction({
-                name: "deleteOne",
-                data: {
-                  colName: "tasks",
-                  _id: task._id
-                }
-              }).then((result) => {
-                let msg = {
-                  'result': null,
-                  'msg': 'insert a task:error',
-                  'msg': err
-                }
-                reject(msg)
-              })
-            })
           })
 
-        }))
+        } else {
+          wx.cloud.callFunction({
+            name: "deleteOne",
+            data: {
+              colName: "tasks",
+              _id: task._id
+            }
+          }).then((result => {
+            let msg = {
+              'result': null,
+              'msg': 'publish a task:error',
+              'errMsg': 'balance - payment <0'
+            }
+            reject(msg);
+          }))
 
-      })
+        }
+      }
+      )
 
-    }))
+    })
 
   },
 
 
-  joinOneTask: function (task, userid) {
+  joinOneTask: function (task, user) {
     return new Promise((resolve, reject => {
       if (task.joiners.length >= task.maxJoiner) {
         let msg = {
@@ -338,12 +325,19 @@ export var api = {
         }
         reject(msg);
       } else {
-        let joiners = task.joiners;
-        joiners.push(userid);
-        mydb.updateOneTaskByTaskId(task._id, {
-          'joiners': joiners
-        }, (result => {
-          if (result.stats.updated == 1) {
+        var joiners = task.joiners;
+        joiners.push(user._id);
+        wx.cloud.callFunction({
+          name: "updateOne",
+          data: {
+            colName: "tasks",
+            _id: task._id,
+            updateInfo: {
+              "joiners": joiners
+            }
+          }
+        }).then((result) => {
+          if (result && result.result.stats.updated == 1) {
             let msg = {
               'result': result.stats.updated,
               'msg': 'joiner a task:ok',
@@ -359,10 +353,13 @@ export var api = {
             }
             reject(msg);
           }
-        }))
+        })
+
+
       }
     }))
   },
+
   verifyOneTask: function (task, user) {
     return new Promise((resolve, reject) => {
       if (task.publish.publiser != user._id) {
@@ -373,11 +370,19 @@ export var api = {
         }
         reject(msg);
       } else {
-        let upTask = new Promise((resolve, reject => {
-          mydb.updateOneTaskByTaskId(task._id, {
-            'state': 'doing'
-          }, (result) => {
-            if (result.stats.updated == 1) {
+        let upTask = new Promise((resolve, reject) => {
+
+          wx.cloud.callFunction({
+            name: "updateOne",
+            data: {
+              colName: "tasks",
+              _id: task._id,
+              updateInfo: {
+                'state': 'doing'
+              }
+            }
+          }).then((result) => {
+            if (result && result.result.stats.updated == 1) {
               let msg = {
                 'result': result.stats.updated,
                 'msg': 'update a task:ok',
@@ -392,13 +397,21 @@ export var api = {
               }
               reject(msg);
             }
-          })
-        }));
 
-        let upUser = new Promise((resolve, reject => {
-          mydb.updateOneUserByUserId(user._id, {
-            'balance': user.balance - task.payment
-          }, (result) => {
+          })
+        });
+
+        let upUser = new Promise((resolve, reject) => {
+          wx.cloud.callFunction({
+            name: "updateOne",
+            data: {
+              colName: "users",
+              _id: user._id,
+              updateInfo: {
+                'balance': user.balance - task.payment
+              }
+            }
+          }).then((result) => {
             if (result.stats.updated == 1) {
               let msg = {
                 'result': result.stats.updated,
@@ -412,8 +425,11 @@ export var api = {
               }
               reject(msg);
             }
-          })
-        }));
+          }
+          )
+
+
+        });
 
         Promise.all([upTask, upUser]).then((res) => {
           let msg = {

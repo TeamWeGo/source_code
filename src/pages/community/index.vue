@@ -38,7 +38,10 @@ export default {
           finished: [], //String Array the tasks that the user finished
           doing: [] //String Array the tasks that the user is doing right now
         },
-        balance: 1000 //Number free money coin
+        balance: 1000, //Number free money coin
+        credit: 100,
+        isVerified: True,
+        personalStatement: "Hello World"
       };
       api
         .insertOneUser(user)
@@ -50,49 +53,42 @@ export default {
         });
     },
     queryOneUserByUserId() {
-      wx.cloud
-        .callFunction({
-          name: "queryOne",
-          data: {
-            colName: "users",
-            _id: "96c1cbbe5cc7ac420928f5b7449fdd"
-          }
-        })
+      api
+        .queryOneById("users", "")
         .then(res => {
           console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
         });
     },
     updateOneUserById() {
-      wx.cloud
-        .callFunction({
-          name: "updateOne",
-          data: {
-            colName: "users",
-            _id: "ee3099285cc7c051093255c93e1edebc",
-            updateInfo: {
-              balance: 3000
-            }
-          }
+      api
+        .updateOneById("users", "", {
+          balance: 5000
         })
         .then(res => {
           console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
         });
     },
     publishOneTask() {
       let task = {
-        name: "唱歌", // String every task need a name Title
+        title: "唱歌", // String every task need a name Title
         type: "娱乐", //String task type
         description: "唱一首单身情歌", //String task detail description
         state: "publishing", //String task state
-        numberOfJoiner: 10, //Number Max Nubmer of joiners
-        joiner: [], //String Array the joiners _id array
+        maxJoiner: 10, //Number Max Nubmer of joiners
+        joiners: [], //String Array the joiners _id array
         location: "广州",
         publish: {
           publisher: "ee3099285cc7c051093255c93e1edebc", //String user._id
           beginTime: "",
           endTime: ""
         },
-        payment: 200,
+        payment: 4000,
         work: {
           beginTime: "",
           endTime: ""
