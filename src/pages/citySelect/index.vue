@@ -1,14 +1,14 @@
 <template>
   <div class="city">
     <cityList />
-    <cityAlphabet />
+    <!-- <cityAlphabet /> -->
   </div>
 </template>
 
 <script>
 import store from '@/components/store'
 import cityList from './cityList'
-import cityAlphabet from './cityAlphabet'
+// import cityAlphabet from './cityAlphabet'
 
 export default {
   data () {
@@ -17,8 +17,8 @@ export default {
     }
   },
   components: {
-    cityList,
-    cityAlphabet
+    cityList
+    // cityAlphabet
   }
 }
 </script>

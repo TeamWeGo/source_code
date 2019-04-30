@@ -24,6 +24,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "cnpm": "^6.0.0",
     "mpvue": "^2.0.0",
     "mpvue-weui": "^1.0.6",
     "pinyin": "^2.8.3",

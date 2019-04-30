@@ -28,9 +28,9 @@ export default {
   methods: {
     insertOneUser() {
       let user = {
-        name: "庄蚊子", //String real name
-        wechatopenid: "0001",
-        studentId: "16340222", //String studient id
+        name: "zzq", //String real name
+        wechatopenid: "0002",
+        studentId: "16340296", //String studient id
         gender: "male", //String
         tasks: {
           //Object the tasks which containd the user
@@ -73,19 +73,19 @@ export default {
     },
     publishOneTask() {
       let task = {
-        name: "唱歌", // String every task need a name Title
+        title: "唱歌", // String every task need a name Title
         type: "娱乐", //String task type
         description: "唱一首单身情歌", //String task detail description
         state: "publishing", //String task state
-        numberOfJoiner: 10, //Number Max Nubmer of joiners
-        joiner: [], //String Array the joiners _id array
+        maxJoiner: 10, //Number Max Nubmer of joiners
+        joiners: [], //String Array the joiners _id array
         location: "广州",
         publish: {
-          publisher: "ee3099285cc44cdd07c405e104efb85b", //String user._id
-          beginTime: "",
-          endTime: ""
+          publisher: "96c1cbbe5cc6a00d08b8e1e2413479ca", //String user._id
+          beginTime: new Date(),
+          endTime: new Date()
         },
-        payment: 200,
+        payment: 10,
         work: {
           beginTime: "",
           endTime: ""

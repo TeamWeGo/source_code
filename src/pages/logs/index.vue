@@ -59,6 +59,8 @@ export default {
       .then(res => {
         console.log(res);
         this.missionlist = res.result;
+        console.log(res.result[0].publish.beginTime);
+        console.log(res.result[0].payment);
       })
       .catch(rej => {
         console.warn(rej);

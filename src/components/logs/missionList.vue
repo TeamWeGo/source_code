@@ -10,12 +10,12 @@
           </li>
           <li><span><mp-rate rateValue=3 rateClass="mission-list-item-star"></mp-rate></span></li>
           <li>
-            <span class="mission-list-item-time">{{item.time}}</span>
+            <span class="mission-list-item-time">{{item.publish.beginTime}} - {{item.publish.endTime}}</span>
           </li>
-          <li class="mission-list-item-intro">{{item.intro}}</li>
+          <li class="mission-list-item-intro">{{item.description}}</li>
           <li class="mission-list-item-price">
             <span>CNY￥</span>
-            <span>{{item.price}}</span>
+            <span>{{item.payment}}</span>
           </li>
         </ul>
       </div>
