@@ -50,32 +50,25 @@ export default {
         });
     },
     queryOneUserByUserId() {
-      wx.cloud
-        .callFunction({
-          name: "queryOne",
-          data: {
-            colName: "users",
-            _id: "96c1cbbe5cc7ac420928f5b7449fdd"
-          }
-        })
+      api
+        .queryOneById("users", "")
         .then(res => {
           console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
         });
     },
     updateOneUserById() {
-      wx.cloud
-        .callFunction({
-          name: "updateOne",
-          data: {
-            colName: "users",
-            _id: "ee3099285cc7c051093255c93e1edebc",
-            updateInfo: {
-              balance: 3000
-            }
-          }
+      api
+        .updateOneById("users", "", {
+          balance: 5000
         })
         .then(res => {
           console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
         });
     },
     publishOneTask() {
@@ -92,7 +85,7 @@ export default {
           beginTime: "",
           endTime: ""
         },
-        payment: 200,
+        payment: 4000,
         work: {
           beginTime: "",
           endTime: ""
