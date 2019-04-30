@@ -1,24 +1,21 @@
 <template>
   <div class="city">
-    <cityList />
-    <cityAlphabet />
+    <cityList/>
   </div>
 </template>
 
 <script>
-import store from '@/components/store'
-import cityList from './cityList'
-import cityAlphabet from './cityAlphabet'
+import store from "@/components/store";
+import cityList from "./cityList";
+//import cityAlphabet from './cityAlphabet'
 
 export default {
-  data () {
-    return {
-
-    }
+  data() {
+    return {};
   },
   components: {
-    cityList,
-    cityAlphabet
+    cityList
+    // cityAlphabet
   }
-}
+};
 </script>
