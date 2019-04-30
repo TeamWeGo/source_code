@@ -72,51 +72,75 @@ export var api = {
     })
   },
 
-  queryAllUsers: function () {
+  querySomeByModel: function (colName, queryInfo) {
     return new Promise((resolve, reject) => {
-      mydb.queryAllUsers((result) => {
-        if (result) {
-          if (result.data.length != 0) {
-            let msg = {
-              'result': result.data,
-              'msg': 'query all user:ok',
-              'errMsg': null
+      wx.cloud
+        .callFunction({
+          name: "querySome",
+          data: {
+            colName: colName,
+            queryInfo: queryInfo
+          }
+        })
+        .then(result => {
+          if (result.result) {
+            if (result.result.data.length != 0) {
+              let msg = {
+                'result': result.result.data,
+                'msg': 'query all user:ok',
+                'errMsg': null
+              }
+              resolve(msg);
+            } else {
+              let msg = {
+                'result': null,
+                'msg': 'query all user:error',
+                'errMsg': 'query error in db '
+              }
+              reject(msg);
             }
-            resolve(msg);
           } else {
             let msg = {
               'result': null,
               'msg': 'query all user:error',
-              'errMsg': 'query error in db '
+              'errMsg': 'error in db'
             }
             reject(msg);
           }
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'query all user:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg);
-        }
-      })
+        });
     })
   },
   /**
    * queryOneUserByUserId
    * @param {String} id user id
    */
-  queryOneUserByUserId: function (id) {
+  queryOneById: function (colName, _id) {
     return new Promise((resolve, reject) => {
-      mydb.queryOneUserByUserId(id, function (result) {
-        if (result) {
-          if (result.data.length != 0) {
-            let msg = {
-              'result': result.data,
-              'msg': 'query a user:ok',
-              'errMsg': null
+      wx.cloud
+        .callFunction({
+          name: "queryOne",
+          data: {
+            colName: colName,
+            _id: _id
+          }
+        })
+        .then(result => {
+          if (result.result) {
+            if (result.result.data.length != 0) {
+              let msg = {
+                'result': result.result.data,
+                'msg': 'query a user:ok',
+                'errMsg': null
+              }
+              resolve(msg)
+            } else {
+              let msg = {
+                'result': null,
+                'msg': 'query a user:error',
+                'errMsg': 'error in db'
+              }
+              reject(msg)
             }
-            resolve(msg)
           } else {
             let msg = {
               'result': null,
@@ -125,41 +149,43 @@ export var api = {
             }
             reject(msg)
           }
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'query a user:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg)
-        }
-      })
-    })
+        })
+    });
   },
   /**
    * updateUserByUserId
    * @param {String} _id user _id
    * @param {Object} updateInfo update user info
    */
-  updateUserByUserId: function (_id, updateInfo) {
+  updateOneById: function (colName, _id, updateInfo) {
     return new Promise((resolve, reject) => {
-      mydb.updateOneUserByUserId(_id, updateInfo, function (result) {
-        if (result.stats.updated == 1) {
-          let msg = {
-            'result': result.stats.updated,
-            'msg': 'update a user:ok',
-            'errMsg': null
+      wx.cloud
+        .callFunction({
+          name: "updateOne",
+          data: {
+            colName: colName,
+            _id: _id,
+            updateInfo: updateInfo
           }
-          resolve(msg)
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'update a user:error',
-            'errMsg': 'error in db'
+        })
+        .then(result => {
+          if (result.result.stats.updated == 1) {
+            let msg = {
+              'result': result.stats.updated,
+              'msg': 'update a user:ok',
+              'errMsg': null
+            }
+            resolve(msg)
+          } else {
+            let msg = {
+              'result': null,
+              'msg': 'update a user:error',
+              'errMsg': 'error in db'
+            }
+            reject(msg)
           }
-          reject(msg)
-        }
-      })
+        });
+
     })
   },
   /**
@@ -167,254 +193,141 @@ export var api = {
    * @param {Object} task task
    */
   publishOneTask: async function (task) {
-    let user;
-    let error;
-    if (!isVaildTaskForm(task)) {
-      let msg = {
-        'result': null,
-        'msg': 'publish a task:error',
-        'errMsg': 'task is no valid'
-      }
-      reject(msg)
-    }
-
-    await wx.cloud.callFunction({
-      name: "insertOne",
-      data: {
-        colName: "tasks",
-        data: task
-      }
-    }).then((result) => {
-      task._id = result._id;
-    }).catch((err) => {
-      error = ref;
-    })
-
-    await wx.cloud
-      .callFunction({
-        name: "queryOne",
-        data: {
-          colName: "users",
-          _id: task.publish.publiser
-        }
-      }).then((result) => {
-        if (result.data.length != 0) {
-          user = result.data;
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'query a user:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg)
-        }
-      }).catch((err) => {
-        error = ref;
-      })
-
-
     return new Promise((resolve, reject) => {
-
-      if (error) {
-        mydb.deleteOneTaskByTaskId(task._id, (result) => {
-          let msg = {
-            'result': null,
-            'msg': 'insert a task:error',
-            'msg': error
-          }
-          reject(msg)
-        })
-      }
-      let publishs = user.tasks.published;
-      publishs.push(task._id);
-      if (user.balance - task.payment < 0) {
-        mydb.deleteOneTaskByTaskId(task._id, (result) => {
-          let msg = {
-            'result': null,
-            'msg': 'insert a task:error',
-            'msg': 'user.balance - task.payment < 0'
-          }
-          reject(msg)
-        })
+      if (!isVaildTaskForm(task)) {
+        let msg = {
+          'result': null,
+          'msg': 'publish a task:error',
+          'errMsg': 'task is no valid'
+        }
+        reject(msg)
       } else {
-        let updateInfo = {
-          'tasks': {
-            'published': publishs
+        resolve();
+      }
+
+
+    }).then((result => {
+      return new Promise((resolve, reject) => {
+        wx.cloud.callFunction({
+          name: "insertOne",
+          data: {
+            colName: "tasks",
+            data: task
           }
-        };
-        mydb.updateOneUserByUserId(user._id, updateInfo, (result) => {
-          if (result.stats.updated == 1) {
-            let msg = {
-              'result': task._id,
-              'msg': 'insert a task:ok',
-              'errMsg': null
+        }).then((result) => {
+          resolve(result.result._id);
+        }).catch((err) => {
+          let msg = {
+            'result': null,
+            'msg': 'publish a task:error',
+            'errMsg': err
+          }
+          reject(msg)
+        })
+      }).then((result) => {
+        task._id = result;
+        return new Promise((resolve, reject => {
+          wx.cloud.callFunction({
+            name: "queryOne",
+            data: {
+              colName: "users",
+              _id: task.publish.publiser
             }
-            resolve(msg);
-          }
-          else {
+          }).then((result => {
+            if (result.result.data.length != 0) {
+              resolve(result.result.data);
+            } else {
+              let msg = {
+                'result': null,
+                'msg': 'publish a task:error',
+                'errMsg': 'no publisher in db'
+              }
+              reject(msg)
+            }
+          })).catch((err) => {
             let msg = {
               'result': null,
-              'msg': 'insert a task:error',
-              'errMsg': 'error in db'
+              'msg': 'publish a task:error',
+              'errMsg': err
             }
-            mydb.deleteOneTaskByTaskId(task._id, (result) => {
+            reject(msg)
+          })
+        })).then((result => {
+          return new Promise((resolve, reject) => {
+            let user = result;
+            if (user.balance - task.payment < 0) {
+              let msg = {
+                'result': null,
+                'msg': 'insert a task:error',
+                'msg': 'user.balance - task.payment < 0'
+              }
               reject(msg)
+            }
+            let published = user.tasks.published;
+            published.push(task._id);
+            wx.cloud.callFunction({
+              name: "updateOne",
+              data: {
+                colName: 'users',
+                _id: user._id,
+                updateInfo: {
+                  tasks: {
+                    published: published
+                  }
+                }
+              }
+            }).then((result => {
+              if (result.result.state.update == 1) {
+                let msg = {
+                  'result': result.result.state.update,
+                  'msg': 'publish a task:ok',
+                  'errMsg': null
+                }
+                resolve(msg)
+              } else {
+                let msg = {
+                  'result': null,
+                  'msg': 'publish a task:error',
+                  'errMsg': 'update publisher error'
+                }
+                reject(msg)
+              }
+            })).catch((err => {
+              let msg = {
+                'result': null,
+                'msg': 'publish a task:error',
+                'errMsg': err
+              }
+              reject(msg)
+            }))
+          }).catch((err) => {
+            new Promise((resolve, reject) => {
+              wx.cloud.callFunction({
+                name: "deleteOne",
+                data: {
+                  colName: "tasks",
+                  _id: task._id
+                }
+              }).then((result) => {
+                let msg = {
+                  'result': null,
+                  'msg': 'insert a task:error',
+                  'msg': err
+                }
+                reject(msg)
+              })
             })
-          }
-        });
-      }
-    });
+          })
 
-  },
+        }))
 
-  /**
-   * update a Task by _id
-   * @param {String} id task._id
-   * @param {Object} updateInfo Object info
-   */
-  updateTaskByTaskId: function (id, updateInfo) {
-    return new Promise((resolve, reject) => {
-      mydb.updateOneTaskByTaskId(id, updateInfo, (result) => {
-        if (result.stats.updated == 1) {
-          let msg = {
-            'result': result.stats.updated,
-            'msg': 'update a task:ok',
-            'errMsg': null
-          }
-          resolve(msg);
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'update a task:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg);
-        }
       })
-    })
+
+    }))
 
   },
-  queryOneTaskByTaskId: function (id) {
-    return new Promise((resolve, reject) => {
-      mydb.queryOneTaskByTaskId(id, (result) => {
-        if (result.data.length != 0) {
-          let msg = {
-            'result': result.data,
-            'msg': 'query a task:ok',
-            'errMsg': null
-          }
-          resolve(msg);
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'query a task:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg);
-        }
-      })
-    })
-  },
-  // queryAllTasksByPublisherId: function (publisherId) {
-  //   return new Promise((resolve, reject) => {
-  //     mydb.queryTasksByPublisherId(publisherId, (result) => {
-  //       if (result) {
-  //         if (result.data.length != 0) {
-  //           let msg = {
-  //             'result': result.data,
-  //             'msg': 'query a task:ok'
-  //           }
-  //           resolve(msg);
-  //         } else {
-  //           let msg = {
-  //             'result': null,
-  //             'msg': 'query a task:error'
-  //           }
-  //           reject(msg);
-  //         }
-  //       } else {
-  //         let msg = {
-  //           'result': null,
-  //           'msg': 'query a task:error'
-  //         }
-  //         reject(msg);
-  //       }
-  //     })
-  //   })
-  // },
 
-  // queryFinishedTasksByPublisherId: function (publisherId) {
-  //   return new Promise((resolve, reject) => {
-  //     mydb.queryTasksModule({
-  //       state: "finished",
-  //       publish: {
-  //         publiser: publisherId
-  //       }
-  //     }, (result) => {
-  //       if (result.data.length != 0) {
-  //         let msg = {
-  //           'result': result.data,
-  //           'msg': 'query a task:ok'
-  //         }
-  //         resolve(msg);
-  //       } else {
-  //         let msg = {
-  //           'result': null,
-  //           'msg': 'query a task:error'
-  //         }
-  //         reject(msg);
-  //       }
-  //     })
-  //   })
-  // },
-  queryTasksByModel: function (model) {
-    return new Promise((resolve, reject) => {
-      mydb.queryTasksModel(model, (result) => {
-        if (result.data.length != 0) {
-          let msg = {
-            'result': result.data,
-            'msg': 'query a task:ok',
-            'errMsg': null
-          }
-          resolve(msg);
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'query a task:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg);
-        }
-      })
-    })
-  },
-  // queryAllTasks: function () {
-  //   return new Promise((resolve, reject) => {
-  //     mydb.queryAllTasks((result) => {
-  //       if (result) {
-  //         if (result.data.length != 0) {
-  //           let msg = {
-  //             'result': result.data,
-  //             'msg': 'query a task:ok'
-  //           }
-  //           resolve(msg);
-  //         } else {
-  //           let msg = {
-  //             'result': null,
-  //             'msg': 'query a task:error'
-  //           }
-  //           reject(msg);
-  //         }
-  //       } else {
-  //         let msg = {
-  //           'result': null,
-  //           'msg': 'query a task:error'
-  //         }
-  //         reject(msg);
-  //       }
-  //     })
-  //   })
-  // },
+
   joinOneTask: function (task, userid) {
     return new Promise((resolve, reject => {
       if (task.joiners.length >= task.maxJoiner) {

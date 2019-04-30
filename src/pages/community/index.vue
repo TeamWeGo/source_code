@@ -68,7 +68,7 @@ export default {
           name: "updateOne",
           data: {
             colName: "users",
-            _id: "9c4488c75cc720cc090e539350a9e278",
+            _id: "ee3099285cc7c051093255c93e1edebc",
             updateInfo: {
               balance: 3000
             }
@@ -88,7 +88,7 @@ export default {
         joiner: [], //String Array the joiners _id array
         location: "广州",
         publish: {
-          publisher: "ee3099285cc44cdd07c405e104efb85b", //String user._id
+          publisher: "ee3099285cc7c051093255c93e1edebc", //String user._id
           beginTime: "",
           endTime: ""
         },
@@ -98,16 +98,13 @@ export default {
           endTime: ""
         }
       };
-      wx.cloud
-        .callFunction({
-          name: "insertOne",
-          data: {
-            colName: "tasks",
-            data: task
-          }
-        })
+      api
+        .publishOneTask(task)
         .then(res => {
           console.log(res);
+        })
+        .catch(err => {
+          console.warn(err);
         });
     },
     queryOneTaskByTaskId() {
@@ -143,7 +140,7 @@ export default {
     },
     queryAllTasks() {
       api
-        .queryTasksByModel({})
+        .querySomeByModel("tasks", {})
         .then(res => {
           console.log(res);
         })
