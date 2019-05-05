@@ -55,7 +55,7 @@ export default {
   created() {
     console.log("abc");
     api
-      .queryTasksByModel({})
+      .querySomeByModel("tasks",{})
       .then(res => {
         console.log(res);
         this.missionlist = res.result;
