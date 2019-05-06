@@ -319,11 +319,11 @@ export var api = {
    */
   joinOneTask: function (task, user) {
     return new Promise((resolve, reject) => {
-      if (task.joiners.length >= task.maxJoiner) {
+      if (task.joiners.length >= task.maxJoiner || task.state != "publishing") {
         let msg = {
           result: null,
           msg: "join a task:error",
-          errMsg: "the task already has max number of joiner"
+          errMsg: "the task already has max number of joiner || task.state != publishing"
         };
         reject(msg);
       } else {
@@ -422,14 +422,14 @@ export var api = {
         .then(result => {
           publisher = result.result.data[0];
           if (
-            task.publish.publisher != publisher._id &&
+            task.publish.publisher != publisher._id || task.state != "publishing" ||
             publisher.balance - task.payment * task.joiners.length < 0
           ) {
             let msg = {
               result: null,
               msg: "verify a task:error",
               errMsg:
-                "error in db || publisher.balance - task.payment * task.joiners.length < 0"
+                "error in db || publisher.balance - task.payment * task.joiners.length < 0 || task.state != publishing "
             };
             reject(msg);
           } else {
@@ -601,14 +601,14 @@ export var api = {
         .then(result => {
           publisher = result.result.data[0];
           if (
-            task.publish.publisher != publisher._id &&
+            task.publish.publisher != publisher._id || task.state != "doing" ||
             publisher.balance - task.payment * task.joiners.length < 0
           ) {
             let msg = {
               result: null,
               msg: "end a task:error",
               errMsg:
-                "error in db || publisher.balance - task.payment * task.joiners.length < 0"
+                "error in db || publisher.balance - task.payment * task.joiners.length < 0 || task.state != doing "
             };
             reject(msg);
           } else {
@@ -753,6 +753,178 @@ export var api = {
                 let msg = {
                   result: null,
                   msg: "end a task:error",
+                  errMsg: err
+                };
+                reject(msg);
+              });
+          }
+        });
+    });
+  },
+
+  /**
+   * publisher delete a task before verifyed
+   * @param {object} task task object
+   * @param {object} publisher user object
+   */
+  deleteOneTask: function (task, publisher) {
+    return new Promise((resolve, reject) => {
+      wx.cloud
+        .callFunction({
+          name: "queryOne",
+          data: {
+            colName: "users",
+            _id: publisher._id
+          }
+        })
+        .then(result => {
+          publisher = result.result.data[0];
+          if (
+            task.publish.publisher != publisher._id ||
+            task.state != "publishing"
+          ) {
+            let msg = {
+              result: null,
+              msg: "delete a task:error",
+              errMsg:
+                "error in db || the task is not publishing"
+            };
+            reject(msg);
+          } else {
+            let upTask = new Promise((resolve, reject) => {
+              wx.cloud
+                .callFunction({
+                  name: "deleteOne",
+                  data: {
+                    colName: "tasks",
+                    _id: task._id,
+
+                  }
+                })
+                .then(result => {
+                  if (result && result.result.stats.updated == 1) {
+                    resolve();
+                  } else {
+                    let msg = {
+                      result: null,
+                      msg: "delete a task:error",
+                      errMsg: "error in db"
+                    };
+                    reject(msg);
+                  }
+                });
+            });
+
+            let upPubliser = new Promise((resolve, reject) => {
+              let publishing = publisher.tasks.publishing;
+              let i = publishing.indexOf(task._id);
+              publishing.splice(i, 1);
+
+              wx.cloud
+                .callFunction({
+                  name: "updateOne",
+                  data: {
+                    colName: "users",
+                    _id: publisher._id,
+                    updateInfo: {
+                      tasks: {
+                        publishing: publishing,
+
+                      }
+                    }
+                  }
+                })
+                .then(result => {
+                  if (result.result.stats.updated == 1) {
+                    resolve();
+                  } else {
+                    let msg = {
+                      result: null,
+                      msg: "update a task:error",
+                      errMsg: "error in db"
+                    };
+                    reject(msg);
+                  }
+                });
+            });
+
+            let upJoiners = task.joiners.map((joinerId, idx) => {
+              return new Promise((resolve, reject) => {
+                wx.cloud
+                  .callFunction({
+                    name: "queryOne",
+                    data: {
+                      colName: "users",
+                      _id: joinerId
+                    }
+                  })
+                  .then(result => {
+                    let temUser = result.result.data[0];
+                    let joining = temUser.tasks.joining;
+
+                    if (joining.indexOf(task._id) == -1) {
+                      let msg = {
+                        result: null,
+                        msg: "find a task:error",
+                        errMsg: "doing has no id"
+                      };
+                      reject(msg);
+                    } else {
+                      let i = joining.indexOf(task._id);
+                      joining.splice(i, 1);
+
+                      wx.cloud
+                        .callFunction({
+                          name: "updateOne",
+                          data: {
+                            colName: "users",
+                            _id: temUser._id,
+                            updateInfo: {
+                              tasks: {
+                                joining: joining,
+                              }
+                            }
+                          }
+                        })
+                        .then(result => {
+                          if (result && result.result.stats.updated == 1) {
+                            resolve();
+                          }
+                        })
+                        .catch(err => {
+                          let msg = {
+                            result: null,
+                            msg: "find a task:error",
+                            errMsg: err
+                          };
+                          reject(msg);
+                        });
+                    }
+                  })
+                  .catch(err => {
+                    let msg = {
+                      result: null,
+                      msg: "find a task:error",
+                      errMsg: err
+                    };
+                    reject(msg);
+                  });
+              });
+            });
+
+            Promise.all([upTask, upPubliser, upJoiners])
+              .then(res => {
+                let msg = {
+                  result: task._id,
+                  msg: "delete a task:ok",
+                  errMsg: null
+                };
+                resolve(msg);
+              })
+              .catch(err => {
+                let msg = {
+                  result: null,
+                  msg: "delete a task:error",
                   errMsg: err
                 };
                 reject(msg);
