@@ -105,7 +105,6 @@ export var api = {
               };
               reject(msg);
             }
-            resolve(msg);
           } else {
             let msg = {
               result: null,
@@ -123,7 +122,7 @@ export var api = {
    * @param {String} colName table name
    * @param {String} _id _id
    */
-  queryOneUserByUserId: function (id) {
+  queryOneById: function (colName, _id) {
     return new Promise((resolve, reject) => {
       wx.cloud
         .callFunction({
@@ -150,7 +149,6 @@ export var api = {
               };
               reject(msg);
             }
-            resolve(msg)
           } else {
             let msg = {
               result: null,
@@ -169,14 +167,15 @@ export var api = {
    * @param {string} _id _id
    * @param {Object} updateInfo update object
    */
-  updateUserByUserId: function (_id, updateInfo) {
+  updateOneById: function (colName, _id, updateInfo) {
     return new Promise((resolve, reject) => {
-      mydb.updateOneUserByUserId(_id, updateInfo, function (result) {
-        if (result.stats.updated == 1) {
-          let msg = {
-            'result': result.stats.updated,
-            'msg': 'update a user:ok',
-            'errMsg': null
+      wx.cloud
+        .callFunction({
+          name: "updateOne",
+          data: {
+            colName: colName,
+            _id: _id,
+            updateInfo: updateInfo
           }
         })
         .then(result => {
