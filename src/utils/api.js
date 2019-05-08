@@ -73,17 +73,6 @@ export var api = {
     });
   },
 
-<<<<<<< HEAD
-  queryAllUsers: function () {
-    return new Promise((resolve, reject) => {
-      mydb.queryAllUsers((result) => {
-        if (result) {
-          if (result.data.length != 0) {
-            let msg = {
-              'result': result.data,
-              'msg': 'query all user:ok',
-              'errMsg': null
-=======
   /**
    * querysome
    * @param {string} colName table
@@ -115,29 +104,10 @@ export var api = {
                 errMsg: "query error in db "
               };
               reject(msg);
->>>>>>> upstream/master
             }
             resolve(msg);
           } else {
             let msg = {
-<<<<<<< HEAD
-              'result': null,
-              'msg': 'query all user:error',
-              'errMsg': 'query error in db '
-            }
-            reject(msg);
-          }
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'query all user:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg);
-        }
-      })
-    })
-=======
               result: null,
               msg: "query all user:error",
               errMsg: "error in db"
@@ -146,7 +116,6 @@ export var api = {
           }
         });
     });
->>>>>>> upstream/master
   },
 
   /**
@@ -156,15 +125,6 @@ export var api = {
    */
   queryOneUserByUserId: function (id) {
     return new Promise((resolve, reject) => {
-<<<<<<< HEAD
-      mydb.queryOneUserByUserId(id, function (result) {
-        if (result) {
-          if (result.data.length != 0) {
-            let msg = {
-              'result': result.data,
-              'msg': 'query a user:ok',
-              'errMsg': null
-=======
       wx.cloud
         .callFunction({
           name: "queryOne",
@@ -181,6 +141,14 @@ export var api = {
                 msg: "query a user:ok",
                 errMsg: null
               };
+              resolve(msg);
+            } else {
+              let msg = {
+                result: null,
+                msg: "query a user:error",
+                errMsg: "error in db"
+              };
+              reject(msg);
             }
             resolve(msg)
           } else {
@@ -210,19 +178,6 @@ export var api = {
             'msg': 'update a user:ok',
             'errMsg': null
           }
-<<<<<<< HEAD
-          resolve(msg)
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'update a user:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg)
-        }
-      })
-    })
-=======
         })
         .then(result => {
           if (result.result.stats.updated == 1) {
@@ -242,7 +197,6 @@ export var api = {
           }
         });
     });
->>>>>>> upstream/master
   },
   /**
    * publish a task and update publiser
@@ -250,73 +204,6 @@ export var api = {
    */
   publishOneTask: async function (task) {
     let user;
-<<<<<<< HEAD
-    let error;
-    if (!isVaildTaskForm(task)) {
-      let msg = {
-        'result': null,
-        'msg': 'publish a task:error',
-        'errMsg': 'task is no valid'
-      }
-      reject(msg)
-    }
-
-    await wx.cloud.callFunction({
-      name: "insertOne",
-      data: {
-        colName: "tasks",
-        data: task
-      }
-    }).then((result) => {
-      task._id = result._id;
-    }).catch((err) => {
-      error = ref;
-    })
-
-    await wx.cloud
-      .callFunction({
-        name: "queryOne",
-        data: {
-          colName: "users",
-          _id: task.publish.publiser
-        }
-      }).then((result) => {
-        if (result.data.length != 0) {
-          user = result.data;
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'query a user:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg)
-        }
-      }).catch((err) => {
-        error = ref;
-      })
-
-
-    return new Promise((resolve, reject) => {
-
-      if (error) {
-        mydb.deleteOneTaskByTaskId(task._id, (result) => {
-          let msg = {
-            'result': null,
-            'msg': 'insert a task:error',
-            'msg': error
-          }
-          reject(msg)
-        })
-      }
-      let publishs = user.tasks.published;
-      publishs.push(task._id);
-      if (user.balance - task.payment < 0) {
-        mydb.deleteOneTaskByTaskId(task._id, (result) => {
-          let msg = {
-            'result': null,
-            'msg': 'insert a task:error',
-            'msg': 'user.balance - task.payment < 0'
-=======
     let p1 = new Promise((resolve, reject) => {
       wx.cloud
         .callFunction({
@@ -339,197 +226,8 @@ export var api = {
           data: {
             colName: "users",
             _id: task.publish.publisher
->>>>>>> upstream/master
           }
         })
-<<<<<<< HEAD
-      } else {
-        let updateInfo = {
-          'tasks': {
-            'published': publishs
-          }
-        };
-        mydb.updateOneUserByUserId(user._id, updateInfo, (result) => {
-          if (result.stats.updated == 1) {
-            let msg = {
-              'result': task._id,
-              'msg': 'insert a task:ok',
-              'errMsg': null
-            }
-            resolve(msg);
-          }
-          else {
-            let msg = {
-              'result': null,
-              'msg': 'insert a task:error',
-              'errMsg': 'error in db'
-            }
-            mydb.deleteOneTaskByTaskId(task._id, (result) => {
-              reject(msg)
-            })
-          }
-        });
-      }
-    });
-
-  },
-
-  /**
-   * update a Task by _id
-   * @param {String} id task._id
-   * @param {Object} updateInfo Object info
-   */
-  updateTaskByTaskId: function (id, updateInfo) {
-    return new Promise((resolve, reject) => {
-      mydb.updateOneTaskByTaskId(id, updateInfo, (result) => {
-        if (result.stats.updated == 1) {
-          let msg = {
-            'result': result.stats.updated,
-            'msg': 'update a task:ok',
-            'errMsg': null
-          }
-          resolve(msg);
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'update a task:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg);
-        }
-      })
-    })
-
-  },
-  queryOneTaskByTaskId: function (id) {
-    return new Promise((resolve, reject) => {
-      mydb.queryOneTaskByTaskId(id, (result) => {
-        if (result.data.length != 0) {
-          let msg = {
-            'result': result.data,
-            'msg': 'query a task:ok',
-            'errMsg': null
-          }
-          resolve(msg);
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'query a task:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg);
-        }
-      })
-    })
-  },
-  // queryAllTasksByPublisherId: function (publisherId) {
-  //   return new Promise((resolve, reject) => {
-  //     mydb.queryTasksByPublisherId(publisherId, (result) => {
-  //       if (result) {
-  //         if (result.data.length != 0) {
-  //           let msg = {
-  //             'result': result.data,
-  //             'msg': 'query a task:ok'
-  //           }
-  //           resolve(msg);
-  //         } else {
-  //           let msg = {
-  //             'result': null,
-  //             'msg': 'query a task:error'
-  //           }
-  //           reject(msg);
-  //         }
-  //       } else {
-  //         let msg = {
-  //           'result': null,
-  //           'msg': 'query a task:error'
-  //         }
-  //         reject(msg);
-  //       }
-  //     })
-  //   })
-  // },
-
-  // queryFinishedTasksByPublisherId: function (publisherId) {
-  //   return new Promise((resolve, reject) => {
-  //     mydb.queryTasksModule({
-  //       state: "finished",
-  //       publish: {
-  //         publiser: publisherId
-  //       }
-  //     }, (result) => {
-  //       if (result.data.length != 0) {
-  //         let msg = {
-  //           'result': result.data,
-  //           'msg': 'query a task:ok'
-  //         }
-  //         resolve(msg);
-  //       } else {
-  //         let msg = {
-  //           'result': null,
-  //           'msg': 'query a task:error'
-  //         }
-  //         reject(msg);
-  //       }
-  //     })
-  //   })
-  // },
-  queryTasksByModel: function (model) {
-    return new Promise((resolve, reject) => {
-      mydb.queryTasksModel(model, (result) => {
-        if (result.data.length != 0) {
-          let msg = {
-            'result': result.data,
-            'msg': 'query a task:ok',
-            'errMsg': null
-          }
-          resolve(msg);
-        } else {
-          let msg = {
-            'result': null,
-            'msg': 'query a task:error',
-            'errMsg': 'error in db'
-          }
-          reject(msg);
-        }
-      })
-    })
-  },
-  // queryAllTasks: function () {
-  //   return new Promise((resolve, reject) => {
-  //     mydb.queryAllTasks((result) => {
-  //       if (result) {
-  //         if (result.data.length != 0) {
-  //           let msg = {
-  //             'result': result.data,
-  //             'msg': 'query a task:ok'
-  //           }
-  //           resolve(msg);
-  //         } else {
-  //           let msg = {
-  //             'result': null,
-  //             'msg': 'query a task:error'
-  //           }
-  //           reject(msg);
-  //         }
-  //       } else {
-  //         let msg = {
-  //           'result': null,
-  //           'msg': 'query a task:error'
-  //         }
-  //         reject(msg);
-  //       }
-  //     })
-  //   })
-  // },
-  joinOneTask: function (task, userid) {
-    return new Promise((resolve, reject => {
-      if (task.joiners.length >= task.maxJoiner) {
-        let msg = {
-          'result': null,
-          'msg': 'join a task:error',
-          'errMsg': 'the task already has max number of joiner'
-=======
         .then(result => {
           resolve(result.result.data[0]);
         });
@@ -610,7 +308,6 @@ export var api = {
               };
               reject(msg);
             });
->>>>>>> upstream/master
         }
       });
     });

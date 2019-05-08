@@ -87,11 +87,7 @@ export default {
     }  
 
     api
-<<<<<<< HEAD
       .querySomeByModel("tasks", {})
-=======
-      .querySomeByModel("tasks",{})
->>>>>>> upstream/master
       .then(res => {
         console.log(res);
         this.missionlist = res.result;
