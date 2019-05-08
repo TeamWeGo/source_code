@@ -9,6 +9,9 @@
     <button @click="updateOneTaskByTaskId">updateOneTaskByTaskId</button>
     <button @click="queryAllTasks">queryAllTasks</button>
     <button @click="queryAllUsers">queryAllUsers</button>
+    <button @click="joinOneTask">joinOneTask</button>
+    <button @click="verifyOneTask">verifyOneTask</button>
+    <button @click="endOneTask">endOneTask</button>
   </div>
 </template>
 
@@ -35,11 +38,17 @@ export default {
         gender: "male", //String
         tasks: {
           //Object the tasks which containd the user
-          published: [], // String Array the tasks that the user published
+          publishing: [], // String Array the tasks that the user published
           finished: [], //String Array the tasks that the user finished
-          doing: [] //String Array the tasks that the user is doing right now
+          doing: [], //String Array the tasks that the user is doing right now
+          joining: [],
+          verifyed: [],
+          ended: []
         },
-        balance: 1000 //Number free money coin
+        balance: 5000, //Number free money coin
+        credit: 100,
+        isVerified: true,
+        personalStatement: "Hello World"
       };
       api
         .insertOneUser(user)
@@ -51,32 +60,25 @@ export default {
         });
     },
     queryOneUserByUserId() {
-      wx.cloud
-        .callFunction({
-          name: "queryOne",
-          data: {
-            colName: "users",
-            _id: "96c1cbbe5cc7ac420928f5b7449fdd"
-          }
-        })
+      api
+        .queryOneById("users", "")
         .then(res => {
           console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
         });
     },
     updateOneUserById() {
-      wx.cloud
-        .callFunction({
-          name: "updateOne",
-          data: {
-            colName: "users",
-            _id: "ee3099285cc7c051093255c93e1edebc",
-            updateInfo: {
-              balance: 3000
-            }
-          }
+      api
+        .updateOneById("users", "", {
+          balance: 5000
         })
         .then(res => {
           console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
         });
     },
     publishOneTask() {
@@ -89,11 +91,11 @@ export default {
         joiners: [], //String Array the joiners _id array
         location: "广州",
         publish: {
-          publisher: "ee3099285cc7c051093255c93e1edebc", //String user._id
+          publisher: "9c4488c75ccd7f600bf8fe206feb2726", //String user._id
           beginTime: "",
           endTime: ""
         },
-        payment: 10,
+        payment: 40,
         work: {
           beginTime: "",
           endTime: ""
@@ -150,16 +152,76 @@ export default {
         });
     },
     queryAllUsers() {
-      wx.cloud
-        .callFunction({
-          name: "querySome",
-          data: {
-            colName: "users",
-            queryInfo: {}
-          }
-        })
+      api
+        .querySomeByModel("users", {})
         .then(res => {
           console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    joinOneTask() {
+      let task = {
+        _id: "96c1cbbe5ccd7fd00bf71e5b6040ab63",
+        joiners: [],
+        maxJoiner: 10
+      };
+      let joiner = {
+        _id: "9c4488c75ccd7f9d0bf92e032f5159d6"
+      };
+      api
+        .joinOneTask(task, joiner)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    verifyOneTask() {
+      let task = {
+        _id: "96c1cbbe5ccd7fd00bf71e5b6040ab63",
+        joiners: ["9c4488c75ccd7f9d0bf92e032f5159d6"],
+        publish: {
+          publisher: "9c4488c75ccd7f600bf8fe206feb2726"
+        },
+        maxJoiner: 10,
+        payment: 40
+      };
+      let publisher = {
+        _id: "9c4488c75ccd7f600bf8fe206feb2726"
+      };
+      api
+        .verifyOneTask(task, publisher)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    endOneTask() {
+      let task = {
+        _id: "96c1cbbe5ccd7fd00bf71e5b6040ab63",
+        joiners: ["9c4488c75ccd7f9d0bf92e032f5159d6"],
+        publish: {
+          publisher: "9c4488c75ccd7f600bf8fe206feb2726"
+        },
+        maxJoiner: 10,
+        payment: 40
+      };
+      let publisher = {
+        _id: "9c4488c75ccd7f600bf8fe206feb2726"
+      };
+
+      api
+        .endOneTask(task, publisher)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
         });
     }
   }
