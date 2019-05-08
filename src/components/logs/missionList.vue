@@ -45,6 +45,11 @@ export default {
     return {
       missionlist: this.list
     }
+  },
+  watch: {
+    list: function (value){
+      this.missionlist = value;
+    }
   }
 
 }
