@@ -222,6 +222,18 @@ export default {
         .catch(rej => {
           console.warn(rej);
         });
+    },
+    deleteOneTask() {
+      let task;
+      let publisher;
+      api
+        .deleteOneTask(task, publisher)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
     }
   }
 };

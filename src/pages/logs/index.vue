@@ -55,7 +55,7 @@ export default {
   created() {
     console.log("abc");
     api
-      .querySomeByModel("tasks",{})
+      .querySomeByModel("tasks", {})
       .then(res => {
         console.log(res);
         this.missionlist = res.result;
@@ -67,7 +67,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .site {
   width: 25%;
   text-align: center;

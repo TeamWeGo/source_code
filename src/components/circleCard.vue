@@ -1,21 +1,19 @@
 <template>
   <div class="circleTemplate">
     <div class="circle">
-      <img class="circle-img" v-if="imgSrc" :src="imgSrc" >
+      <img class="circle-img" v-if="imgSrc" :src="imgSrc">
     </div>
-    <p class="circle-text">
-      {{text}}
-    </p>
+    <p class="circle-text">{{text}}</p>
   </div>
 </template>
 
 <script>
 export default {
-  props: [ 'text', 'imgSrc' ]
-}
+  props: ["text", "imgSrc"]
+};
 </script>
 
-<style>
+<style scoped>
 .circle {
   border-radius: 50%;
   width: 60px;
