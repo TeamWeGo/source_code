@@ -1,13 +1,30 @@
 <template>
-  <div class="mission-main">
-    <div class="mission-toolbar">
-      <searchBar></searchBar>
-    </div>
-    <div>
-      <mp-navbar :tabs="tabs" activeIndex="0" @tabClick="tabClick"></mp-navbar>
-    </div>
-    <div>
-      <missionList v-bind:list="missionlist"></missionList>
+  <div class="mission-main" @touchstart="touchStart" @touchend="touchEnd">
+    <view v-bind:class="sliderClass">
+      <view class="page-content">
+        <view class="wc">
+          <text>首页</text>
+        </view>
+        <view class="wc">
+          <text>导航一</text>
+        </view>
+        <view class="wc">
+          <text>导航二</text>
+        </view>
+        <view class="wc">
+          <text>导航三</text>
+        </view>
+      </view>
+    </view>
+    <div v-bind:class="pageClass">
+      <div class="mission-toolbar"></div>
+      <div class="navbar">
+        <mp-navbar :tabs="tabs" activeIndex="0" @tabClick="tabClick"></mp-navbar>
+      </div>
+      <div class="fill"></div>
+      <div class="missionlist">
+        <missionList v-bind:list="missionlist"></missionList>
+      </div>
     </div>
   </div>
 </template>
@@ -29,45 +46,79 @@ export default {
 
   data() {
     return {
-      missionlist: [
-        {
-          image: "../../../static/images/user.png",
-          title: "取快递",
-          time: "2019-4-16 15:34",
-          location: "至善园",
-          intro: "从丰巢三号柜取快递送到至善园二号",
-          price: "30"
-        },
-        {
-          image: "../../../static/images/user.png",
-          title: "陪打农药",
-          time: "2019-4-16 15:34",
-          location: "至善园",
-          intro: "从王者一星打到百星王者",
-          price: "10000"
-        }
-      ],
-      tabs: ["待完成", "待确认", "已确认", "已完成"]
+      missionlist: [],
+      tabs: ["已发布", "待完成", "待确认", "已确认", "已完成"],
+      pageClass: "page-top-open",
+      sliderClass: "page-slidebar-close"
     };
   },
-  methods: {},
+
+  methods: {
+    touchStart() {
+      this.sliderClass = "page-slidebar-open";
+      console.log("我开始了");
+      this.missionlist = [];
+      console.log(this.missionlist);
+    },
+    touchEnd() {
+      this.sliderClass = "page-slidebar-close";
+      console.log("我好了");
+    }
+  },
 
   created() {
-    console.log("abc");
+    Date.prototype.Format = function(fmt) {
+      //author: meizz
+      var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        S: this.getMilliseconds() //毫秒
+      };
+      if (/(y+)/.test(fmt))
+        fmt = fmt.replace(
+          RegExp.$1,
+          (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+        );
+      for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt))
+          fmt = fmt.replace(
+            RegExp.$1,
+            RegExp.$1.length == 1
+              ? o[k]
+              : ("00" + o[k]).substr(("" + o[k]).length)
+          );
+      return fmt;
+    };
+
     api
-      .queryTasksByModel({})
+      .querySomeByModel("tasks", {})
       .then(res => {
         console.log(res);
         this.missionlist = res.result;
+        console.log(this.missionlist);
+        this.missionlist.forEach(element => {
+          var date = new Date(element.publish.beginTime);
+          element.publish.beginTime = date.Format("yyyy-MM-dd");
+          element.publish.endTime = date.Format("yyyy-MM-dd");
+        });
       })
       .catch(rej => {
         console.warn(rej);
+        console.log("NOOOOOO");
       });
   }
 };
 </script>
 
-<style>
+<style scoped>
+.mission-main {
+  height: 100%;
+}
+
 .site {
   width: 25%;
   text-align: center;
@@ -76,5 +127,59 @@ export default {
 .mission-add {
   width: 15%;
   text-align: center;
+}
+
+.navbar {
+  position: fixed; /* 绝对定位，fixed是相对于浏览器窗口定位。 */
+  top: 0; /* 距离窗口顶部距离 */
+  left: 0; /* 距离窗口左边的距离 */
+  width: 100%;
+  background-color: white;
+  z-index: 0;
+}
+
+.fill {
+  width: 100%;
+  height: 44px;
+}
+
+/* 侧边栏样式 */
+.page-slidebar-close {
+  height: 100%;
+  width: 50%;
+  left: -600rpx;
+  position: fixed;
+  background-color: white;
+  z-index: 1;
+  transition: 1s left;
+}
+
+.page-slidebar-open {
+  height: 100%;
+  width: 50%;
+  left: 0;
+  position: fixed;
+  background-color: white;
+  z-index: 1;
+  transition: 1s left;
+}
+
+.page-top-open {
+  left: 0;
+}
+.page-top-close {
+  left: 100rpx;
+}
+
+/* 控制侧边栏的内容距离顶部的距离 */
+.page-content {
+  padding-top: 60rpx;
+}
+
+/* 侧边栏内容的 css 样式 */
+.wc {
+  color: black;
+  padding: 30rpx 0 30rpx 150rpx;
+  border-bottom: 1px solid #eee;
 }
 </style>
