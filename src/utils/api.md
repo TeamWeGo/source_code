@@ -28,6 +28,19 @@
   * 修改 numberOfJoiner 为 maxJoiner 代表 最多参加的人数
   * 增加 avatarId 标识任务的封面图片的 存入数据库后得到的 id
 
+更新日期：5.10 16.12
+
+* Task 属性更改
+  * 增加 isQuestionnaire 发布的任务是否是调查问卷
+  * 增加 questionnaireId 调查问卷的 id
+* Questionnaire 属性更改
+  * 增加 Questionnaire 代表调查哦问卷
+  * 增加 template 代表 调查问卷的模板，是一个 array 类型
+  * 增加 title 代表 调查问卷的标题
+  * 增加 description 代表 调查问卷的简述
+  * 增加 results 代表 每一份调查问卷的结果，是一个 array 类型，其中每一个结果都是 template 的实例
+  * 增加 maxCount 代表 调查问卷最多需要多少份
+
 ```javascript
   let User = {
    // '_id':'x',//String database main key
@@ -135,7 +148,8 @@ api
        'beginTime':Date,
        'endTime':Date,
     }
-
+  'isQuestionnaire':true,
+    'questionnaireId':X,
   }
 
   let task ={
@@ -347,4 +361,108 @@ api
   .catch(error => {
     console.warn(error);
   });
+```
+
+## questionnaires object
+
+```javascript
+  let task = {
+    'title':'x', // String every task need a name Title
+    'avatarId':'',//upload the avatar to server and get an id from the callback
+    'type':'学习|生活|娱乐|',//String task type
+    'description':'XXX',//String task detail description
+    'state':'publishing|verifying|doing|finished',//String task state 任务发布中，任务确认中，任务执行中，任务完成
+    'maxJoiner':1,//Number Max Nubmer of joiners
+    'joiners':['x'],//String Array the joiners _id array
+    'location':'x'
+    'publish':{
+      'publisher':'X',//String user._id
+      'beginTime':Date,
+      'endTime':Date,
+    }
+    'payment':200,
+    'work':{
+       'beginTime':Date,
+       'endTime':Date,
+    },
+    'isQuestionnaire':true,
+    'questionnaireId':X,
+  }
+
+  let questionnaire ={
+    //'_id'
+    'title':xx,
+    'description':xx,
+    'maxCount':50,
+    'template':[
+      {
+        'type':Input,
+        'description':'你的学号',
+        'input':'',
+      },
+      {'type':SingleSelect,
+      'description':'是否喜欢xx',
+      'select':{
+        '是':false,
+        '否':false,
+      }
+      },
+      {
+        'type':MultiSelect,
+        'description':'以下哪一个代表你现在的心情',
+        'select':{
+          '开心':false,
+          '沮丧':false,
+          '感激':false
+        }
+      }
+    ],
+    'results':[
+      [
+         {
+        'type':Input,
+        'description':'你的学号',
+        'input':'16666',
+      },
+      {'type':SingleSelect,
+      'description':'是否喜欢xx',
+      'select':{
+        '是':true,
+        '否':false,
+      }
+      },
+      {
+        'type':MultiSelect,
+        'description':'以下哪一个代表你现在的心情',
+        'select':{
+          '开心':true,
+          '沮丧':false,
+          '感激':true
+        }
+      }
+      ],[
+         {
+        'type':Input,
+        'description':'你的学号',
+        'input':'12333',
+      },
+      {'type':SingleSelect,
+      'description':'是否喜欢xx',
+      'select':{
+        '是':false,
+        '否':true,
+      }
+      },
+      {
+        'type':MultiSelect,
+        'description':'以下哪一个代表你现在的心情',
+        'select':{
+          '开心':false,
+          '沮丧':true,
+          '感激':false
+        }
+      }
+      ]
+    ]
+  }
 ```

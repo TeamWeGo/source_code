@@ -12,6 +12,7 @@
     <button @click="joinOneTask">joinOneTask</button>
     <button @click="verifyOneTask">verifyOneTask</button>
     <button @click="endOneTask">endOneTask</button>
+    <button @click="deleteOneTask">deleteOneTask</button>
   </div>
 </template>
 
@@ -217,6 +218,18 @@ export default {
 
       api
         .endOneTask(task, publisher)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    deleteOneTask() {
+      let task;
+      let publisher;
+      api
+        .deleteOneTask(task, publisher)
         .then(res => {
           console.log(res);
         })
