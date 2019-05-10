@@ -154,7 +154,7 @@ api.updateOneById("users",user._id,{'balance':212}).then((result)=>{
 创建并发布一个任务，获得任务的_id，同时更新任务的publisher的task信息，publisher获得创建的任务的id
 ```javascript
 
-api.insertOneTask(task).then((result)=>{
+api.publishOneTask(task).then((result)=>{
   console.log(result)
 }).catch((error)=>{
   console.warn(error)

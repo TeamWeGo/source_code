@@ -22,35 +22,59 @@
       <textarea type="text" id='description' v-model='Task.description'/>
     </view>
     <view class='Task-time'>
-      <view class='startTime'>
+      <view class='startDate'>
         <picker  mode="date"
-          value="Task.startTime"
+          value="Task.startDate"
           start="2019-01-01"
           end="2022-01-01"
-          @change='bindStartChange'>
-          <view class='picker'>开始时间：{{Task.startTime}}</view>
+          @change='bindStartDate'>
+          <view class='picker'>开始日期：{{Task.startDate}}</view>
+        </picker>
+      </view>
+      <view class='startTime'>
+        <picker  mode="time"
+          value="Task.startDate"
+          @change='bindStartTime'>
+          <view class='picker'>时间：{{Task.startTime}}</view>
         </picker>
       </view>
 
-      <view class='completeTime'>
+      <view class='completeDate'>
         <picker mode='date'
           value='Task.completeTime'
           start='2019-01-01'
           end='2022-01-01'
           @change='bindCompleteDate'>
-          <view class='picker'>截止时间：{{Task.completeTime}}</view>
+          <view class='picker'>截止日期：{{Task.completeDate}}</view>
+        </picker>
+      </view>
+
+      <view class='completeTime'>
+        <picker mode='time'
+          value='Task.completeDate'
+          @change='bindCompleteTime'>
+          <view class='picker'>时间：{{Task.completeTime}}</view>
+        </picker>
+      </view>
+
+      <view class='publishDate'>
+        <picker mode='date'
+          value='Task.publishDate'
+          start='2019-01-01'
+          end='2022-01-01'
+          @change='bindPublishDate'>
+          <view class='picker'>报名截止：{{Task.publishDate}}</view>
         </picker>
       </view>
 
       <view class='publishTime'>
-        <picker mode='date'
+        <picker mode='time'
           value='Task.publishTime'
-          start='2019-01-01'
-          end='2022-01-01'
-          @change='bindPublishDate'>
-          <view class='picker'>报名截止：{{Task.publishTime}}</view>
+          @change='bindPublishTime'>
+          <view class='picker'>时间：{{Task.publishTime}}</view>
         </picker>
       </view>
+
     </view>
     <view class='Task-tag'>
       <picker mode='selector'
@@ -76,7 +100,7 @@
 
 
 <script>
-import { api } from "../../utils/api.js";
+import { api } from "../../../utils/api.js";
 export default {
   data () {
     return {
@@ -87,9 +111,12 @@ export default {
         participatorNum: '',
         payment: '',
         description: '',
-        startTime: '2019-04-25',
-        completeTime: '2019-04-25',
-        publishTime: '2019-04-25',
+        startDate: '2019-04-25',
+        startTime: '00:00',
+        completeDate: '2019-04-25',
+        completeTime: '00:00',
+        publishDate: '2019-04-25',
+        publishTime: '00:00',
         location: '北京市,北京市,东城区',
         tag: [{id: 0, name: '学习'}, {id: 1, name: '娱乐'}, {id: 2, name: '生活'}]
       },
@@ -107,18 +134,18 @@ export default {
         joiner: [],
         location: this.Task.location,
         publish: {
-          publisher: '96c1cbbe5cc1c6ab06a2fe28085dc760',
+          publisher: 'ee3099285cc7c051093255c93e1edebc',
           beginTime: "",
-          endTime: this.Task.startTime
+          endTime: this.Task.startDate + this.Task.startTime
         },
-        idlePay: this.Task.payment,
+        payment: this.Task.payment,
         work: {
-          beginTime: this.Task.startTime,
-          endTime: this.Task.completeTime
+          beginTime: this.Task.startDate + this.Task.startTime,
+          endTime: this.Task.completeDate + this.Task.completeTime
         }
       };
       api
-        .insertOneTask(task)
+        .publishOneTask(task)
         .then(res => {
           console.log(res);
         })
@@ -126,13 +153,22 @@ export default {
           console.warn(rej);
         });
     },
-    bindStartChange: function(e){
+    bindStartDate: function(e){
+      this.Task.startDate = e.mp.detail.value
+    },
+    bindStartTime: function(e){
       this.Task.startTime = e.mp.detail.value
     },
-    bindCompleteChange: function(e){
+    bindCompleteDate: function(e){
+      this.Task.completeDate = e.mp.detail.value
+    },
+    bindCompleteTime: function(e){
       this.Task.completeTime = e.mp.detail.value
     },
     bindPublishDate: function(e){
+      this.Task.publishDate = e.mp.detail.value
+    },
+    bindPublishTime: function(e){
       this.Task.publishTime = e.mp.detail.value
     },
     bindRegionChange: function(e){
