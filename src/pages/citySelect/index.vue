@@ -1,13 +1,15 @@
 <template>
   <div class="city">
-    <cityList/>
+    <cityList />
+    <!-- <cityAlphabet /> -->
   </div>
 </template>
 
 <script>
-import store from "@/components/store";
-import cityList from "./cityList";
-//import cityAlphabet from './cityAlphabet'
+import store from '@/components/store'
+import cityList from './cityList'
+// import cityAlphabet from './cityAlphabet'
+
 
 export default {
   data() {
