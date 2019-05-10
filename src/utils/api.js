@@ -73,6 +73,33 @@ export var api = {
     });
   },
 
+  insertOne: function (colName, data) {
+    return new Promise((resolve, reject) => {
+      wx.cloud
+        .callFunction({
+          name: "insertOne",
+          data: {
+            colName: colName,
+            data: data
+          }
+        }).then((result) => {
+          let msg = {
+            result: result.result._id,
+            msg: "insert a user:ok",
+            errMsg: null
+          };
+          resolve(msg);
+        }).catch(err => {
+          let msg = {
+            result: null,
+            msg: "insert a user:error",
+            errMsg: err
+          };
+          reject(msg);
+        });
+    })
+  },
+
   /**
    * querysome
    * @param {string} colName table
