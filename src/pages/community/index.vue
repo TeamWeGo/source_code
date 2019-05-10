@@ -31,9 +31,10 @@ export default {
   methods: {
     insertOneUser() {
       let user = {
-        name: "zzp", //String real name
-        wechatopenid: "00010",
-        studentId: "16340212", //String studient id
+        name: "zzq", //String real name
+        wechatopenid: "0002",
+        studentId: "16340296", //String studient id
+
         gender: "male", //String
         tasks: {
           //Object the tasks which containd the user
