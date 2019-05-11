@@ -398,11 +398,11 @@ api
       {
         'type':Input,
         'description':'你的学号',
-        'input':'',
+        'content':'',
       },
       {'type':SingleSelect,
       'description':'是否喜欢xx',
-      'select':{
+      'content':{
         '是':false,
         '否':false,
       }
@@ -410,7 +410,7 @@ api
       {
         'type':MultiSelect,
         'description':'以下哪一个代表你现在的心情',
-        'select':{
+        'content':{
           '开心':false,
           '沮丧':false,
           '感激':false
@@ -422,11 +422,11 @@ api
          {
         'type':Input,
         'description':'你的学号',
-        'input':'16666',
+        'content':'16666',
       },
       {'type':SingleSelect,
       'description':'是否喜欢xx',
-      'select':{
+      'content':{
         '是':true,
         '否':false,
       }
@@ -434,7 +434,7 @@ api
       {
         'type':MultiSelect,
         'description':'以下哪一个代表你现在的心情',
-        'select':{
+        'content':{
           '开心':true,
           '沮丧':false,
           '感激':true
@@ -444,11 +444,11 @@ api
          {
         'type':Input,
         'description':'你的学号',
-        'input':'12333',
+        'content':'12333',
       },
       {'type':SingleSelect,
       'description':'是否喜欢xx',
-      'select':{
+      'content':{
         '是':false,
         '否':true,
       }
@@ -456,7 +456,7 @@ api
       {
         'type':MultiSelect,
         'description':'以下哪一个代表你现在的心情',
-        'select':{
+        'content':{
           '开心':false,
           '沮丧':true,
           '感激':false
