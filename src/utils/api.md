@@ -180,7 +180,14 @@ api
 ### task methods
 
 * publishOneTask
-  创建并发布一个任务，获得任务的\_id，同时更新任务的 publisher 的 task 信息，publisher 获得创建的任务的 id
+创建并发布一个任务，获得任务的_id，同时更新任务的publisher的task信息，publisher获得创建的任务的id
+```javascript
+
+api.publishOneTask(task).then((result)=>{
+  console.log(result)
+}).catch((error)=>{
+  console.warn(error)
+})
 
 ```javascript
 api
