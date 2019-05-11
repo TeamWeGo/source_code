@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <p class="ttt">{{ txt }}</p>
@@ -15,8 +16,6 @@
     <button @click="deleteOneTask">deleteOneTask</button>
   </div>
 </template>
-
-
 <script>
 import { api } from "../../utils/api.js";
 export default {
@@ -243,3 +242,7 @@ export default {
 
 <style scoped>
 </style>
+
+
+
+
