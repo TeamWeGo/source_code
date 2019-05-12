@@ -2,6 +2,7 @@
 <template>
   <div>
     <p class="ttt">{{ txt }}</p>
+    <qContainer></qContainer>
     <button @click="insertOneUser">insertOneUser</button>
     <button @click="queryOneUserByUserId">queryOneUserByUserId</button>
     <button @click="updateOneUserById">updateOneUserById</button>
@@ -18,6 +19,7 @@
 </template>
 <script>
 import { api } from "../../utils/api.js";
+import qContainer from "@/components/qContainer";
 export default {
   data() {
     return {
@@ -27,6 +29,9 @@ export default {
 
   created() {
     // let app = getApp()
+  },
+  components: {
+    qContainer
   },
   methods: {
     insertOneUser() {
