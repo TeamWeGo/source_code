@@ -1,28 +1,64 @@
 <template>
   <div class="container">
-    <baseInput></baseInput>
-    <ul>
-      <li :is="item.type" v-for="item in them" v-bind:key="item" :data="data"></li>
-    </ul>
+    <baseInput baseData="temDatas[0]"></baseInput>
+    <baseSingleSelect baseData="temDatas[1]"></baseSingleSelect>
   </div>
 </template>
 
 <script>
-import baseInput from "./question/baseInput";
+import baseInput from "./questionSub/baseInput";
+import baseSingleSelect from "./questionSub/baseSingleSelect";
 export default {
   data: function() {
     return {
-      tt: {
-        type: "Input",
-        data: {
-          description: "ss",
-          input: ""
+      temDatas: [
+        {
+          type: Input,
+          description: "你的学号",
+          content: [
+            {
+              result: ""
+            }
+          ]
+        },
+        {
+          type: SingleSelect,
+          description: "是否喜欢xx",
+          content: [
+            {
+              label: "是",
+              result: false
+            },
+            {
+              label: "否",
+              result: false
+            }
+          ]
+        },
+        {
+          type: MultiSelect,
+          description: "以下哪一个代表你现在的心情",
+          content: [
+            {
+              label: "开心",
+              result: false
+            },
+            {
+              label: "沮丧",
+              result: false
+            },
+            {
+              label: "感激",
+              result: false
+            }
+          ]
         }
-      }
+      ]
     };
   },
   components: {
-    baseInput
+    baseInput,
+    baseSingleSelect
   }
 };
 </script>

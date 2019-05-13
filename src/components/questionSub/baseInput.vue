@@ -1,7 +1,7 @@
 <template>
   <div id="base-input">
-    <label>{{baseData.data.description}}</label>
-    <input id="input-text" type="text" v-model="baseData.data.input">
+    <label for="one">{{temData.description}}</label>
+    <input name="one" id="one" type="text" v-model="temData.content[0].result">
   </div>
 </template>
 
@@ -10,7 +10,9 @@ export default {
   props: ["baseData"],
   components: {},
   data: function() {
-    return {};
+    return {
+      temData: this.baseData
+    };
   },
 
   created: {},
