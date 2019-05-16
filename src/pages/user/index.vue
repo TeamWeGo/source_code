@@ -27,14 +27,23 @@
         </div>
       </div>
 
-      <div class = "div3">
-        <span class = "tag">{{userInfo.tags[0]}}</span>
-        <span class = "tag">{{userInfo.tags[1]}}</span>
-        <span class = "tag">{{userInfo.tags[2]}}</span>
-        <span class = "tag">{{userInfo.tags[3]}}</span>
-        <span class = "tag">{{userInfo.tags[4]}}</span>
-
+      <div class = "div3" v-for="(item, index) in tags" :key="index">
+        <ul>
+          <li> 
+            <button>{{item.name}}</button>
+          </li>
+        </ul>
       </div>
+
+      <!-- <div class = "div3" >
+        <button class = "unclickedTag" @click="tagButtonClicked">{{userInfo.tags[0].name}}</button>
+        <button class = "unclickedTag" @click="tagButtonClicked">{{userInfo.tags[1].name}}</button>
+        <button class = "unclickedTag" @click="tagButtonClicked">{{userInfo.tags[2].name}}</button>
+        <button class = "unclickedTag" @click="tagButtonClicked">{{userInfo.tags[3].name}}</button>
+        <button class = "unclickedTag" @click="tagButtonClicked">{{userInfo.tags[4].name}}</button>
+      </div> -->
+
+      
 
       <div class = "div4">
         <span class = "task">{{'进行中：' + userInfo.tasks.doing.length}}</span>
@@ -63,7 +72,13 @@ export default {
         credit: 99,
         personalStatement: 'Hello World!',
         isVerified: false,
-        tags: ['学习', '维修', '快递', '社交', '娱乐'],
+        tags: [
+          {name:'学习', flag:1}, 
+          {name:'维修', flag:0}, 
+          {name:'快递', flag:1}, 
+          {name:'社交', flag:1}, 
+          {name:'娱乐', flag:1}, ],
+        index:[0,1,1],
         tasks: {
           published: [0,1,2],
           finished: [0],
@@ -73,7 +88,8 @@ export default {
       },
       disabled: true,
       visibility: 'invisible',
-      isEditing: false
+      isEditing: false,
+      
     }
   },
 
@@ -124,6 +140,10 @@ export default {
         .catch(rej => {
           console.warn(rej);
         });
+    },
+
+    tagButtonClicked(){
+
     }
 
   },
@@ -216,10 +236,20 @@ export default {
   margin: 30rpx;
 }
 
-.tag{
+.clickedTag{
   border: 1px solid #000;
-  background: rgb(37, 119, 228);
+  background: rgb(104, 204, 113);
   color: white;
+  margin: 30rpx;
+  width: 20%;
+  float: left;
+  text-align: center;
+}
+
+.unclickedTag{
+  border: 1px solid #000;
+  background: white;
+  color: black;
   margin: 30rpx;
   width: 20%;
   float: left;
