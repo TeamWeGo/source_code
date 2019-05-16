@@ -6,9 +6,8 @@
 
 
 <script>
-import searchBar from "@/components/logs/searchBar";
+import store from '@/components/store';
 import missionList from "@/components/logs/missionList";
-import mpNavbar from "mpvue-weui/src/navbar";
 
 import { api } from "../../utils/api.js";
 
@@ -16,7 +15,8 @@ export default {
   data () {
     return {
       missionlist: [],
-      type: ""
+      type: "",
+      curCity: ""
     }
   },
   components: {
@@ -27,6 +27,7 @@ export default {
   },
   onLoad: function(options) {
     this.type = options.type;
+    this.curCity = store.state.curCity;
   },
   created() {
     Date.prototype.Format = function(fmt) {
