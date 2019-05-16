@@ -31,9 +31,10 @@ export default {
 .item {
   margin: 5px;
   position: relative;
+  margin-bottom: 0;
 }
 .text {
-  font-size: 18px;
+  font-size: 16px;
   margin: 10px;
 }
 .line {

@@ -1,18 +1,21 @@
+
 <template>
   <div>
     <p class="ttt">{{ txt }}</p>
     <button @click="insertOneUser">insertOneUser</button>
     <button @click="queryOneUserByUserId">queryOneUserByUserId</button>
     <button @click="updateOneUserById">updateOneUserById</button>
-    <button @click="insertOneTask">insertOneTask</button>
+    <button @click="publishOneTask">publishOneTask</button>
     <button @click="queryOneTaskByTaskId">queryOneTaskByTaskId</button>
     <button @click="updateOneTaskByTaskId">updateOneTaskByTaskId</button>
     <button @click="queryAllTasks">queryAllTasks</button>
     <button @click="queryAllUsers">queryAllUsers</button>
+    <button @click="joinOneTask">joinOneTask</button>
+    <button @click="verifyOneTask">verifyOneTask</button>
+    <button @click="endOneTask">endOneTask</button>
+    <button @click="deleteOneTask">deleteOneTask</button>
   </div>
 </template>
-
-
 <script>
 import { api } from "../../utils/api.js";
 export default {
@@ -28,16 +31,24 @@ export default {
   methods: {
     insertOneUser() {
       let user = {
-        name: "庄蚊子", //String real name
-        studentId: "16340222", //String studient id
+        name: "zzq", //String real name
+        wechatopenid: "0002",
+        studentId: "16340296", //String studient id
+
         gender: "male", //String
         tasks: {
           //Object the tasks which containd the user
-          published: [], // String Array the tasks that the user published
+          publishing: [], // String Array the tasks that the user published
           finished: [], //String Array the tasks that the user finished
-          doing: [] //String Array the tasks that the user is doing right now
+          doing: [], //String Array the tasks that the user is doing right now
+          joining: [],
+          verifyed: [],
+          ended: []
         },
-        idlePay: 1000 //Number free money coin
+        balance: 5000, //Number free money coin
+        credit: 100,
+        isVerified: true,
+        personalStatement: "Hello World"
       };
       api
         .insertOneUser(user)
@@ -50,7 +61,7 @@ export default {
     },
     queryOneUserByUserId() {
       api
-        .queryOneUserByUserId("ee3099285cc1b61506961f552b4d9ce5")
+        .queryOneById("users", "")
         .then(res => {
           console.log(res);
         })
@@ -60,8 +71,8 @@ export default {
     },
     updateOneUserById() {
       api
-        .updateUserByUserId("ee3099285cc1b61506961f552b4d9ce5", {
-          idlePay: 250
+        .updateOneById("users", "", {
+          balance: 5000
         })
         .then(res => {
           console.log(res);
@@ -70,60 +81,69 @@ export default {
           console.warn(rej);
         });
     },
-    insertOneTask() {
+    publishOneTask() {
       let task = {
-        name: "唱歌", // String every task need a name Title
+        title: "唱歌", // String every task need a name Title
         type: "娱乐", //String task type
         description: "唱一首单身情歌", //String task detail description
         state: "publishing", //String task state
-        numberOfJoiner: 10, //Number Max Nubmer of joiners
-        joiner: [], //String Array the joiners _id array
+        maxJoiner: 10, //Number Max Nubmer of joiners
+        joiners: [], //String Array the joiners _id array
         location: "广州",
         publish: {
-          publisher: "ee3099285cc1b61506961f552b4d9ce5", //String user._id
+          publisher: "9c4488c75ccd7f600bf8fe206feb2726", //String user._id
           beginTime: "",
           endTime: ""
         },
-        idlePay: 200,
+        payment: 40,
         work: {
           beginTime: "",
           endTime: ""
         }
       };
       api
-        .insertOneTask(task)
+        .publishOneTask(task)
         .then(res => {
           console.log(res);
         })
-        .catch(rej => {
-          console.warn(rej);
+        .catch(err => {
+          console.warn(err);
         });
     },
     queryOneTaskByTaskId() {
-      api
-        .queryOneTaskByTaskId("9c4488c75cc1b95c069ae0d25cb96f2f")
+      wx.cloud
+        .callFunction({
+          name: "queryOne",
+          data: {
+            colName: "tasks",
+            queryInfo: {
+              _id: ""
+            }
+          }
+        })
         .then(res => {
           console.log(res);
-        })
-        .catch(rej => {
-          console.warn(rej);
         });
     },
     updateOneTaskByTaskId() {
-      api
-        .updateTaskByTaskId("9c4488c75cc1b95c069ae0d25cb96f2f", {
-          idlePay: 2500
+      wx.cloud
+        .callFunction({
+          name: "updateOne",
+          data: {
+            colName: "tasks",
+            _id: "988c1b1b5cc7acc9092ab3cc40fb6b8d",
+            updateInfo: {
+              payment: 3000
+            }
+          }
         })
         .then(res => {
           console.log(res);
-        })
-        .catch(rej => {
-          console.warn(rej);
         });
     },
     queryAllTasks() {
       api
-        .queryAllTasks()
+        .querySomeByModel("tasks", {})
         .then(res => {
           console.log(res);
         })
@@ -133,7 +153,82 @@ export default {
     },
     queryAllUsers() {
       api
-        .queryAllUsers()
+        .querySomeByModel("users", {})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    joinOneTask() {
+      let task = {
+        _id: "96c1cbbe5ccd7fd00bf71e5b6040ab63",
+        joiners: [],
+        maxJoiner: 10
+      };
+      let joiner = {
+        _id: "9c4488c75ccd7f9d0bf92e032f5159d6"
+      };
+      api
+        .joinOneTask(task, joiner)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    verifyOneTask() {
+      let task = {
+        _id: "96c1cbbe5ccd7fd00bf71e5b6040ab63",
+        joiners: ["9c4488c75ccd7f9d0bf92e032f5159d6"],
+        publish: {
+          publisher: "9c4488c75ccd7f600bf8fe206feb2726"
+        },
+        maxJoiner: 10,
+        payment: 40
+      };
+      let publisher = {
+        _id: "9c4488c75ccd7f600bf8fe206feb2726"
+      };
+      api
+        .verifyOneTask(task, publisher)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    endOneTask() {
+      let task = {
+        _id: "96c1cbbe5ccd7fd00bf71e5b6040ab63",
+        joiners: ["9c4488c75ccd7f9d0bf92e032f5159d6"],
+        publish: {
+          publisher: "9c4488c75ccd7f600bf8fe206feb2726"
+        },
+        maxJoiner: 10,
+        payment: 40
+      };
+      let publisher = {
+        _id: "9c4488c75ccd7f600bf8fe206feb2726"
+      };
+
+      api
+        .endOneTask(task, publisher)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    deleteOneTask() {
+      let task;
+      let publisher;
+      api
+        .deleteOneTask(task, publisher)
         .then(res => {
           console.log(res);
         })
@@ -147,3 +242,7 @@ export default {
 
 <style scoped>
 </style>
+
+
+
+

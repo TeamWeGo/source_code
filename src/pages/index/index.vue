@@ -89,7 +89,7 @@ export default {
       }
     },
     chooseCity () {
-      let url = '../citySelect/main?city='+this.curCity;
+      let url = '../citySelect/main';
       wx.navigateTo({ url })
     },
     getLocation () {
@@ -109,7 +109,8 @@ export default {
               if(res && res.data){
                 console.log(res);
                 let city = res.data.result.addressComponent.city;
-                this.curCity = city.replace("市","");
+                store.commit('changeCity', city.replace("市",""));
+                this.curCity = store.state.curCity;
                 //console.log(this.curCity);
               }else{
                 console.log('地址获取失败')
