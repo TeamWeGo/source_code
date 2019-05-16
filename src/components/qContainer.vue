@@ -8,6 +8,7 @@
 <script>
 import baseInput from "./questionSub/baseInput";
 import baseSingleSelect from "./questionSub/baseSingleSelect";
+import baseMultiSelect from "./questionSub/baseMultiSelect";
 export default {
   data: function() {
     return {
@@ -58,7 +59,8 @@ export default {
   },
   components: {
     baseInput,
-    baseSingleSelect
+    baseSingleSelect,
+    baseMultiSelect
   }
 };
 </script>
