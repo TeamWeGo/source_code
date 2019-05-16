@@ -180,9 +180,9 @@ api
 ### task methods
 
 * publishOneTask
-创建并发布一个任务，获得任务的_id，同时更新任务的publisher的task信息，publisher获得创建的任务的id
-```javascript
+  创建并发布一个任务，获得任务的\_id，同时更新任务的 publisher 的 task 信息，publisher 获得创建的任务的 id
 
+````javascript
 api.publishOneTask(task).then((result)=>{
   console.log(result)
 }).catch((error)=>{
@@ -198,7 +198,7 @@ api
   .catch(error => {
     console.warn(error);
   });
-```
+````
 
 * updateOneTaskByTaskId
   通过任务\_id 更新任务的信息
@@ -405,71 +405,132 @@ api
       {
         'type':Input,
         'description':'你的学号',
-        'content':'',
+        'content':[
+          {
+            'result':''
+          }
+        ],
       },
-      {'type':SingleSelect,
+      {
+      'type':SingleSelect,
       'description':'是否喜欢xx',
-      'content':{
-        '是':false,
-        '否':false,
-      }
+      'content':[
+        {
+          'label':'是',
+          'result':false
+        },
+        {
+          'label':'否',
+          'result':false
+        }
+      ]
       },
       {
         'type':MultiSelect,
         'description':'以下哪一个代表你现在的心情',
-        'content':{
-          '开心':false,
-          '沮丧':false,
-          '感激':false
+        'content':[
+          {
+          'label':'开心',
+          'result':false
+        },
+        {
+          'label':'沮丧',
+          'result':false
+        },
+        {
+          'label':'感激',
+          'result':false
         }
+        ]
       }
     ],
     'results':[
-      [
-         {
+     [
+      {
         'type':Input,
         'description':'你的学号',
-        'content':'16666',
-      },
-      {'type':SingleSelect,
-      'description':'是否喜欢xx',
-      'content':{
-        '是':true,
-        '否':false,
-      }
+        'content':[
+          {
+            'result':'111222'
+          }
+        ],
       },
       {
-        'type':MultiSelect,
-        'description':'以下哪一个代表你现在的心情',
-        'content':{
-          '开心':true,
-          '沮丧':false,
-          '感激':true
-        }
-      }
-      ],[
-         {
-        'type':Input,
-        'description':'你的学号',
-        'content':'12333',
-      },
-      {'type':SingleSelect,
+      'type':SingleSelect,
       'description':'是否喜欢xx',
-      'content':{
-        '是':false,
-        '否':true,
-      }
-      },
-      {
-        'type':MultiSelect,
-        'description':'以下哪一个代表你现在的心情',
-        'content':{
-          '开心':false,
-          '沮丧':true,
-          '感激':false
+      'content':[
+        {
+          'label':'是',
+          'result':true
+        },
+        {
+          'label':'否',
+          'result':false
         }
-      }
       ]
+      },
+      {
+        'type':MultiSelect,
+        'description':'以下哪一个代表你现在的心情',
+        'content':[
+          {
+          'label':'开心',
+          'result':true
+        },
+        {
+          'label':'沮丧',
+          'result':false
+        },
+        {
+          'label':'感激',
+          'result':true
+        }
+        ]
+      }
+    ],
+    [
+      {
+        'type':Input,
+        'description':'你的学号',
+        'content':[
+          {
+            'result':'1222'
+          }
+        ],
+      },
+      {
+      'type':SingleSelect,
+      'description':'是否喜欢xx',
+      'content':[
+        {
+          'label':'是',
+          'result':false
+        },
+        {
+          'label':'否',
+          'result':true
+        }
+      ]
+      },
+      {
+        'type':MultiSelect,
+        'description':'以下哪一个代表你现在的心情',
+        'content':[
+          {
+          'label':'开心',
+          'result':false
+        },
+        {
+          'label':'沮丧',
+          'result':true
+        },
+        {
+          'label':'感激',
+          'result':false
+        }
+        ]
+      }
+    ]
     ]
   }
 ```
