@@ -61,7 +61,7 @@ export default {
   },
   created () {
     this.getCityList();
-    console.log(123123123);
+    //console.log(123123123);
   }
 };
 </script>
