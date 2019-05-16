@@ -22,31 +22,75 @@
       <textarea type="text" id='description' v-model='Task.description'/>
     </view>
     <view class='Task-time'>
-      <view class='startTime'>
+      <view class='startDate'>
         <picker  mode="date"
-          value="Task.startTime"
+          value="Task.startDate"
           start="2019-01-01"
           end="2022-01-01"
-          bindchange='bindDateChange'>
-          <view class='picker'>开始时间：{{Task.startTime}}</view>
+          @change='bindStartDate'>
+          <view class='picker'>开始日期：{{Task.startDate}}</view>
         </picker>
       </view>
+      <view class='startTime'>
+        <picker  mode="time"
+          value="Task.startDate"
+          @change='bindStartTime'>
+          <view class='picker'>时间：{{Task.startTime}}</view>
+        </picker>
+      </view>
+
+      <view class='completeDate'>
+        <picker mode='date'
+          value='Task.completeTime'
+          start='2019-01-01'
+          end='2022-01-01'
+          @change='bindCompleteDate'>
+          <view class='picker'>截止日期：{{Task.completeDate}}</view>
+        </picker>
+      </view>
+
       <view class='completeTime'>
-        <label>截止时间</label>
-        <input type='date' id='completeTime' placeholder='2019.04.10' v-model='Task.completeTime' />
+        <picker mode='time'
+          value='Task.completeDate'
+          @change='bindCompleteTime'>
+          <view class='picker'>时间：{{Task.completeTime}}</view>
+        </picker>
       </view>
+
+      <view class='publishDate'>
+        <picker mode='date'
+          value='Task.publishDate'
+          start='2019-01-01'
+          end='2022-01-01'
+          @change='bindPublishDate'>
+          <view class='picker'>报名截止：{{Task.publishDate}}</view>
+        </picker>
+      </view>
+
       <view class='publishTime'>
-        <label>截止时间</label>
-        <input type='date' id='publishTime' placeholder='2019.04.10' v-model='Task.publishTime' />
+        <picker mode='time'
+          value='Task.publishTime'
+          @change='bindPublishTime'>
+          <view class='picker'>时间：{{Task.publishTime}}</view>
+        </picker>
       </view>
+
     </view>
     <view class='Task-tag'>
-      <label>标签</label>
-      <input type="text" id='tag' v-model='Task.tag'/>
+      <picker mode='selector'
+        :value='index'
+        :range='Task.tag'
+        :range-key="'name'"
+        @change='bindTagChange'>
+        <view class='picker'>标签：{{Task.tag[index].name}}</view>
+      </picker>
     </view>
     <view class='Task-location'>
-      <label>地点</label>
-      <input type="text" id='location' V-model='Task.location'/>
+      <picker mode='region'
+        value='Task.location'
+        @change='bindRegionChange'>
+        <view class='picker'>地点：{{Task.location}}</view>
+      </picker>
     </view>
     <view class='publish' @click='publishTask'>
       <button>{{ publish }}</button>
@@ -61,16 +105,20 @@ export default {
   data () {
     return {
       createTask: '创建任务',
+      index: 0,
       Task: {
         name: '',
         participatorNum: '',
         payment: '',
         description: '',
-        startTime: '2019-04-25',
-        completeTime: '',
-        publishTime: '',
-        location: '',
-        tag: ''
+        startDate: '2019-04-25',
+        startTime: '00:00',
+        completeDate: '2019-04-25',
+        completeTime: '00:00',
+        publishDate: '2019-04-25',
+        publishTime: '00:00',
+        location: '北京市,北京市,东城区',
+        tag: [{id: 0, name: '学习'}, {id: 1, name: '娱乐'}, {id: 2, name: '生活'}]
       },
       publish: 'fa♂布'
     }
@@ -86,18 +134,18 @@ export default {
         joiner: [],
         location: this.Task.location,
         publish: {
-          publisher: '96c1cbbe5cc1c6ab06a2fe28085dc760',
+          publisher: 'ee3099285cc7c051093255c93e1edebc',
           beginTime: "",
-          endTime: this.Task.startTime
+          endTime: this.Task.startDate + this.Task.startTime
         },
-        idlePay: this.Task.payment,
+        payment: this.Task.payment,
         work: {
-          beginTime: this.Task.startTime,
-          endTime: this.Task.completeTime
+          beginTime: this.Task.startDate + this.Task.startTime,
+          endTime: this.Task.completeDate + this.Task.completeTime
         }
       };
       api
-        .insertOneTask(task)
+        .publishOneTask(task)
         .then(res => {
           console.log(res);
         })
@@ -105,9 +153,29 @@ export default {
           console.warn(rej);
         });
     },
-    bindDateChange(e){
-      console.log('picker发送选择改变，携带值为', e.detail.value)
-      this.Task.startTime = e.detail.value
+    bindStartDate: function(e){
+      this.Task.startDate = e.mp.detail.value
+    },
+    bindStartTime: function(e){
+      this.Task.startTime = e.mp.detail.value
+    },
+    bindCompleteDate: function(e){
+      this.Task.completeDate = e.mp.detail.value
+    },
+    bindCompleteTime: function(e){
+      this.Task.completeTime = e.mp.detail.value
+    },
+    bindPublishDate: function(e){
+      this.Task.publishDate = e.mp.detail.value
+    },
+    bindPublishTime: function(e){
+      this.Task.publishTime = e.mp.detail.value
+    },
+    bindRegionChange: function(e){
+      this.Task.location = e.mp.detail.value
+    },
+    bindTagChange: function(e){
+      this.index = e.mp.detail.value
     }
   }
 }

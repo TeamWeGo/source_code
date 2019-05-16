@@ -10,12 +10,15 @@
 		"autoAudits": false,
 		"checkInvalidKey": true
 	},
+	"cloudfunctionRoot": "dist/wx/static/functions/",
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
 	"appid": "wx553c52dfc0d9b880",
 	"projectname": "team-project",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
+	"libVersion": "2.6.6",
+	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
 	"condition": {
 		"search": {
 			"current": -1,

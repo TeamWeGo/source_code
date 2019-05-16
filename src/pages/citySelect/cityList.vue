@@ -50,9 +50,8 @@ export default {
   created () {
     this.curCity = store.state.curCity;
   }
-}
+};
 </script>
-
 
 <style scoped>
 .cur-city-name {
