@@ -57,6 +57,10 @@ export default {
     touchStart() {
       this.sliderClass = "page-slidebar-open";
       console.log("我开始了");
+<<<<<<< HEAD
+=======
+      //this.missionlist = [];
+>>>>>>> eb8a159ddeaccb86a9ac2a75e3f31814b039d5b8
       console.log(this.missionlist);
     },
     touchEnd() {
