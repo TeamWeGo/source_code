@@ -8,7 +8,7 @@
 <script>
 import store from '@/components/store'
 import cityList from './cityList'
-// import cityAlphabet from './cityAlphabet'
+import cityAlphabet from './cityAlphabet'
 
 let pinyin = require("pinyin")
 let cityData = require('./city_code.js');
@@ -48,13 +48,13 @@ export default {
     },
     group () {
       for(let i = 97; i <= 122; i++){
-        this.cityGroup[i] = [];
+        this.cityGroup[String.fromCharCode(i).toUpperCase()] = [];
       }
-      (this.cityGroup[97]).push(this.allCityList[0]);
+      (this.cityGroup['A']).push(this.allCityList[0]);
       for(let i = 1; i < this.allCityList.length; i++){
         let c = this.allCityList[i];
-        let d = pinyin(c, {style: pinyin.STYLE_NORMAL})[0][0][0].charCodeAt()
-        if(d >= 97 && d <= 122)
+        let d = pinyin(c, {style: pinyin.STYLE_NORMAL})[0][0][0].toUpperCase()
+        if(d >= 'A' && d <= 'Z')
           this.cityGroup[ d ].push(c);
       }
     }
