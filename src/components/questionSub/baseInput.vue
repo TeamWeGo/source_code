@@ -11,7 +11,14 @@ export default {
   components: {},
   data: function() {
     return {
-      temData: this.baseData
+      temData: {
+        description: "two",
+        content: [
+          {
+            result: ""
+          }
+        ]
+      }
     };
   },
 
