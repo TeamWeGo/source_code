@@ -7,7 +7,7 @@
     <div class="all-city">
       <div class="text-info">所有城市</div>
       <div v-for="(item,key) in cityGroup" :key="key" :ref="key" >
-        <div class="small-title" :data="closure(key)">{{ data }}</div>
+        <div class="small-title">{{ key }}</div>
         <cityItem v-for="(cityname, i) in item" :key="i" :city="cityname" @click="citySelected(cityname)"/>
       </div>
     </div>
@@ -49,6 +49,14 @@ export default {
   },
   created () {
     this.curCity = store.state.curCity;
+  },
+  watch: {
+    '$store.state.city_alphabet': {
+      handler: function(newer, older) {
+        console.log(newer, older);
+      },
+      deep: true
+    }
   }
 };
 </script>

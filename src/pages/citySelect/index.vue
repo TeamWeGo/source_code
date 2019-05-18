@@ -49,19 +49,21 @@ export default {
     },
     group() {
       for (let i = 97; i <= 122; i++) {
-        this.cityGroup[i] = [];
+        this.cityGroup[String.fromCharCode(i).toUpperCase()] = [];
       }
-      this.cityGroup[97].push(this.allCityList[0]);
+      this.cityGroup["A"].push(this.allCityList[0]);
       for (let i = 1; i < this.allCityList.length; i++) {
         let c = this.allCityList[i];
-        let d = pinyin(c, { style: pinyin.STYLE_NORMAL })[0][0][0].charCodeAt();
-        if (d >= 97 && d <= 122) this.cityGroup[d].push(c);
+        let d = pinyin(c, {
+          style: pinyin.STYLE_NORMAL
+        })[0][0][0].toUpperCase();
+        if (d >= "A" && d <= "Z") this.cityGroup[d].push(c);
       }
     }
   },
   created() {
     this.getCityList();
-    console.log(123123123);
+    //console.log(123123123);
   }
 };
 </script>

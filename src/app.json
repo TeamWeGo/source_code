@@ -4,7 +4,8 @@
     "pages/logs/main",
     "pages/user/main",
     "pages/citySelect/main",
-    "pages/community/main"
+    "pages/community/main",
+    "pages/studyList/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

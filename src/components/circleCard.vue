@@ -1,5 +1,5 @@
 <template>
-  <div class="circleTemplate">
+  <div class="circleTemplate" @click="handleClick">
     <div class="circle">
       <img class="circle-img" v-if="imgSrc" :src="imgSrc">
     </div>
@@ -9,7 +9,13 @@
 
 <script>
 export default {
-  props: ["text", "imgSrc"]
+  props: ["text", "imgSrc"],
+  methods: {
+    handleClick () {
+      let url = '../studyList/main?type=' + this.text;
+      wx.navigateTo({ url })
+    }
+  }
 };
 </script>
 
