@@ -3,11 +3,19 @@
     <radio-group class="radio-group" @change="radioChange">
       <label>{{temData.description}}</label>
       <br>
-      <radio name="one" id="one" value="true" v-model="temData.content[0].result"></radio>
-      <label for="one">{{temData.content[0].label}}</label>
+      <radio
+        name="one"
+        id="one"
+        value="true"
+        v-model="temData.content[0].result"
+      >{{temData.content[0].label}}</radio>
       <br>
-      <radio name="two" id="two" value="true" v-model="temData.content[0].result"></radio>
-      <label for="two">{{temData.content[1].label}}</label>
+      <radio
+        name="two"
+        id="two"
+        value="true"
+        v-model="temData.content[0].result"
+      >{{temData.content[1].label}}</radio>
     </radio-group>
   </div>
 </template>
@@ -22,7 +30,6 @@ export default {
     };
   },
 
-  created: {},
   methods: {},
   computed: {}
 };
