@@ -1,7 +1,8 @@
 <template>
   <div class="container">
-    <baseInput baseData="temDatas[0]"></baseInput>
-    <baseSingleSelect baseData="temDatas[1]"></baseSingleSelect>
+    <baseInput :baseData="temDatas[0]"></baseInput>
+    <baseSingleSelect :baseData="temDatas[1]"></baseSingleSelect>
+    <baseMultiSelect :baseData="temDatas[2]"></baseMultiSelect>
   </div>
 </template>
 
@@ -14,7 +15,7 @@ export default {
     return {
       temDatas: [
         {
-          type: Input,
+          type: "baseInput",
           description: "你的学号",
           content: [
             {
@@ -23,7 +24,7 @@ export default {
           ]
         },
         {
-          type: SingleSelect,
+          type: "baseSingleSelect",
           description: "是否喜欢xx",
           content: [
             {
@@ -37,7 +38,7 @@ export default {
           ]
         },
         {
-          type: MultiSelect,
+          type: "baseMultiSelect",
           description: "以下哪一个代表你现在的心情",
           content: [
             {

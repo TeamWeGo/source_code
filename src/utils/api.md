@@ -275,7 +275,9 @@ api
 
 ```javascript
 api
-  .querySomeByModel("tasks", {})
+  .querySomeByModel("tasks", {
+    payment: 20
+  })
   .then(result => {
     console.log(result);
   })
