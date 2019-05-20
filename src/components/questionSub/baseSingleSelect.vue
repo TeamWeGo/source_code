@@ -2,11 +2,12 @@
   <div id="base-singleSelect">
     <label>{{temData.description}}</label>
     <br>
-    <input type="radio" name="one" id="one" value="true" v-model="temData.content[0].result">
-    <label for="one">{{temData.content[0].label}}</label>
-    <br>
-    <input type="radio" name="two" id="two" value="true" v-model="temData.content[0].result">
-    <label for="two">{{temData.content[1].label}}</label>
+    <div v-for="(item, index) in temData.content" :key="index">
+    <input type="radio" value="true" :name="index" :id="index" v-model="item.result">
+    <label :for="index">{{item.label}}</label>
+    </div>
+    <!--<input type="radio" name="two" id="two" value="true" v-model="temData.content[0].result">
+    <label for="two">{{temData.content[1].label}}</label>-->
   </div>
 </template>
 
@@ -18,11 +19,11 @@ export default {
     return {
       temData: this.baseData
     };
-  },
+  }
 
-  created: {},
-  methods: {},
-  computed: {}
+//  created: {},
+// methods: {},
+ // computed: {}
 };
 </script>
 

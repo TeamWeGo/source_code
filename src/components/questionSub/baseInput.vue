@@ -13,11 +13,11 @@ export default {
     return {
       temData: this.baseData
     };
-  },
+  }
 
-  created: {},
-  methods: {},
-  computed: {}
+//  created: {},
+ // methods: {},
+ // computed: {}
 };
 </script>
 
