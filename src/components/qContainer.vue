@@ -2,6 +2,7 @@
   <div class="container">
     <baseInput baseData="temDatas[0]"></baseInput>
     <baseSingleSelect baseData="temDatas[1]"></baseSingleSelect>
+    <baseMultiSelect baseData="temDatas[2]"></baseMultiSelect>
   </div>
 </template>
 

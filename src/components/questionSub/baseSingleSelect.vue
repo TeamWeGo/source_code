@@ -1,12 +1,14 @@
 <template>
   <div id="base-singleSelect">
-    <label>{{temData.description}}</label>
-    <br>
-    <input type="radio" name="one" id="one" value="true" v-model="temData.content[0].result">
-    <label for="one">{{temData.content[0].label}}</label>
-    <br>
-    <input type="radio" name="two" id="two" value="true" v-model="temData.content[0].result">
-    <label for="two">{{temData.content[1].label}}</label>
+    <radio-group class="radio-group" @change="radioChange">
+      <label>{{temData.description}}</label>
+      <br>
+      <radio name="one" id="one" value="true" v-model="temData.content[0].result"></radio>
+      <label for="one">{{temData.content[0].label}}</label>
+      <br>
+      <radio name="two" id="two" value="true" v-model="temData.content[0].result"></radio>
+      <label for="two">{{temData.content[1].label}}</label>
+    </radio-group>
   </div>
 </template>
 
