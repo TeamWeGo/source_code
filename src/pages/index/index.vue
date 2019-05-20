@@ -119,6 +119,25 @@ export default {
           })
         }
       })
+    },
+    studyList () {
+      console.log("yes")
+      let url = '../studyList/main';
+      wx.navigateTo({ url })
+      console.log("yes")
+    },
+    liveList () {
+      console.log("yes")
+      let url = '../liveList/main';
+      wx.navigateTo({ url })
+    },
+    playList () {
+      let url = '../playList/main';
+      wx.navigateTo({ url })
+    },
+    infoList () {
+      let url = '../infoList/main';
+      wx.navigateTo({ url })
     }
   },
 
