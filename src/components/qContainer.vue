@@ -1,8 +1,26 @@
 <template>
   <div class="container">
-    <baseInput :baseData="temDatas[0]"></baseInput>
-    <baseSingleSelect :baseData="temDatas[1]"></baseSingleSelect>
-    <baseMultiSelect :baseData="temDatas[2]"></baseMultiSelect>
+    <div v-for="(item, index) in temDatas" :key="index">
+      <ul v-if="item.type=='baseInput'">
+        <baseInput :baseData="item"></baseInput>
+        <button @click="deleteQues(index)">delete Ques</button>
+      </ul>
+      <ul v-if="item.type=='baseSingleSelect'">
+        <baseSingleSelect :baseData="item"></baseSingleSelect>
+        <button @click="addOption(index)">add Option</button>
+        <button @click="deleteOption(index)">delete Option</button>
+        <button @click="deleteQues(index)">delete Ques</button>
+      </ul>
+      <ul v-if="item.type=='baseMultiSelect'">
+        <baseMultiSelect :baseData="item"></baseMultiSelect>
+        <button @click="addOption(index)">add Option</button>
+        <button @click="deleteOption(index)">delete Option</button>
+        <button @click="deleteQues(index)">delete Ques</button>
+      </ul>
+    </div>
+
+    <!--<component :is="item.type"  v-for="(item, index) in temDatas" :key="index" :baseData="item">
+    </component>-->
   </div>
 </template>
 
@@ -11,57 +29,27 @@ import baseInput from "./questionSub/baseInput";
 import baseSingleSelect from "./questionSub/baseSingleSelect";
 import baseMultiSelect from "./questionSub/baseMultiSelect";
 export default {
-  data: function() {
-    return {
-      temDatas: [
-        {
-          type: "baseInput",
-          description: "你的学号",
-          content: [
-            {
-              result: ""
-            }
-          ]
-        },
-        {
-          type: "baseSingleSelect",
-          description: "是否喜欢xx",
-          content: [
-            {
-              label: "是",
-              result: false
-            },
-            {
-              label: "否",
-              result: false
-            }
-          ]
-        },
-        {
-          type: "baseMultiSelect",
-          description: "以下哪一个代表你现在的心情",
-          content: [
-            {
-              label: "开心",
-              result: false
-            },
-            {
-              label: "沮丧",
-              result: false
-            },
-            {
-              label: "感激",
-              result: false
-            }
-          ]
-        }
-      ]
-    };
-  },
   components: {
     baseInput,
     baseSingleSelect,
     baseMultiSelect
+  },
+  props: ["temDatas"],
+  data: function() {
+    return {
+      temDatas: this.temDatas
+    };
+  },
+  methods: {
+    addOption: function(index){
+      this.$emit("addOption", index)
+    },
+    deleteOption: function(index){
+      this.$emit("deleteOption", index)
+    },
+    deleteQues: function(index){
+      this.$emit("deleteQues", index)
+    }
   }
 };
 </script>
