@@ -9,7 +9,7 @@
         value="true"
         v-model="temData.content[0].result"
       >{{temData.content[0].label}}</radio>
-      <br>
+
       <radio
         name="two"
         id="two"
