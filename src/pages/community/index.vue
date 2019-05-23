@@ -2,7 +2,7 @@
 <template>
   <div>
     <p class="ttt">{{ txt }}</p>
-    <qContainer></qContainer>
+    <qContainer :temDatas="temDatas"></qContainer>
     <button @click="insertOneUser">insertOneUser</button>
     <button @click="queryOneUserByUserId">queryOneUserByUserId</button>
     <button @click="updateOneUserById">updateOneUserById</button>
@@ -23,13 +23,53 @@ import qContainer from "@/components/qContainer";
 export default {
   data() {
     return {
-      txt: "社区"
+      txt: "社区",
+      temDatas: [
+        {
+          type: "baseInput",
+          description: "你的学号",
+          content: [
+            {
+              result: ""
+            }
+          ]
+        },
+        {
+          type: "baseSingleSelect",
+          description: "是否喜欢xx",
+          content: [
+            {
+              label: "是",
+              result: false
+            },
+            {
+              label: "否",
+              result: false
+            }
+          ]
+        },
+        {
+          type: "baseMultiSelect",
+          description: "以下哪一个代表你现在的心情",
+          content: [
+            {
+              label: "开心",
+              result: false
+            },
+            {
+              label: "沮丧",
+              result: false
+            },
+            {
+              label: "感激",
+              result: false
+            }
+          ]
+        }
+      ]
     };
   },
 
-  created() {
-    // let app = getApp()
-  },
   components: {
     qContainer
   },
