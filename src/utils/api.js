@@ -948,7 +948,7 @@ export var api = {
                 };
                 resolve(msg);
               })
-              .catch(err => {
+              .catch((err) => {
                 let msg = {
                   result: null,
                   msg: "delete a task:error",
@@ -959,6 +959,31 @@ export var api = {
           }
         });
     });
+  },
+
+  getOpenId: function () {
+    return new Promise((resolve, reject) => {
+      wx.cloud.callFunction({
+        name: 'getOpenId',
+      }).then((result) => {
+
+        console.log(result);
+
+        let msg = {
+          result: result.result.openId,
+          msg: "get open id :ok",
+          errMsg: null
+        };
+        resolve(msg);
+      }).catch((err) => {
+        let msg = {
+          result: null,
+          msg: "get open id :error",
+          errMsg: err
+        };
+        reject(msg);
+      })
+    })
   }
 };
 

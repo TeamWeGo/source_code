@@ -5,7 +5,8 @@ Vue.config.productionTip = false
 App.mpType = 'app'
 
 wx.cloud.init({
-  env: 'earnmoney-7c2ab8'
+  env: 'earnmoney-7c2ab8',
+  traceUser: true
 })
 
 const app = new Vue(App)

@@ -6,15 +6,9 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-import store from '@/components/store'
-import cityList from './cityList'
-import cityAlphabet from './cityAlphabet'
-=======
 import store from "@/components/store";
 import cityList from "./cityList";
 import cityAlphabet from "./cityAlphabet";
->>>>>>> 92e7ed134c18aad309f09164df8d44b1e81df577
 
 let pinyin = require("pinyin");
 let cityData = require("./city_code.js");
