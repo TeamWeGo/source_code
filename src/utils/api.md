@@ -536,3 +536,31 @@ api
     ]
   }
 ```
+
+## tool methods
+
+* getOpenId
+
+```javascript
+api
+  .getOpenId()
+  .then(res => {
+    console.log(res);
+
+    res 的数据结构 {
+          result: xxxx,
+          msg: "get open id :ok",
+          errMsg: null
+        };
+
+  })
+  .catch(rej => {
+    console.warn(rej);
+    或
+ rej 的数据结构 {
+          result: null,
+          msg: "get open id :error",
+          errMsg: xxx
+        };
+  });
+```

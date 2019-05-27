@@ -15,6 +15,7 @@
     <button @click="verifyOneTask">verifyOneTask</button>
     <button @click="endOneTask">endOneTask</button>
     <button @click="deleteOneTask">deleteOneTask</button>
+    <button @click="getOpenId">getOpenId</button>
   </div>
 </template>
 <script>
@@ -274,6 +275,16 @@ export default {
       let publisher;
       api
         .deleteOneTask(task, publisher)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    getOpenId() {
+      api
+        .getOpenId()
         .then(res => {
           console.log(res);
         })
