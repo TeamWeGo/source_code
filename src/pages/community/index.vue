@@ -3,6 +3,7 @@
   <div>
     <p class="ttt">{{ txt }}</p>
     <qContainer :temDatas="temDatas"></qContainer>
+    <qEdit></qEdit>
     <button @click="insertOneUser">insertOneUser</button>
     <button @click="queryOneUserByUserId">queryOneUserByUserId</button>
     <button @click="updateOneUserById">updateOneUserById</button>
@@ -21,6 +22,7 @@
 <script>
 import { api } from "../../utils/api.js";
 import qContainer from "@/components/qContainer";
+import qEdit from "@/components/qEdit";
 export default {
   data() {
     return {
@@ -72,7 +74,8 @@ export default {
   },
 
   components: {
-    qContainer
+    qContainer,
+    qEdit
   },
   methods: {
     insertOneUser() {

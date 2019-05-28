@@ -97,9 +97,9 @@ export default {
     api
       .querySomeByModel("tasks", {})
       .then(res => {
-        console.log(res);
+        //   console.log(res);
         this.missionlist = res.result;
-        console.log(this.missionlist);
+        //  console.log(this.missionlist);
         this.missionlist.forEach(element => {
           var date = new Date(element.publish.beginTime);
           element.publish.beginTime = date.Format("yyyy-MM-dd");

@@ -45,7 +45,7 @@ export default {
         return pinyin.compare(param1, param2);
       });
       this.group();
-      console.log(this.cityGroup);
+      //  console.log(this.cityGroup);
     },
     group() {
       for (let i = 97; i <= 122; i++) {

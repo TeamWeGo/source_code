@@ -11,7 +11,7 @@
         <button @click="addOption(index)">add Option</button>
         <button @click="deleteOption(index)">delete Option</button>
         <button @click="deleteQues(index)">delete Ques</button>
-      </ul>
+      </ul> 
       <ul v-if="item.type=='baseMultiSelect'">
         <baseMultiSelect :baseData="item"></baseMultiSelect>
         <button @click="addOption(index)">add Option</button>
