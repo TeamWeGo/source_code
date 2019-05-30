@@ -3,11 +3,13 @@
     <p class="title">{{ pageTitle }}</p>
     <img class="editButton" src="/static/images/edit.png" @click="updateUserInfo"/>
     <button v-bind:class="visibility" @click="saveChanges">完成</button>
+    <button class="authorize" open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">授权登录</button>
     <div class = container>
+
 
       <div class = "div1">
         <div class = "avatar">
-          <img class="userAvatar" src="/static/images/user.png" background-size="cover" />
+          <img class="userAvatar" v-bind:src=userInfo.avatarUrl background-size="cover" />
         </div>
         <div class = "info">
           <div class= "infoRow">
@@ -23,25 +25,17 @@
       <div class = "div2">
         <div class= "ps">
             <label class="lableClass">个签：</label>
-            <input type="text"  v-bind:disabled="disabled" v-model='userInfo.personalStatement'/>
+            <input type="text"  v-bind:disabled="disabled" v-model='userInfo.personalStatement'/> 
         </div>
-      </div>
+      </div> 
 
-      <div class = "div3" v-for="(item, index) in tags" :key="index">
-        <ul>
-          <li> 
-            <button>{{item.name}}</button>
-          </li>
-        </ul>
+      <div class = "div3" >
+        <button class = "unclickedTag" @click="tagButtonClicked(0)">{{userInfo.tags[0].name}}</button>
+        <button class = "unclickedTag" @click="tagButtonClicked(1)">{{userInfo.tags[1].name}}</button>
+        <button class = "unclickedTag" @click="tagButtonClicked(2)">{{userInfo.tags[2].name}}</button>
+        <button class = "unclickedTag" @click="tagButtonClicked(3)">{{userInfo.tags[3].name}}</button>
+        <button class = "unclickedTag" @click="tagButtonClicked(4)">{{userInfo.tags[4].name}}</button>
       </div>
-
-      <!-- <div class = "div3" >
-        <button class = "unclickedTag" @click="tagButtonClicked">{{userInfo.tags[0].name}}</button>
-        <button class = "unclickedTag" @click="tagButtonClicked">{{userInfo.tags[1].name}}</button>
-        <button class = "unclickedTag" @click="tagButtonClicked">{{userInfo.tags[2].name}}</button>
-        <button class = "unclickedTag" @click="tagButtonClicked">{{userInfo.tags[3].name}}</button>
-        <button class = "unclickedTag" @click="tagButtonClicked">{{userInfo.tags[4].name}}</button>
-      </div> -->
 
       
 
@@ -84,7 +78,9 @@ export default {
           finished: [0],
           doing: [1,2],
         },
-        isVerified: true
+        isVerified: true,
+        wechatopenid: 1,
+        id:1
       },
       disabled: true,
       visibility: 'invisible',
@@ -116,18 +112,21 @@ export default {
       console.log(this.userInfo.userName)
 
       let user = {
-        '_id':'x',
-        // '_openid':'124',
+        'wechatopenid':this.userInfo.wechatopenid,
         'nickName': this.userInfo.userName, 
-        'name':'X',
+        'name':'realName',
+        'avatarUrl':this.userInfo.avatarUrl,
         'studentId':'123',
         'gender':this.userInfo.gender,
         'tasks':{ 
-          'published':this.userInfo.tasks.published,
+          'joining':[],
+          'doing':this.userInfo.tasks.doing,
           'finished':this.userInfo.tasks.finished,
-          'doing':this.userInfo.tasks.doing
+          'publishing':this.userInfo.tasks.published,
+          'verifyed':[],
+          'ended':[]
         },
-        'idlePay':this.userInfo.balance,
+        'balance':this.userInfo.balance,
         'isVerified': this.userInfo.isVerified,
         'personalStatement':this.userInfo.personalStatement,
         'credit': this.userInfo.credit
@@ -142,10 +141,100 @@ export default {
         });
     },
 
-    tagButtonClicked(){
+    tagButtonClicked(index){
+        if(this.isEditing){
+          if(this.tags[index].flag == 1){
+            this.tags[index].flag = 0
+          }else{
+            this.tags[index].flag = 1
+          }
+        }
+    },
 
+    onGotUserInfo: function (e) {
+      
+      // wx.login({
+      //   success:function(res){
+      //     console.log(res.code)
+      //     //发送请求
+      //     wx.request({
+      //       url: 'https:api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&grant_type=authorization_code',
+      //       data: {
+      //         code:res.code
+      //       },
+      //       success: function (res) {
+      //         console.log(res.data)
+      //       }
+      //     })
+      //   }
+      // })
+
+      wx.getUserInfo({
+        success: (res) => {
+            console.log(res.code)
+            console.log(res.userInfo)
+            this.userInfo.userName = res.userInfo.nickName
+            this.userInfo.avatarUrl = res.userInfo.avatarUrl
+            // this.userInfo.wechatopenid = res.userInfo.openId
+            if(res.userInfo.gender == 1 ){
+              this.userInfo.gender = '男'
+            }else{
+              this.userInfo.gender = '女'
+            }
+        }
+      })
+
+      
+      let user = {
+        'wechatopenid':this.userInfo.wechatopenid,
+        'nickName': this.userInfo.userName, 
+        'name':'realName',
+        'avatarUrl':this.userInfo.avatarUrl,
+        'studentId':'123',
+        'gender':this.userInfo.gender,
+        'tasks':{ 
+          'joining':[],
+          'doing':this.userInfo.tasks.doing,
+          'finished':this.userInfo.tasks.finished,
+          'publishing':this.userInfo.tasks.published,
+          'verifyed':[],
+          'ended':[]
+        },
+        'balance':this.userInfo.balance,
+        'isVerified': this.userInfo.isVerified,
+        'personalStatement':this.userInfo.personalStatement,
+        'credit': this.userInfo.credit
+      }
+      console.log(user)
+
+      api.insertOneUser(user)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+          api.querySomeByModel("users", {
+              'wechatopenid':1
+            })
+            .then(result => {
+              console.log(result);
+              this.userInfo.id = result.result[0].id
+              this.userInfo.userName = result.result[0].nickName
+              this.userInfo.gender = result.result[0].gender
+              this.userInfo.isVerified = result.result[0].isVerified
+              this.userInfo.balance = result.result[0].balance
+              this.userInfo.credit = result.result[0].credit
+              this.userInfo.avatarUrl = result.result[0].avatarUrl
+              this.userInfo.personalStatement = result.result[0].personalStatement
+              this.userInfo.tags = result.result[0].tags
+              this.userInfo.tasks = result.result[0].tasks
+            })
+            .catch(error => {
+              console.warn(error);
+            });
+        });
     }
-
+    
   },
 
   created () {
@@ -170,6 +259,10 @@ export default {
   margin-right: 50rpx;
 }
 
+.authorize{
+  width:150rpx;
+  font-size: 10pt;
+}
 .container{
   width: 90%;
   margin: 50rpx;
