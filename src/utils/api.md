@@ -9,7 +9,7 @@
   * 增加 isVerified 属性（是否认证）
   * 增加 credit 属性
   * idle -> balance
-  * Task
+* Task
   * name -> title
   * idlepay -> payment
 
@@ -33,7 +33,7 @@
 * Task 属性更改
   * 增加 isQuestionnaire 发布的任务是否是调查问卷
   * 增加 questionnaireId 调查问卷的 id
-  * Questionnaire 属性更改
+* Questionnaire 属性更改
   * 增加 Questionnaire 代表调查哦问卷
   * 增加 template 代表 调查问卷的模板，是一个 array 类型
   * 增加 title 代表 调查问卷的标题
@@ -180,9 +180,9 @@ api
 ### task methods
 
 * publishOneTask
-  创建并发布一个任务，获得任务的 id，同时更新任务的 publisher 的 task 信息，publisher 获得创建的任务的 id
+创建并发布一个任务，获得任务的_id，同时更新任务的publisher的task信息，publisher获得创建的任务的id
+```javascript
 
-````javascript
 api.publishOneTask(task).then((result)=>{
   console.log(result)
 }).catch((error)=>{
@@ -198,10 +198,10 @@ api
   .catch(error => {
     console.warn(error);
   });
-````
+```
 
 * updateOneTaskByTaskId
-  通过任务 id 更新任务的信息
+  通过任务\_id 更新任务的信息
 
 ```javascript
 api
@@ -217,7 +217,7 @@ api
 ```
 
 * joinOneTask
-  加入一个任务，第一个参数为 当前 task 信息 必须包含{ task.id，task.joiners ，task.maxJoiner}，第二个参数为 加入者的 id
+  加入一个任务，第一个参数为 当前 task 信息 必须包含{ task.\_id，task.joiners ，task.maxJoiner}，第二个参数为 加入者的\_id
 
 ```javascript
 api
@@ -231,7 +231,7 @@ api
 ```
 
 * verifyOneTask
-  奶牛确认任务，任务开始执行，并从奶牛的账户中扣除闲钱币。第一个参数未当前 task 信息 必须包含{ task.id，task.joiners ，task.maxJoiner task.payment, task.publish.publisher}，第二个参数 为 publisher 发布者信息，必须包含{user.id}
+  奶牛确认任务，任务开始执行，并从奶牛的账户中扣除闲钱币。第一个参数未当前 task 信息 必须包含{ task.\_id，task.joiners ，task.maxJoiner task.payment, task.publish.publisher}，第二个参数 为 publisher 发布者信息，必须包含{user.\_id}
 
 ```javascript
 api
@@ -245,7 +245,7 @@ api
 ```
 
 * endOneTask
-  奶牛结束任务，任务结束，参加者获得闲钱币。第一个参数未当前 task 信息 必须包含{ task.id，task.joiners ，task.maxJoiner task.payment, task.publish.publisher}，第二个参数 为 publisher 发布者信息，必须包含{user.id}
+  奶牛结束任务，任务结束，参加者获得闲钱币。第一个参数未当前 task 信息 必须包含{ task.\_id，task.joiners ，task.maxJoiner task.payment, task.publish.publisher}，第二个参数 为 publisher 发布者信息，必须包含{user.\_id}
 
 ```javascript
 api
@@ -275,11 +275,12 @@ api
 
 ```javascript
 api
-  .querySomeByModel("tasks", {
-    payment: 20
+  .querySomeByModel("users", {
+    'wechatopenid':
   })
   .then(result => {
     console.log(result);
+    
   })
   .catch(error => {
     console.warn(error);
@@ -403,164 +404,75 @@ api
     'title':xx,
     'description':xx,
     'maxCount':50,
-    'template': [
-        {
-          type: 'baseInput',
-          description: "你的学号",
-          content: [
-            {
-              result: ""
-            }
-          ]
-        },
-        {
-          type: 'baseSingleSelect',
-          description: "是否喜欢xx",
-          content: [
-            {
-              label: "是",
-              result: false
-            },
-            {
-              label: "否",
-              result: false
-            }
-          ]
-        },
-        {
-          type: 'baseMultiSelect',
-          description: "以下哪一个代表你现在的心情",
-          content: [
-            {
-              label: "开心",
-              result: false
-            },
-            {
-              label: "沮丧",
-              result: false
-            },
-            {
-              label: "感激",
-              result: false
-            }
-          ]
-        }
-      ],
-    'results':[
-     [
-      {
-        'type':'baseInput',
-        'description':'你的学号',
-        'content':[
-          {
-            'result':'111222'
-          }
-        ],
-      },
-      {
-      'type':'baseSingleSelect',
-      'description':'是否喜欢xx',
-      'content':[
-        {
-          'label':'是',
-          'result':true
-        },
-        {
-          'label':'否',
-          'result':false
-        }
-      ]
-      },
-      {
-        'type':'baseMultiSelect',
-        'description':'以下哪一个代表你现在的心情',
-        'content':[
-          {
-          'label':'开心',
-          'result':true
-        },
-        {
-          'label':'沮丧',
-          'result':false
-        },
-        {
-          'label':'感激',
-          'result':true
-        }
-        ]
-      }
-    ],
-    [
+    'template':[
       {
         'type':Input,
         'description':'你的学号',
-        'content':[
-          {
-            'result':'1222'
-          }
-        ],
+        'content':'',
       },
-      {
-      'type':SingleSelect,
+      {'type':SingleSelect,
       'description':'是否喜欢xx',
-      'content':[
-        {
-          'label':'是',
-          'result':false
-        },
-        {
-          'label':'否',
-          'result':true
-        }
-      ]
+      'content':{
+        '是':false,
+        '否':false,
+      }
       },
       {
         'type':MultiSelect,
         'description':'以下哪一个代表你现在的心情',
-        'content':[
-          {
-          'label':'开心',
-          'result':false
-        },
-        {
-          'label':'沮丧',
-          'result':true
-        },
-        {
-          'label':'感激',
-          'result':false
+        'content':{
+          '开心':false,
+          '沮丧':false,
+          '感激':false
         }
-        ]
       }
-    ]
+    ],
+    'results':[
+      [
+         {
+        'type':Input,
+        'description':'你的学号',
+        'content':'16666',
+      },
+      {'type':SingleSelect,
+      'description':'是否喜欢xx',
+      'content':{
+        '是':true,
+        '否':false,
+      }
+      },
+      {
+        'type':MultiSelect,
+        'description':'以下哪一个代表你现在的心情',
+        'content':{
+          '开心':true,
+          '沮丧':false,
+          '感激':true
+        }
+      }
+      ],[
+         {
+        'type':Input,
+        'description':'你的学号',
+        'content':'12333',
+      },
+      {'type':SingleSelect,
+      'description':'是否喜欢xx',
+      'content':{
+        '是':false,
+        '否':true,
+      }
+      },
+      {
+        'type':MultiSelect,
+        'description':'以下哪一个代表你现在的心情',
+        'content':{
+          '开心':false,
+          '沮丧':true,
+          '感激':false
+        }
+      }
+      ]
     ]
   }
-```
-
-## tool methods
-
-* getOpenId
-
-```javascript
-api
-  .getOpenId()
-  .then(res => {
-    console.log(res);
-
-    res 的数据结构 {
-          result: xxxx,
-          msg: "get open id :ok",
-          errMsg: null
-        };
-
-  })
-  .catch(rej => {
-    console.warn(rej);
-    或
- rej 的数据结构 {
-          result: null,
-          msg: "get open id :error",
-          errMsg: xxx
-        };
-  });
 ```

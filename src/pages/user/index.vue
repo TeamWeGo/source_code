@@ -3,10 +3,11 @@
     <p class="title">{{ pageTitle }}</p>
     <img class="editButton" src="/static/images/edit.png" @click="updateUserInfo">
     <button v-bind:class="visibility" @click="saveChanges">完成</button>
+    <button class="authorize" open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">授权登录</button>
     <div class="container">
       <div class="div1">
         <div class="avatar">
-          <img class="userAvatar" src="/static/images/user.png" background-size="cover">
+          <img class="userAvatar" v-bind:src="userInfo.avatarUrl" background-size="cover">
         </div>
         <div class="info">
           <div class="infoRow">
@@ -24,6 +25,14 @@
           <label class="lableClass">个签：</label>
           <input type="text" v-bind:disabled="disabled" v-model="userInfo.personalStatement">
         </div>
+      </div>
+
+      <div class="div3">
+        <button class="unclickedTag" @click="tagButtonClicked(0)">{{userInfo.tags[0].name}}</button>
+        <button class="unclickedTag" @click="tagButtonClicked(1)">{{userInfo.tags[1].name}}</button>
+        <button class="unclickedTag" @click="tagButtonClicked(2)">{{userInfo.tags[2].name}}</button>
+        <button class="unclickedTag" @click="tagButtonClicked(3)">{{userInfo.tags[3].name}}</button>
+        <button class="unclickedTag" @click="tagButtonClicked(4)">{{userInfo.tags[4].name}}</button>
       </div>
 
       <div class="div3">
@@ -65,7 +74,9 @@ export default {
           finished: [0],
           doing: [1, 2]
         },
-        isVerified: true
+        isVerified: true,
+        wechatopenid: 1,
+        id: 1
       },
       disabled: true,
       visibility: "invisible",
@@ -93,18 +104,21 @@ export default {
       console.log(this.userInfo.userName);
 
       let user = {
-        _id: "x",
-        // '_openid':'124',
+        wechatopenid: this.userInfo.wechatopenid,
         nickName: this.userInfo.userName,
-        name: "X",
+        name: "realName",
+        avatarUrl: this.userInfo.avatarUrl,
         studentId: "123",
         gender: this.userInfo.gender,
         tasks: {
-          published: this.userInfo.tasks.published,
+          joining: [],
+          doing: this.userInfo.tasks.doing,
           finished: this.userInfo.tasks.finished,
-          doing: this.userInfo.tasks.doing
+          publishing: this.userInfo.tasks.published,
+          verifyed: [],
+          ended: []
         },
-        idlePay: this.userInfo.balance,
+        balance: this.userInfo.balance,
         isVerified: this.userInfo.isVerified,
         personalStatement: this.userInfo.personalStatement,
         credit: this.userInfo.credit
@@ -142,6 +156,10 @@ export default {
   margin-right: 50rpx;
 }
 
+.authorize {
+  width: 150rpx;
+  font-size: 10pt;
+}
 .container {
   width: 90%;
   margin: 50rpx;
@@ -208,10 +226,20 @@ export default {
   margin: 30rpx;
 }
 
-.tag {
+.clickedTag {
   border: 1px solid #000;
-  background: rgb(37, 119, 228);
+  background: rgb(104, 204, 113);
   color: white;
+  margin: 30rpx;
+  width: 20%;
+  float: left;
+  text-align: center;
+}
+
+.unclickedTag {
+  border: 1px solid #000;
+  background: white;
+  color: black;
   margin: 30rpx;
   width: 20%;
   float: left;

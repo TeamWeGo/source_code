@@ -6,9 +6,11 @@
 </template>
 
 <script>
+
 import store from "@/components/store";
 import cityList from "./cityList";
 import cityAlphabet from "./cityAlphabet";
+
 
 let pinyin = require("pinyin");
 let cityData = require("./city_code.js");
