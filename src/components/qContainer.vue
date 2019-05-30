@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <label>{{title}}</label>
     <div v-for="(item, index) in temDatas" :key="index">
       <ul v-if="item.type=='baseInput'">
         <baseInput :baseData="item"></baseInput>
@@ -10,7 +11,7 @@
         <button @click="addOption(index)">add Option</button>
         <button @click="deleteOption(index)">delete Option</button>
         <button @click="deleteQues(index)">delete Ques</button>
-      </ul>
+      </ul> 
       <ul v-if="item.type=='baseMultiSelect'">
         <baseMultiSelect :baseData="item"></baseMultiSelect>
         <button @click="addOption(index)">add Option</button>
@@ -34,21 +35,21 @@ export default {
     baseSingleSelect,
     baseMultiSelect
   },
-  props: ["temDatas"],
+  props: ["temDatas", "title"],
   data: function() {
     return {
       temDatas: this.temDatas
     };
   },
   methods: {
-    addOption: function(index){
-      this.$emit("addOption", index)
+    addOption: function(index) {
+      this.$emit("addOption", index);
     },
-    deleteOption: function(index){
-      this.$emit("deleteOption", index)
+    deleteOption: function(index) {
+      this.$emit("deleteOption", index);
     },
-    deleteQues: function(index){
-      this.$emit("deleteQues", index)
+    deleteQues: function(index) {
+      this.$emit("deleteQues", index);
     }
   }
 };

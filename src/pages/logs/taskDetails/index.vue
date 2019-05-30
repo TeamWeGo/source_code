@@ -80,6 +80,11 @@ export default {
       accept: '接♂受'
     }
   },
+  onLoad (options) {
+    var obj =JSON.parse(decodeURIComponent(options.obj));
+    console.log(obj);
+    this.Task = obj;
+  },
   methods: {
     accpetTask (){
       Date.prototype.Format = function(fmt) {

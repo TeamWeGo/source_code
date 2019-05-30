@@ -2,7 +2,8 @@
 <template>
   <div>
     <p class="ttt">{{ txt }}</p>
-    <qContainer></qContainer>
+    <qContainer :temDatas="temDatas"></qContainer>
+    <qEdit></qEdit>
     <button @click="insertOneUser">insertOneUser</button>
     <button @click="queryOneUserByUserId">queryOneUserByUserId</button>
     <button @click="updateOneUserById">updateOneUserById</button>
@@ -15,23 +16,66 @@
     <button @click="verifyOneTask">verifyOneTask</button>
     <button @click="endOneTask">endOneTask</button>
     <button @click="deleteOneTask">deleteOneTask</button>
+    <button @click="getOpenId">getOpenId</button>
   </div>
 </template>
 <script>
 import { api } from "../../utils/api.js";
 import qContainer from "@/components/qContainer";
+import qEdit from "@/components/qEdit";
 export default {
   data() {
     return {
-      txt: "社区"
+      txt: "社区",
+      temDatas: [
+        {
+          type: "baseInput",
+          description: "你的学号",
+          content: [
+            {
+              result: ""
+            }
+          ]
+        },
+        {
+          type: "baseSingleSelect",
+          description: "是否喜欢xx",
+          content: [
+            {
+              label: "是",
+              result: false
+            },
+            {
+              label: "否",
+              result: false
+            }
+          ]
+        },
+        {
+          type: "baseMultiSelect",
+          description: "以下哪一个代表你现在的心情",
+          content: [
+            {
+              label: "开心",
+              result: false
+            },
+            {
+              label: "沮丧",
+              result: false
+            },
+            {
+              label: "感激",
+              result: false
+            }
+          ]
+        }
+      ]
     };
   },
 
-  created() {
-    // let app = getApp()
-  },
   components: {
-    qContainer
+    qContainer,
+    qEdit
   },
   methods: {
     insertOneUser() {
@@ -234,6 +278,16 @@ export default {
       let publisher;
       api
         .deleteOneTask(task, publisher)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    getOpenId() {
+      api
+        .getOpenId()
         .then(res => {
           console.log(res);
         })

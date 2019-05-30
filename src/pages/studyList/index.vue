@@ -6,25 +6,23 @@
 
 
 <script>
-import store from '@/components/store';
+import store from "@/components/store";
 import missionList from "@/components/logs/missionList";
 
 import { api } from "../../utils/api.js";
 
 export default {
-  data () {
+  data() {
     return {
       missionlist: [],
       type: "",
       curCity: ""
-    }
+    };
   },
   components: {
     missionList
   },
-  methods: {
-
-  },
+  methods: {},
   onLoad: function(options) {
     this.type = options.type;
     console.log(this.type);
@@ -62,9 +60,9 @@ export default {
         'type': this.type
       })
       .then(res => {
-        console.log(res);
+        //    console.log(res);
         this.missionlist = res.result;
-        console.log(this.missionlist);
+        //    console.log(this.missionlist);
         this.missionlist.forEach(element => {
           var date = new Date(element.publish.beginTime);
           element.publish.beginTime = date.Format("yyyy-MM-dd");
@@ -83,5 +81,4 @@ export default {
 .missionList {
   margin: 5px;
 }
-
 </style>

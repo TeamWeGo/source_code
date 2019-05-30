@@ -275,11 +275,12 @@ api
 
 ```javascript
 api
-  .querySomeByModel("tasks", {
-    payment: 20
+  .querySomeByModel("users", {
+    'wechatopenid':
   })
   .then(result => {
     console.log(result);
+
   })
   .catch(error => {
     console.warn(error);
@@ -407,132 +408,99 @@ api
       {
         'type':Input,
         'description':'你的学号',
-        'content':[
-          {
-            'result':''
-          }
-        ],
+        'content':'',
       },
-      {
-      'type':SingleSelect,
+      {'type':SingleSelect,
       'description':'是否喜欢xx',
-      'content':[
-        {
-          'label':'是',
-          'result':false
-        },
-        {
-          'label':'否',
-          'result':false
-        }
-      ]
+      'content':{
+        '是':false,
+        '否':false,
+      }
       },
       {
         'type':MultiSelect,
         'description':'以下哪一个代表你现在的心情',
-        'content':[
-          {
-          'label':'开心',
-          'result':false
-        },
-        {
-          'label':'沮丧',
-          'result':false
-        },
-        {
-          'label':'感激',
-          'result':false
+        'content':{
+          '开心':false,
+          '沮丧':false,
+          '感激':false
         }
-        ]
       }
     ],
     'results':[
-     [
-      {
+      [
+         {
         'type':Input,
         'description':'你的学号',
-        'content':[
-          {
-            'result':'111222'
-          }
-        ],
+        'content':'16666',
       },
-      {
-      'type':SingleSelect,
+      {'type':SingleSelect,
       'description':'是否喜欢xx',
-      'content':[
-        {
-          'label':'是',
-          'result':true
-        },
-        {
-          'label':'否',
-          'result':false
-        }
-      ]
+      'content':{
+        '是':true,
+        '否':false,
+      }
       },
       {
         'type':MultiSelect,
         'description':'以下哪一个代表你现在的心情',
-        'content':[
-          {
-          'label':'开心',
-          'result':true
-        },
-        {
-          'label':'沮丧',
-          'result':false
-        },
-        {
-          'label':'感激',
-          'result':true
+        'content':{
+          '开心':true,
+          '沮丧':false,
+          '感激':true
         }
-        ]
       }
-    ],
-    [
-      {
+      ],[
+         {
         'type':Input,
         'description':'你的学号',
-        'content':[
-          {
-            'result':'1222'
-          }
-        ],
+        'content':'12333',
       },
-      {
-      'type':SingleSelect,
+      {'type':SingleSelect,
       'description':'是否喜欢xx',
-      'content':[
-        {
-          'label':'是',
-          'result':false
-        },
-        {
-          'label':'否',
-          'result':true
-        }
-      ]
+      'content':{
+        '是':false,
+        '否':true,
+      }
       },
       {
         'type':MultiSelect,
         'description':'以下哪一个代表你现在的心情',
-        'content':[
-          {
-          'label':'开心',
-          'result':false
-        },
-        {
-          'label':'沮丧',
-          'result':true
-        },
-        {
-          'label':'感激',
-          'result':false
+        'content':{
+          '开心':false,
+          '沮丧':true,
+          '感激':false
         }
-        ]
       }
-    ]
+      ]
     ]
   }
+```
+
+## tool methods
+
+* getOpenId
+
+```javascript
+api
+  .getOpenId()
+  .then(res => {
+    console.log(res);
+
+    res 的数据结构 {
+          result: xxxx,
+          msg: "get open id :ok",
+          errMsg: null
+        };
+
+  })
+  .catch(rej => {
+    console.warn(rej);
+    或
+ rej 的数据结构 {
+          result: null,
+          msg: "get open id :error",
+          errMsg: xxx
+        };
+  });
 ```
