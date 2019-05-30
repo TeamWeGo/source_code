@@ -180,9 +180,9 @@ api
 ### task methods
 
 * publishOneTask
-创建并发布一个任务，获得任务的_id，同时更新任务的publisher的task信息，publisher获得创建的任务的id
-```javascript
+  创建并发布一个任务，获得任务的\_id，同时更新任务的 publisher 的 task 信息，publisher 获得创建的任务的 id
 
+````javascript
 api.publishOneTask(task).then((result)=>{
   console.log(result)
 }).catch((error)=>{
@@ -198,7 +198,7 @@ api
   .catch(error => {
     console.warn(error);
   });
-```
+````
 
 * updateOneTaskByTaskId
   通过任务\_id 更新任务的信息
@@ -280,7 +280,7 @@ api
   })
   .then(result => {
     console.log(result);
-    
+
   })
   .catch(error => {
     console.warn(error);
@@ -475,4 +475,32 @@ api
       ]
     ]
   }
+```
+
+## tool methods
+
+* getOpenId
+
+```javascript
+api
+  .getOpenId()
+  .then(res => {
+    console.log(res);
+
+    res 的数据结构 {
+          result: xxxx,
+          msg: "get open id :ok",
+          errMsg: null
+        };
+
+  })
+  .catch(rej => {
+    console.warn(rej);
+    或
+ rej 的数据结构 {
+          result: null,
+          msg: "get open id :error",
+          errMsg: xxx
+        };
+  });
 ```
