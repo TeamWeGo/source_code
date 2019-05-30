@@ -24,7 +24,7 @@ export default {
   },
   methods: {},
   onLoad: function(options) {
-    this.missionlist = null;
+    this.missionlist = [];
     this.type = options.type;
     console.log(this.type);
     this.curCity = store.state.curCity;
@@ -61,8 +61,16 @@ export default {
         'type': this.type
       })
       .then(res => {
-        console.log(res);
-        this.missionlist = res.result;
+        //console.log(res);
+        let tempList = res.result;
+        for(let i in tempList){
+          let li = tempList[i]
+          //console.log(li);
+          if(String(li['location']).includes(this.curCity) && String(li['state']).includes('publishing')){
+            this.missionlist.push(li);
+          }
+        }
+        //this.missionlist = res.result;
         console.log(this.missionlist);
         this.missionlist.forEach(element => {
           var date = new Date(element.publish.beginTime);
@@ -72,7 +80,7 @@ export default {
       })
       .catch(rej => {
         console.warn(rej);
-        console.log("NOOOOOO");
+        //console.log("NOOOOOO");
       });
   }
 };

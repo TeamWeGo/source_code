@@ -107,7 +107,7 @@ export default {
             },
             success: res => {
               if (res && res.data) {
-                //console.log(res);
+                console.log(res.data.result.addressComponent);
                 let city = res.data.result.addressComponent.city;
                 store.commit("changeCity", city.replace("市", ""));
                 this.curCity = store.state.curCity;
