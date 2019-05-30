@@ -2,74 +2,74 @@
   <div>
     <div class="search-bar">
       <button class="city-button" @click="chooseCity">{{ curCity }}</button>
-      <input type="text" class="search-input" placeholder="搜索相关任务" />
-      <img class="search-icon" src="/static/images/search.png" />
+      <input type="text" class="search-input" placeholder="搜索相关任务">
+      <img class="search-icon" src="/static/images/search.png">
     </div>
 
     <picSlider/>
 
     <div class="choose-tag">
-      <circleCard v-bind:text="study.text" v-bind:imgSrc="study.imgSrc" />
-      <circleCard v-bind:text="live.text" v-bind:imgSrc="live.imgSrc" />
-      <circleCard v-bind:text="play.text" v-bind:imgSrc="play.imgSrc" />
-      <circleCard v-bind:text="info.text" v-bind:imgSrc="info.imgSrc" />
+      <circleCard v-bind:text="study.text" v-bind:imgSrc="study.imgSrc"/>
+      <circleCard v-bind:text="live.text" v-bind:imgSrc="live.imgSrc"/>
+      <circleCard v-bind:text="play.text" v-bind:imgSrc="play.imgSrc"/>
+      <circleCard v-bind:text="info.text" v-bind:imgSrc="info.imgSrc"/>
     </div>
 
-    <menuItem v-for="(item,index) in menuInfo" :key="index" :mission="item" />
+    <menuItem v-for="(item,index) in menuInfo" :key="index" :mission="item"/>
   </div>
 </template>
 
 <script>
-import card from '@/components/card'
-import circleCard from '@/components/circleCard'
-import picSlider from '@/components/picSlider'
-import menuItem from '@/components/menuItem'
+import card from "@/components/card";
+import circleCard from "@/components/circleCard";
+import picSlider from "@/components/picSlider";
+import menuItem from "@/components/menuItem";
 
-import { api } from "../../utils/api.js"
-import store from '@/components/store'
+import { api } from "../../utils/api.js";
+import store from "@/components/store";
 
 export default {
-  data () {
+  data() {
     return {
-      motto: 'Hello miniprograme',
+      motto: "Hello miniprograme",
       curCity: store.state.curCity,
       userInfo: {
-        nickName: 'mpvue',
-        avatarUrl: 'http://mpvue.com/assets/logo.png'
+        nickName: "mpvue",
+        avatarUrl: "http://mpvue.com/assets/logo.png"
       },
       study: {
-        text: '学习',
-        imgSrc: '/static/images/study.png'
+        text: "学习",
+        imgSrc: "/static/images/study.png"
       },
       live: {
-        text: '生活',
-        imgSrc: '/static/images/live.png'
+        text: "生活",
+        imgSrc: "/static/images/live.png"
       },
       play: {
-        text: '娱乐',
-        imgSrc: '/static/images/play.png'
+        text: "娱乐",
+        imgSrc: "/static/images/play.png"
       },
       info: {
-        text: '咨询',
-        imgSrc: '/static/images/info.png'
+        text: "咨询",
+        imgSrc: "/static/images/info.png"
       },
       menuInfo: [
         {
-          imgSrc: '/static/images/info.png',
-          time: '2019-11-11 11:11:11',
-          title: '唱单身情歌',
-          address: '至二712',
-          account: '11'
+          imgSrc: "/static/images/info.png",
+          time: "2019-11-11 11:11:11",
+          title: "唱单身情歌",
+          address: "至二712",
+          account: "11"
         },
         {
-          imgSrc: '/static/images/play.png',
-          time: '2019-05-20 13:14',
-          title: '给晓帆做一天女朋友',
-          address: '至二712',
-          account: '520'
+          imgSrc: "/static/images/play.png",
+          time: "2019-05-20 13:14",
+          title: "给晓帆做一天女朋友",
+          address: "至二712",
+          account: "520"
         }
       ]
-    }
+    };
   },
 
   components: {
@@ -80,80 +80,79 @@ export default {
   },
 
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
+    bindViewTap() {
+      const url = "../logs/main";
+      if (mpvuePlatform === "wx") {
+        mpvue.switchTab({ url });
       } else {
-        mpvue.navigateTo({ url })
+        mpvue.navigateTo({ url });
       }
     },
-    chooseCity () {
-      let url = '../citySelect/main';
-      wx.navigateTo({ url })
+    chooseCity() {
+      let url = "../citySelect/main";
+      wx.navigateTo({ url });
     },
-    getLocation () {
-      let ak = '71RBASvs1GCE3EwSMOE3Qa1y0sGzSDSr'
-      let url = 'http://api.map.baidu.com/geocoder/v2/'
+    getLocation() {
+      let ak = "71RBASvs1GCE3EwSMOE3Qa1y0sGzSDSr";
+      let url = "http://api.map.baidu.com/geocoder/v2/";
       wx.getLocation({
-        type: 'wgs84',
+        type: "wgs84",
         success: geo => {
           wx.request({
             url,
             data: {
               ak,
-              output: 'json',
+              output: "json",
               location: `${geo.latitude},${geo.longitude}`
             },
-            success:(res) => {
-              if(res && res.data){
-                console.log(res);
+            success: res => {
+              if (res && res.data) {
+                //console.log(res);
                 let city = res.data.result.addressComponent.city;
-                store.commit('changeCity', city.replace("市",""));
+                store.commit("changeCity", city.replace("市", ""));
                 this.curCity = store.state.curCity;
                 //console.log(this.curCity);
-              }else{
-                console.log('地址获取失败')
+              } else {
+                console.log("地址获取失败");
               }
             }
-          })
+          });
         }
-      })
+      });
     },
-    studyList () {
-      console.log("yes")
-      let url = '../studyList/main';
-      wx.navigateTo({ url })
-      console.log("yes")
+    studyList() {
+      console.log("yes");
+      let url = "../studyList/main";
+      wx.navigateTo({ url });
+      console.log("yes");
     },
-    liveList () {
-      console.log("yes")
-      let url = '../liveList/main';
-      wx.navigateTo({ url })
+    liveList() {
+      console.log("yes");
+      let url = "../liveList/main";
+      wx.navigateTo({ url });
     },
-    playList () {
-      let url = '../playList/main';
-      wx.navigateTo({ url })
+    playList() {
+      let url = "../playList/main";
+      wx.navigateTo({ url });
     },
-    infoList () {
-      let url = '../infoList/main';
-      wx.navigateTo({ url })
+    infoList() {
+      let url = "../infoList/main";
+      wx.navigateTo({ url });
     }
   },
 
-  created () {
+  created() {
     // let app = getApp()
-    this.getLocation()
+    this.getLocation();
   },
 
-  mounted () {
-  },
+  mounted() {},
 
-  onShow () {
+  onShow() {
     //console.log(this.curCity);
     this.curCity = store.state.curCity;
   }
-}
+};
 </script>
 
 <style scoped>
@@ -194,5 +193,4 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 </style>
