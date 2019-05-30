@@ -7,7 +7,7 @@
       </div>
       <div class="fill"></div>
       <div class="missionlist">
-        <missionList v-bind:list="missionlist"></missionList>
+        <missionList v-bind:list="missionlist" v-bind:task_state="tabs[tabs_index]"></missionList>
       </div>
     </div>
   </div>
@@ -38,17 +38,15 @@ export default {
 
   methods: {
     touchStart(e) {
-      console.log("我开始了");
       this.startX = e.mp.changedTouches[0].pageX
       this.startY = e.mp.changedTouches[0].pageY
       console.log(this.startX, this.startY);
     },
     touchEnd(e) {
-      console.log("我好了");
       this.endX = e.mp.changedTouches[0].pageX
       this.endY = e.mp.changedTouches[0].pageY
-      if (Math.abs(this.endY - this.startY) < 20){
-        if(Math.abs(this.endX - this.startX) > 45){
+      if (Math.abs(this.endY - this.startY) < 100){
+        if(Math.abs(this.endX - this.startX) > 100){
           if(this.endX > this.startX){
             this.tabs_index--;
             if(this.tabs_index < 0){
@@ -114,6 +112,14 @@ export default {
   }
 };
 </script>
+
+<style>
+page{
+  height: 100%;
+}
+
+</style>
+
 
 <style scoped>
 .mission-main {
