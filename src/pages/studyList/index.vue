@@ -27,9 +27,9 @@ export default {
   },
   onLoad: function(options) {
     this.type = options.type;
+    console.log(this.type);
     this.curCity = store.state.curCity;
-  },
-  created() {
+
     Date.prototype.Format = function(fmt) {
       //author: meizz
       var o = {
@@ -58,7 +58,9 @@ export default {
     };
 
     api
-      .querySomeByModel("tasks", {})
+      .querySomeByModel("tasks", {
+        'type': this.type
+      })
       .then(res => {
         console.log(res);
         this.missionlist = res.result;
