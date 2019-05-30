@@ -275,9 +275,12 @@ api
 
 ```javascript
 api
-  .querySomeByModel("tasks", {})
+  .querySomeByModel("users", {
+    'wechatopenid':
+  })
   .then(result => {
     console.log(result);
+    
   })
   .catch(error => {
     console.warn(error);
