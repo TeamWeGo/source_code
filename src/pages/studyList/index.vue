@@ -24,6 +24,7 @@ export default {
   },
   methods: {},
   onLoad: function(options) {
+    this.missionlist = null;
     this.type = options.type;
     console.log(this.type);
     this.curCity = store.state.curCity;
@@ -60,9 +61,9 @@ export default {
         'type': this.type
       })
       .then(res => {
-        //    console.log(res);
+        console.log(res);
         this.missionlist = res.result;
-        //    console.log(this.missionlist);
+        console.log(this.missionlist);
         this.missionlist.forEach(element => {
           var date = new Date(element.publish.beginTime);
           element.publish.beginTime = date.Format("yyyy-MM-dd");
