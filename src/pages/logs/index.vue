@@ -1,25 +1,9 @@
 <template>
   <div class="mission-main" @touchstart="touchStart" @touchend="touchEnd">
-    <view v-bind:class="sliderClass">
-      <view class="page-content">
-        <view class="wc">
-          <text>首页</text>
-        </view>
-        <view class="wc">
-          <text>导航一</text>
-        </view>
-        <view class="wc">
-          <text>导航二</text>
-        </view>
-        <view class="wc">
-          <text>导航三</text>
-        </view>
-      </view>
-    </view>
     <div v-bind:class="pageClass">
       <div class="mission-toolbar"></div>
       <div class="navbar">
-        <mp-navbar :tabs="tabs" activeIndex="0" @tabClick="tabClick"></mp-navbar>
+        <mp-navbar :tabs="tabs" v-bind:activeIndex="tabs_index" @tabClick="tabClick"></mp-navbar>
       </div>
       <div class="fill"></div>
       <div class="missionlist">
@@ -47,22 +31,39 @@ export default {
   data() {
     return {
       missionlist: [],
-      tabs: ["已发布", "待完成", "待确认", "已确认", "已完成"],
-      pageClass: "page-top-open",
-      sliderClass: "page-slidebar-close"
+      tabs: ["已接收", "待完成", "已完成"],
+      tabs_index: 0
     };
   },
 
   methods: {
-    touchStart() {
-      this.sliderClass = "page-slidebar-open";
+    touchStart(e) {
       console.log("我开始了");
-      //this.missionlist = [];
-      console.log(this.missionlist);
+      this.startX = e.mp.changedTouches[0].pageX
+      this.startY = e.mp.changedTouches[0].pageY
+      console.log(this.startX, this.startY);
     },
-    touchEnd() {
-      this.sliderClass = "page-slidebar-close";
+    touchEnd(e) {
       console.log("我好了");
+      this.endX = e.mp.changedTouches[0].pageX
+      this.endY = e.mp.changedTouches[0].pageY
+      if (Math.abs(this.endY - this.startY) < 20){
+        if(Math.abs(this.endX - this.startX) > 45){
+          if(this.endX > this.startX){
+            this.tabs_index--;
+            if(this.tabs_index < 0){
+              this.tabs_index = 2;
+            }
+          }
+          else{
+            this.tabs_index++;
+            if(this.tabs_index > 2){
+              this.tabs_index = 0;
+            }
+          }
+        }
+      }
+      console.log(this.endX, this.endY);
     }
   },
 
