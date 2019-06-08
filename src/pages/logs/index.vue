@@ -1,9 +1,10 @@
 <template>
-  <div class="mission-main" @touchstart="touchStart" @touchend="touchEnd">
+  <div class="mission-main" @touchstart="touchStart" @touchend="touchEnd" @touchmove="touchmove">
     <div v-bind:class="pageClass">
+      <button class="role-button" @click="switchRole">{{ curRole }}</button>
       <div class="mission-toolbar"></div>
       <div class="navbar">
-        <mp-navbar :tabs="tabs" v-bind:activeIndex="tabs_index" @tabClick="tabClick"></mp-navbar>
+        <mp-navbar :role="curRole" :tabs="tabs" v-bind:activeIndex="tabs_index" @tabClick="tabClick"></mp-navbar>
       </div>
       <div class="fill"></div>
       <div class="missionlist">
@@ -32,7 +33,8 @@ export default {
     return {
       missionlist: [],
       tabs: ["已接收", "待完成", "已完成"],
-      tabs_index: 0
+      tabs_index: 0,
+      curRole: 'worker'
     };
   },
 
@@ -42,7 +44,7 @@ export default {
       this.startY = e.mp.changedTouches[0].pageY
       console.log(this.startX, this.startY);
     },
-    touchEnd(e) {
+    touchmove(e){
       this.endX = e.mp.changedTouches[0].pageX
       this.endY = e.mp.changedTouches[0].pageY
       if (Math.abs(this.endY - this.startY) < 100){
@@ -59,9 +61,26 @@ export default {
               this.tabs_index = 0;
             }
           }
+          this.startX = this.endX;
+          this.startY = this.endY;
+          console.log(this.endX, this.endY);
         }
       }
-      console.log(this.endX, this.endY);
+    },
+    touchEnd(e) {
+    },
+    switchRole() {
+      console.log("click!")
+      if(this.curRole == 'worker'){
+        this.curRole = 'cow'
+        this.tabs = ["已发布", "已确认", "已结束"]
+      }else{
+        this.curRole = 'worker'
+        this.tabs = ["已接收", "待完成", "已完成"]
+      }
+    },
+    tabClick(e){
+      this.tabs_index = e
     }
   },
 
@@ -116,6 +135,10 @@ export default {
 <style>
 page{
   height: 100%;
+}
+
+.navbar.weui-navbar__item.weui-bar__item_on{
+  color: orangered !important;
 }
 
 </style>
@@ -188,5 +211,19 @@ page{
   color: black;
   padding: 30rpx 0 30rpx 150rpx;
   border-bottom: 1px solid #eee;
+}
+
+.role-button{
+  position: fixed; /* 绝对定位，fixed是相对于浏览器窗口定位。 */
+  bottom: 20rpx; /* 距离窗口顶部距离 */
+  right: 10rpx; /* 距离窗口左边的距离 */
+  height: 28px;
+  width: auto;
+  margin: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  background: transparent;
+  z-index: 1;
+  background-color: green;
 }
 </style>
