@@ -18,7 +18,7 @@
 <script>
 import searchBar from "@/components/logs/searchBar";
 import missionList from "@/components/logs/missionList";
-import mpNavbar from "mpvue-weui/src/navbar";
+import mpNavbar from "@/components/logs/mpnavbar";
 
 import { api } from "../../utils/api.js";
 
