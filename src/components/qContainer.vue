@@ -4,24 +4,31 @@
     <div v-for="(item, index) in temDatas" :key="index">
       <ul v-if="item.type=='baseInput'">
         <baseInput :baseData="item"></baseInput>
-        <button @click="deleteQues(index)">delete Ques</button>
+        <!--       
+        <button @click="deleteQues(index)">delete Ques</button> 
+        -->
       </ul>
       <ul v-if="item.type=='baseSingleSelect'">
         <baseSingleSelect :baseData="item"></baseSingleSelect>
+        <!--    
         <button @click="addOption(index)">add Option</button>
         <button @click="deleteOption(index)">delete Option</button>
         <button @click="deleteQues(index)">delete Ques</button>
-      </ul> 
+        -->
+      </ul>
       <ul v-if="item.type=='baseMultiSelect'">
         <baseMultiSelect :baseData="item"></baseMultiSelect>
+        <!--    
         <button @click="addOption(index)">add Option</button>
         <button @click="deleteOption(index)">delete Option</button>
-        <button @click="deleteQues(index)">delete Ques</button>
+        <button @click="deleteQues(index)">delete Ques</button> 
+        -->
       </ul>
     </div>
 
-    <!--<component :is="item.type"  v-for="(item, index) in temDatas" :key="index" :baseData="item">
-    </component>-->
+    <!--
+      <component :is="item.type"  v-for="(item, index) in temDatas" :key="index" :baseData="item"> </component>
+    -->
   </div>
 </template>
 
