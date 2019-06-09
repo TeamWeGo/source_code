@@ -970,7 +970,7 @@ export var api = {
         console.log(result);
 
         let msg = {
-          result: result.result.openId,
+          result: result.result.userInfo.openId,
           msg: "get open id :ok",
           errMsg: null
         };
