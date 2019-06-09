@@ -5,10 +5,10 @@
     </view>
     <view class='Task-basicInfo'>
       <view class='name'>
-        <view>标题 {{Task.name}}</view>
+        <view>标题 {{Task.title}}</view>
       </view>
       <view class='participatorNum'>
-        <view>人数 {{Task.participatorNum}}</view>
+        <view>人数 {{Task.maxJoiner}}</view>
       </view>
       <view class='payment'>
         <view>报酬 {{Task.payment}}</view>
@@ -20,31 +20,21 @@
     </view>
     <view class='Task-time'>
       <view class='startDate'>
-        <view>开始日期：{{Task.startDate}}</view>
-      </view>
-      <view class='startTime'>
-        <view>时间：{{Task.startTime}}</view>
+        <view>开始日期：{{Task.work.beginTime}}</view>
       </view>
 
       <view class='completeDate'>
-        <view>截止日期：{{Task.completeDate}}</view>
+        <view>截止日期：{{Task.work.endTime}}</view>
       </view>
 
-      <view class='completeTime'>
-        <view>时间：{{Task.completeTime}}</view>
-      </view>
 
       <view class='publishDate'>
-        <view>报名截止：{{Task.publishDate}}</view>
-      </view>
-
-      <view class='publishTime'>
-        <view>时间：{{Task.publishTime}}</view>
+        <view>报名截止：{{Task.publish.endTime}}</view>
       </view>
 
     </view>
     <view class='Task-tag'>
-      <view class='picker'>标签：{{Task.tag[index].name}}</view>
+      <view>标签：{{Task.type}}</view>
     </view>
     <view class='Task-location'>
         <view>地点：{{Task.location}}</view>
@@ -62,23 +52,35 @@ export default {
   data () {
     return {
       title: '任务详情',
-      index: 0,
       Task: {
-        name: '未定',
-        participatorNum: '',
-        payment: '',
+        title: '',
+        avatarId: '',
+        type: '学习',
         description: '',
-        startDate: '2019-04-25',
-        startTime: '00:00',
-        completeDate: '2019-04-25',
-        completeTime: '00:00',
-        publishDate: '2019-04-25',
-        publishTime: '00:00',
+        state: 'publishing', 
+        maxJoiner: 10,
+        joiners: '',
         location: '北京市,北京市,东城区',
-        tag: [{id: 0, name: '学习'}, {id: 1, name: '娱乐'}, {id: 2, name: '生活'}]
+        publish: {
+          publisher: '',
+          beginTime: '',
+          endTime: ''
+        },
+        payment: 200,
+        work: {
+          beginTime: '',
+          endTime: ''
+        },
+        isQuestionnaire: true,
+        questionnaireId: ''
       },
       accept: '接♂受'
     }
+  },
+  onLoad (options) {
+    var obj =JSON.parse(decodeURIComponent(options.obj));
+    console.log(obj);
+    this.Task = obj;
   },
   methods: {
     accpetTask (){
@@ -108,58 +110,6 @@ export default {
             );
         return fmt;
       };
-
-      let task = {
-        name: this.Task.name,
-        type: this.Task.tag,
-        description: this.Task.description,
-        state: 'publishing',
-        numberOfJoiner: 10,
-        joiner: [],
-        location: this.Task.location,
-        publish: {
-          publisher: 'ee3099285cc7c051093255c93e1edebc',
-          beginTime: "",
-          endTime: Date(this.Task.startDate + this.Task.startTime)
-        },
-        payment: this.Task.payment,
-        work: {
-          beginTime: Date(this.Task.startDate + this.Task.startTime),
-          endTime: Date(this.Task.completeDate + this.Task.completeTime)
-        }
-      };
-      api
-        .publishOneTask(task)
-        .then(res => {
-          console.log(res);
-        })
-        .catch(rej => {
-          console.warn(rej);
-        });
-    },
-    bindStartDate: function(e){
-      this.Task.startDate = e.mp.detail.value
-    },
-    bindStartTime: function(e){
-      this.Task.startTime = e.mp.detail.value
-    },
-    bindCompleteDate: function(e){
-      this.Task.completeDate = e.mp.detail.value
-    },
-    bindCompleteTime: function(e){
-      this.Task.completeTime = e.mp.detail.value
-    },
-    bindPublishDate: function(e){
-      this.Task.publishDate = e.mp.detail.value
-    },
-    bindPublishTime: function(e){
-      this.Task.publishTime = e.mp.detail.value
-    },
-    bindRegionChange: function(e){
-      this.Task.location = e.mp.detail.value
-    },
-    bindTagChange: function(e){
-      this.index = e.mp.detail.value
     }
   }
 }

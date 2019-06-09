@@ -1,6 +1,6 @@
 <template>
   <div class="mission-list">
-    <div class="mission-list-item" v-for="(item, index) in missionlist" :key="index">
+    <div class="mission-list-item" v-for="(item, index) in missionlist" :key="index" v-on:click="goto(index)">
       <image class="mission-list-item-image" :src="item.image" ></image>
       <div class="mission-list-item-word">
         <ul>
@@ -49,6 +49,16 @@ export default {
   watch: {
     list: function (value){
       this.missionlist = value;
+    }
+  },
+  methods:{
+    goto(index) {
+      console.log(index);
+      this.mission = this.missionlist[index];
+      console.log(this.mission);
+      var obj = JSON.stringify(this.mission);
+      let url = "./taskDetails/main?obj=" + obj;
+      wx.navigateTo({ url });
     }
   }
 
