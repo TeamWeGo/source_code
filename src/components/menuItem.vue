@@ -1,11 +1,11 @@
 <template>
   <div class="detail">
-    <img class="detail-img" :src="mission.imgSrc" >
+    <img class="detail-img" :src="mission.imgSrc">
     <div class="detail-info">
       <p class="title">{{mission.title}}</p>
-      <p class="time"> 时间：{{mission.time}}</p>
-      <p class="address"> 地点：{{mission.address}}</p>
-      <p class="account"> 金额：{{mission.account}}</p>
+      <p class="time">时间：{{mission.time}}</p>
+      <p class="address">地点：{{mission.address}}</p>
+      <p class="account">金额：{{mission.account}}</p>
     </div>
   </div>
 </template>
@@ -18,7 +18,7 @@ export default {
 
 <style scoped>
 .detail {
-  margin: 8px;
+  margin: 8rpx;
   height: 80px;
   width: 100%;
   display: inline-flex;
@@ -37,7 +37,9 @@ export default {
   font-size: 15px;
   font-weight: bold;
 }
-.time, .address, .account {
+.time,
+.address,
+.account {
   font-size: 12px;
   margin-top: 3px;
 }

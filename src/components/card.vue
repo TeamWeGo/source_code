@@ -2,7 +2,7 @@
   <div class="item">
     <div class="card">
       <!-- picture -->
-      <img class="item_image" :src="imgSrc" />
+      <img class="item_image" :src="imgSrc">
       <!-- content -->
       <div class="descript">{{ desc }}</div>
     </div>
@@ -11,8 +11,8 @@
 
 <script>
 export default {
-  props: ['imgSrc', 'desc']
-}
+  props: ["imgSrc", "desc"]
+};
 </script>
 
 <style scoped>
@@ -35,7 +35,7 @@ export default {
   font-size: 20px;
   width: 100%;
   height: auto;
-  background-color: #DCDCDC;
+  background-color: #dcdcdc;
   opacity: 0.5;
   position: absolute;
   top: 85%;
