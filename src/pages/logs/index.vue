@@ -1,13 +1,14 @@
 <template>
-  <div class="mission-main" @touchstart="touchStart" @touchend="touchEnd">
+  <div class="mission-main" @touchstart="touchStart" @touchend="touchEnd" @touchmove="touchmove">
     <div v-bind:class="pageClass">
+      <button class="role-button" @click="switchRole">{{ curRole }}</button>
       <div class="mission-toolbar"></div>
       <div class="navbar">
-        <mp-navbar :tabs="tabs" v-bind:activeIndex="tabs_index" @tabClick="tabClick"></mp-navbar>
+        <mp-navbar :role="curRole" :tabs="tabs" v-bind:activeIndex="tabs_index" @tabClick="tabClick"></mp-navbar>
       </div>
       <div class="fill"></div>
       <div class="missionlist">
-        <missionList v-bind:list="missionlist"></missionList>
+        <missionList v-bind:list="missionlist" v-bind:task_state="tabs[tabs_index]"></missionList>
       </div>
     </div>
   </div>
@@ -17,7 +18,7 @@
 <script>
 import searchBar from "@/components/logs/searchBar";
 import missionList from "@/components/logs/missionList";
-import mpNavbar from "mpvue-weui/src/navbar";
+import mpNavbar from "@/components/logs/mpnavbar";
 
 import { api } from "../../utils/api.js";
 
@@ -32,23 +33,22 @@ export default {
     return {
       missionlist: [],
       tabs: ["已接收", "待完成", "已完成"],
-      tabs_index: 0
+      tabs_index: 0,
+      curRole: 'worker'
     };
   },
 
   methods: {
     touchStart(e) {
-      console.log("我开始了");
       this.startX = e.mp.changedTouches[0].pageX
       this.startY = e.mp.changedTouches[0].pageY
       console.log(this.startX, this.startY);
     },
-    touchEnd(e) {
-      console.log("我好了");
+    touchmove(e){
       this.endX = e.mp.changedTouches[0].pageX
       this.endY = e.mp.changedTouches[0].pageY
-      if (Math.abs(this.endY - this.startY) < 20){
-        if(Math.abs(this.endX - this.startX) > 45){
+      if (Math.abs(this.endY - this.startY) < 100){
+        if(Math.abs(this.endX - this.startX) > 100){
           if(this.endX > this.startX){
             this.tabs_index--;
             if(this.tabs_index < 0){
@@ -61,9 +61,26 @@ export default {
               this.tabs_index = 0;
             }
           }
+          this.startX = this.endX;
+          this.startY = this.endY;
+          console.log(this.endX, this.endY);
         }
       }
-      console.log(this.endX, this.endY);
+    },
+    touchEnd(e) {
+    },
+    switchRole() {
+      console.log("click!")
+      if(this.curRole == 'worker'){
+        this.curRole = 'cow'
+        this.tabs = ["已发布", "已确认", "已结束"]
+      }else{
+        this.curRole = 'worker'
+        this.tabs = ["已接收", "待完成", "已完成"]
+      }
+    },
+    tabClick(e){
+      this.tabs_index = e
     }
   },
 
@@ -114,6 +131,18 @@ export default {
   }
 };
 </script>
+
+<style>
+page{
+  height: 100%;
+}
+
+.navbar.weui-navbar__item.weui-bar__item_on{
+  color: orangered !important;
+}
+
+</style>
+
 
 <style scoped>
 .mission-main {
@@ -182,5 +211,19 @@ export default {
   color: black;
   padding: 30rpx 0 30rpx 150rpx;
   border-bottom: 1px solid #eee;
+}
+
+.role-button{
+  position: fixed; /* 绝对定位，fixed是相对于浏览器窗口定位。 */
+  bottom: 20rpx; /* 距离窗口顶部距离 */
+  right: 10rpx; /* 距离窗口左边的距离 */
+  height: 28px;
+  width: auto;
+  margin: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  background: transparent;
+  z-index: 1;
+  background-color: green;
 }
 </style>
