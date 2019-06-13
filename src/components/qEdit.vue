@@ -39,12 +39,41 @@ export default {
     return {};
   },
   methods: {
-    addOneMultiSelect() {},
-    addOneSingleSelect() {},
-    addOneInput() {}
+    addOneMultiSelect() {
+
+    },
+    addOneSingleSelect() {
+      var question = {
+          type: "baseSingleSelect",
+          description: "edit_singleSelect_des",
+          content: [
+            {
+              label: "是",
+              result: false
+            },
+            {
+              label: "否",
+              result: false
+            }
+          ]
+      };
+      this.$emit("addInputQues", question);
+    },
+    addOneInput() {
+      var question = {
+          type: "baseInput",
+          description: edit_input_des,
+          content: [
+            {
+              result: ""
+            }
+          ]
+      };
+      this.$emit("addInputQues", question);
+    }
   },
   components: {}
-};
+}
 </script>
 
 <style scoped>
