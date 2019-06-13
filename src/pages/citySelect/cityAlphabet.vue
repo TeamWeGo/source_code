@@ -1,8 +1,8 @@
 <template>
   <div class="alphabet">
     <ul>
-      <li class="alpItem" v-for="item in letters" :key="item"
-          @click="handleClick"
+      <li class="alpItem" v-for="item in letters" :key="item" :ref="item"
+          @click="handleClick($event)"
           @touchstart="handleTouchStart"
           @touchmove="handleTouchMove"
           @touchend="handleTouchEnd"
@@ -20,7 +20,9 @@ export default {
   },
   data () {
     return {
-      touchStatus: false
+      touchStatus: false,
+      startY: 0,
+      dis: 0
     }
   },
   computed: {
@@ -32,14 +34,21 @@ export default {
       return letters
     }
   },
-  updated () {
+  /*updated () {
     this.startY = this.$refs['A'].offsetTop
-  },
+  },*/
   methods: {
     handleLetterClick(e) {
       store.commit('changeAlphabet', e.target.innerText);
     },
-    handleTouchStart() {
+    handleClick(e) {
+      console.log(e.mp._relatedInfo.anchorTargetText);
+      //console.log(this.$refs['A'])
+      let txt = e.mp._relatedInfo.anchorTargetText;
+      store.commit('changeAlphabet', txt);
+      //console.log(store.state.city_alphabet);
+    },
+    handleTouchStart(e) {
       this.touchStatus = true;
     },
     handleTouchMove(e) {

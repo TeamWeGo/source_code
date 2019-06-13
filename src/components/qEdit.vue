@@ -36,15 +36,60 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      edit_input_des: "",
+      edit_singleSelect_des: "",
+      edit_singleSelect_indes: "",
+      edit_multiSelect_des: "",
+      edit_multiSelect_indes: ""
+    };
   },
   methods: {
-    addOneMultiSelect() {},
-    addOneSingleSelect() {},
-    addOneInput() {}
+    addOneMultiSelect() {
+      var question = {
+          type: "baseMultiSelect",
+          description: this.edit_multiSelect_des,
+          content: [
+          ]
+      };
+      var options = this.edit_multiSelect_indes.split(';');
+      for(var i = 0;i < options.length; i++){
+        if(options[i] != ""){
+          question.content.push({label:options[i], result:false});
+        }
+      }
+      this.$emit("addMultiSelectQues", question);
+    },
+    addOneSingleSelect() {
+      var question = {
+          type: "baseSingleSelect",
+          description: this.edit_singleSelect_des,
+          content: [
+          ]
+      };
+      var options = this.edit_singleSelect_indes.split(';');
+      for(var i = 0;i < options.length; i++){
+        if(options[i] != ""){
+          question.content.push({label:options[i], result:false});
+        }
+      }
+      this.$emit("addSingleSelectQues", question);
+    },
+    addOneInput() {
+      var question = {
+          type: "baseInput",
+          description: this.edit_input_des,
+          content: [
+            {
+              result: ""
+            }
+          ]
+      };
+      this.$emit("addInputQues", question);
+    }
   },
   components: {}
-};
+}
 </script>
 
 <style scoped>

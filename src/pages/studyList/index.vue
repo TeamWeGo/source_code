@@ -1,6 +1,6 @@
 <template>
   <div class="missionlist">
-    <missionList v-bind:list="missionlist"></missionList>
+    <missionList v-bind:list="mmissionlist" v-bind:task_state="已发布"></missionList>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ import { api } from "../../utils/api.js";
 export default {
   data() {
     return {
-      missionlist: [],
+      mmissionlist: [121],
       type: "",
       curCity: ""
     };
@@ -24,7 +24,7 @@ export default {
   },
   methods: {},
   onLoad: function(options) {
-    this.missionlist = [];
+    this.mmissionlist = [];
     this.type = options.type;
     console.log(this.type);
     this.curCity = store.state.curCity;
@@ -69,12 +69,12 @@ export default {
             String(li["location"]).includes(this.curCity) &&
             String(li["state"]).includes("publishing")
           ) {
-            this.missionlist.push(li);
+            this.mmissionlist.push(li);
           }
         }
-        //this.missionlist = res.result;
-        console.log(this.missionlist);
-        this.missionlist.forEach(element => {
+        this.mmissionlist = res.result;
+        console.log(this.mmissionlist);
+        this.mmissionlist.forEach(element => {
           var date = new Date(element.publish.beginTime);
           element.publish.beginTime = date.Format("yyyy-MM-dd");
           element.publish.endTime = date.Format("yyyy-MM-dd");

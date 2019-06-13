@@ -3,7 +3,12 @@
   <div>
     <p class="commiunitytitle">{{ commiunitytitle }}</p>
     <qContainer :temDatas="temDatas"></qContainer>
-    <qEdit></qEdit>
+    <button @click="deleteQues">Delete</button>
+    <qEdit
+      @addMultiSelectQues="addMultiSelect"
+      @addSingleSelectQues="addSingleSelect"
+      @addInputQues="addInput"
+    ></qEdit>
     <button @click="getOpenId">getOpenId</button>
     <button @click="createTask">createTask</button>
   </div>
@@ -67,7 +72,11 @@ export default {
     qEdit
   },
   methods: {
-    getOpenId() {
+    deleteQues: function() {
+      var size = this.temDatas.length;
+      this.temDatas.splice(size - 1, 1);
+    },
+    getOpenId: function() {
       api
         .getOpenId()
         .then(res => {
@@ -77,7 +86,8 @@ export default {
           console.warn(rej);
         });
     },
-    createTask() {
+
+    createTask: function() {
       let task = {
         title: "唱歌", // String every task need a name Title
         avatarId: "../", //upload the avatar to server and get an id from the callback
@@ -106,6 +116,16 @@ export default {
         .catch(rej => {
           console.warn(rej);
         });
+    },
+
+    addMultiSelect: function(val) {
+      this.temDatas.push(val);
+    },
+    addSingleSelect: function(val) {
+      this.temDatas.push(val);
+    },
+    addInput: function(val) {
+      this.temDatas.push(val);
     }
   }
 };
@@ -113,7 +133,4 @@ export default {
 
 <style scoped>
 </style>
-
-
-
 

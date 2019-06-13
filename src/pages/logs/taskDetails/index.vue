@@ -43,6 +43,8 @@
       <button>{{ accept }}</button>
     </view>
   </view>
+  <!-- Today is Monday, our air conditioner ran out of money in the midnight, fuck! I wake up because of the heat, and heard xiaofan getting out of bed to turn on the fan
+  Bye Bye! See you next time. -->
 </template>
 
 
