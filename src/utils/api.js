@@ -128,7 +128,7 @@ export var api = {
               let msg = {
                 result: null,
                 msg: "query all user:error",
-                errMsg: "query error in db "
+                errMsg: "empty in db "
               };
               reject(msg);
             }
