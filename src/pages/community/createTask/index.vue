@@ -91,6 +91,7 @@
         <view class="picker">地点：{{Task.location}}</view>
       </picker>
     </view>
+    
     <view class="publish" @click="publishTask">
       <button>{{ publish }}</button>
     </view>
@@ -99,7 +100,7 @@
 
 
 <script>
-import { api } from "../../../utils/api.js";
+import { api } from "../../../utils/api";
 export default {
   data() {
     return {

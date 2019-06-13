@@ -70,7 +70,7 @@ export default {
       this.mission = this.missionlist[index];
       console.log(this.mission);
       var obj = JSON.stringify(this.mission);
-      let url = "./taskDetails/main?obj=" + obj;
+      let url = "../community/taskDetails/main?obj=" + obj;
       wx.navigateTo({ url });
     }
   }
