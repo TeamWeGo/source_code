@@ -5,6 +5,7 @@
     <qContainer :temDatas="temDatas"></qContainer>
     <qEdit></qEdit>
     <button @click="getOpenId">getOpenId</button>
+    <button @click="createTask">createTask</button>
   </div>
 </template>
 <script>
@@ -71,6 +72,36 @@ export default {
         .getOpenId()
         .then(res => {
           console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    },
+    createTask() {
+      let task = {
+        title: "唱歌", // String every task need a name Title
+        avatarId: "../", //upload the avatar to server and get an id from the callback
+        type: "娱乐", //String task type
+        description: "唱一首情歌", //String task detail description
+        state: "publishing", //String task state 任务发布中，任务确认中，任务执行中，任务完成
+        maxJoiner: 2, //Number Max Nubmer of joiners
+        joiners: [""], //String Array the joiners _id array
+        location: "广州",
+        publish: {
+          publisher: "2d9d2d8c5cfcadaf026afb736e36075d", //String user._id
+          beginTime: "",
+          endTime: ""
+        },
+        payment: 5,
+        work: {
+          beginTime: "",
+          endTime: ""
+        }
+      };
+      api
+        .publishOneTask(task)
+        .then(res => {
+          console.log("t");
         })
         .catch(rej => {
           console.warn(rej);
