@@ -6,7 +6,8 @@ Vue.use(Vuex)
 var store = new Vuex.Store({
   state: {
     curCity: "",
-    city_alphabet: 97
+    city_alphabet: 97,
+    user:{}
   },
   mutations: {
     changeCity (state, city) {
@@ -14,6 +15,9 @@ var store = new Vuex.Store({
     },
     changeAlphabet (state, alphabet) {
       state.city_alphabet = alphabet
+    },
+    changeUser(state, curUser){
+      state.user = curUser
     }
   }
 })

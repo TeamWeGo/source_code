@@ -56,6 +56,7 @@
 
 <script>
 import { api } from "../../utils/api.js";
+import store from "@/components/store";
 
 export default {
   data () {
@@ -176,6 +177,7 @@ export default {
               .then(res => {
                 console.log(res);
                 this.userInfo.wechatopenid = res.result
+                
                 let user = {
                   'wechatopenid':this.userInfo.wechatopenid,
                   'nickName': this.userInfo.userName, 
@@ -200,15 +202,18 @@ export default {
                   'personalStatement':this.userInfo.personalStatement,
                   'credit': this.userInfo.credit
                 }
-                console.log(user)
+                store.commit('changeUser', user)
+                console.log("globalUser is :")
+                console.log(store.state.user)
+                
                 
                 //insert the new user if not existed
                 api.insertOneUser(user)
                   .then(res => {
-                    console.log(res);
+                    // console.log(res);
                   })
                   .catch(rej => {
-                    console.warn(rej);
+                    // console.warn(rej);
                     //if user already exsited, query uesrInfo by wechatopenid 
                     //and init all the info with the returned message
                     api.querySomeByModel("users", {
@@ -236,6 +241,35 @@ export default {
                         //init tags
                         this.userInfo.tags.name = result.result[0].tags.name
                         this.userInfo.tags.flag = result.result[0].tags.flag
+
+                        let user = {
+                          'wechatopenid':this.userInfo.wechatopenid,
+                          'nickName': this.userInfo.userName, 
+                          'name':'realName',
+                          'avatarUrl':this.userInfo.avatarUrl,
+                          'studentId':this.userInfo.studentId,
+                          'gender':this.userInfo.gender,
+                          'tasks':{ 
+                            'joining':this.userInfo.tasks.joining,
+                            'doing':this.userInfo.tasks.doing,
+                            'finished':this.userInfo.tasks.finished,
+                            'publishing':this.userInfo.tasks.publishing,
+                            'verified':this.userInfo.tasks.verified,
+                            'ended':this.userInfo.tasks.ended
+                          },
+                          'tags':{
+                            'name':this.userInfo.tags.name,
+                            'flag':this.userInfo.tags.flag
+                          },
+                          'balance':this.userInfo.balance,
+                          'isVerified': this.userInfo.isVerified,
+                          'personalStatement':this.userInfo.personalStatement,
+                          'credit': this.userInfo.credit
+                        }
+                        store.commit('changeUser', user)
+                        console.log("globalUser is :")
+                        console.log(store.state.user)
+
                       })
                       .catch(error => {
                         console.warn(error);
