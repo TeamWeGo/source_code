@@ -7,14 +7,10 @@
           name="one"
           id="one"
           value="true"
-          v-model="temData.content[0].result"
-        >{{temData.content[0].label}}</radio>
-        <radio
-          name="two"
-          id="two"
-          value="true"
-          v-model="temData.content[0].result"
-        >{{temData.content[1].label}}</radio>
+          v-for="it in temData.content"
+          :key="it"
+          v-model="it.result"
+        >{{it.label}}</radio>
       </div>
     </radio-group>
   </div>

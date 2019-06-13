@@ -36,33 +36,49 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      edit_input_des: "",
+      edit_singleSelect_des: "",
+      edit_singleSelect_indes: "",
+      edit_multiSelect_des: "",
+      edit_multiSelect_indes: ""
+    };
   },
   methods: {
     addOneMultiSelect() {
-
+      var question = {
+          type: "baseMultiSelect",
+          description: this.edit_multiSelect_des,
+          content: [
+          ]
+      };
+      var options = this.edit_multiSelect_indes.split(';');
+      for(var i = 0;i < options.length; i++){
+        if(options[i] != ""){
+          question.content.push({label:options[i], result:false});
+        }
+      }
+      this.$emit("addMultiSelectQues", question);
     },
     addOneSingleSelect() {
       var question = {
           type: "baseSingleSelect",
-          description: "edit_singleSelect_des",
+          description: this.edit_singleSelect_des,
           content: [
-            {
-              label: "是",
-              result: false
-            },
-            {
-              label: "否",
-              result: false
-            }
           ]
       };
-      this.$emit("addInputQues", question);
+      var options = this.edit_singleSelect_indes.split(';');
+      for(var i = 0;i < options.length; i++){
+        if(options[i] != ""){
+          question.content.push({label:options[i], result:false});
+        }
+      }
+      this.$emit("addSingleSelectQues", question);
     },
     addOneInput() {
       var question = {
           type: "baseInput",
-          description: edit_input_des,
+          description: this.edit_input_des,
           content: [
             {
               result: ""
