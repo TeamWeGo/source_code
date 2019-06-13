@@ -67,7 +67,7 @@ export default {
         studentId: '16340301',
         avatarUrl: '/static/images/user.png',
         gender: '男',
-        balance: 0,
+        balance: 100,
         credit: 100,
         personalStatement: 'Hello World!',
         isVerified: false,
