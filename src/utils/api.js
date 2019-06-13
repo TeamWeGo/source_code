@@ -128,7 +128,7 @@ export var api = {
               let msg = {
                 result: null,
                 msg: "query all user:error",
-                errMsg: "query error in db "
+                errMsg: "empty in db "
               };
               reject(msg);
             }
@@ -208,16 +208,16 @@ export var api = {
         .then(result => {
           if (result.result.stats.updated == 1) {
             let msg = {
-              result: result.stats.updated,
-              msg: "update a user:ok",
+              result: result.result.stats.updated,
+              msg: "update one:ok",
               errMsg: null
             };
             resolve(msg);
           } else {
             let msg = {
               result: null,
-              msg: "update a user:error",
-              errMsg: "error in db"
+              msg: "update one:error",
+              errMsg: "the info not be changed or error in db"
             };
             reject(msg);
           }

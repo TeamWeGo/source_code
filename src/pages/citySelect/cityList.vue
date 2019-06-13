@@ -4,13 +4,15 @@
       <div class="text-info">当前城市</div>
       <div class="cur-city-name">{{ curCity }}</div>
     </div>
-    <div class="all-city">
-      <div class="text-info">所有城市</div>
-      <div v-for="(item,key) in cityGroup" :key="key" :ref="key" >
-        <div class="small-title">{{ key }}</div>
-        <cityItem v-for="(cityname, i) in item" :key="i" :city="cityname" @click="citySelected(cityname)"/>
+    <scroll-view scroll-y="true" :scroll-into-view=" toView " >
+      <div class="all-city">
+        <div class="text-info">所有城市</div>
+        <div v-for="(item,key) in cityGroup" :key="key" :ref="key" >
+          <div class="small-title" :name="key" >{{ key }}</div>
+          <cityItem v-for="(cityname, i) in item" :key="i" :city="cityname" @click="citySelected(cityname)"/>
+        </div>
       </div>
-    </div>
+    </scroll-view>
   </div>
 </template>
 
@@ -20,14 +22,19 @@ import cityItem from '@/components/cityItem'
 
 export default {
   props: {
-    //allCityList,
     cityGroup: {}
   },
   data () {
     return {
-      curCity: ""
-      //cityList: [],
-      //cityGroup: {}
+
+    }
+  },
+  computed: {
+    curCity () {
+      return store.state.curCity;
+    },
+    alphabet () {
+      return store.state.city_alphabet;
     }
   },
   components: {
@@ -40,22 +47,16 @@ export default {
       wx.navigateBack();
     }
   },
-  computed: {
-    closure () {
-      return function (key) {
-        return String.fromCharCode(key);
-      }
-    }
-  },
   created () {
-    this.curCity = store.state.curCity;
+    //this.curCity = store.state.curCity;
   },
   watch: {
-    '$store.state.city_alphabet': {
-      handler: function(newer, older) {
-        console.log(newer, older);
-      },
-      deep: true
+    alphabet (newer, older) {
+      let target = this.$refs.newer;
+      console.log(target);
+      this.setData({
+        toView: target
+      })
     }
   }
 };
