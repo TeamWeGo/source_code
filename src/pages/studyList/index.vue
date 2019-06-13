@@ -55,18 +55,20 @@ export default {
           );
       return fmt;
     };
-
     api
       .querySomeByModel("tasks", {
-        'type': this.type
+        type: this.type
       })
       .then(res => {
-        //console.log(res);
+        console.log(res);
         let tempList = res.result;
-        for(let i in tempList){
-          let li = tempList[i]
+        for (let i in tempList) {
+          let li = tempList[i];
           //console.log(li);
-          if(String(li['location']).includes(this.curCity) && String(li['state']).includes('publishing')){
+          if (
+            String(li["location"]).includes(this.curCity) &&
+            String(li["state"]).includes("publishing")
+          ) {
             this.missionlist.push(li);
           }
         }
