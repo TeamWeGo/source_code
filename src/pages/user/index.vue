@@ -50,17 +50,20 @@
 
 <script>
 import { api } from "../../utils/api.js";
+import store from "@/components/store";
 
 export default {
   data() {
     return {
       pageTitle: "个人中心",
       userInfo: {
-        userName: "zjx",
-        studentId: "16340301",
-        avatarUrl: "/static/images/user.png",
-        gender: "男",
-        balance: 0,
+
+        userName: 'zjx',
+        studentId: '16340301',
+        avatarUrl: '/static/images/user.png',
+        gender: '男',
+        balance: 100,
+
         credit: 100,
         personalStatement: "Hello World!",
         isVerified: false,
@@ -139,108 +142,131 @@ export default {
         content: "是否授权登陆",
         success(res) {
           if (res.confirm) {
-            console.log("用户点击确定");
-            wx.getUserInfo({
-              success: res => {
-                //get userInfo incluing nickname, avatar and gender
-                console.log(res.userInfo);
 
-                that.userInfo.userName = res.userInfo.nickName;
-                that.userInfo.avatarUrl = res.userInfo.avatarUrl;
-                if (res.userInfo.gender == 1) {
-                  that.userInfo.gender = "男";
-                } else {
-                  that.userInfo.gender = "女";
+            console.log('用户点击确定')
+            
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+
+      //获取信息
+      wx.getUserInfo({
+        success: (res) => {
+            //get userInfo incluing nickname, avatar and gender
+            console.log(res.userInfo)
+            
+            this.userInfo.userName = res.userInfo.nickName
+            this.userInfo.avatarUrl = res.userInfo.avatarUrl
+            if(res.userInfo.gender == 1 ){
+              this.userInfo.gender = '男'
+            }else{
+              this.userInfo.gender = '女'
+            }
+            
+            //get openid
+            api.getOpenId()
+              .then(res => {
+                console.log(res);
+                this.userInfo.wechatopenid = res.result
+                
+                let user = {
+                  'wechatopenid':this.userInfo.wechatopenid,
+                  'nickName': this.userInfo.userName, 
+                  'name':'realName',
+                  'avatarUrl':this.userInfo.avatarUrl,
+                  'studentId':this.userInfo.studentId,
+                  'gender':this.userInfo.gender,
+                  'tasks':{ 
+                    'joining':this.userInfo.tasks.joining,
+                    'doing':this.userInfo.tasks.doing,
+                    'finished':this.userInfo.tasks.finished,
+                    'publishing':this.userInfo.tasks.publishing,
+                    'verified':this.userInfo.tasks.verified,
+                    'ended':this.userInfo.tasks.ended
+                  },
+                  'tags':{
+                    'name':this.userInfo.tags.name,
+                    'flag':this.userInfo.tags.flag
+                  },
+                  'balance':this.userInfo.balance,
+                  'isVerified': this.userInfo.isVerified,
+                  'personalStatement':this.userInfo.personalStatement,
+                  'credit': this.userInfo.credit
                 }
-
-                //get openid
-                api
-                  .getOpenId()
+                store.commit('changeUser', user)
+                console.log("globalUser is :")
+                console.log(store.state.user)
+                
+                
+                //insert the new user if not existed
+                api.insertOneUser(user)
                   .then(res => {
-                    console.log(res);
-                    that.userInfo.wechatopenid = res.result;
-                    let user = {
-                      wechatopenid: that.userInfo.wechatopenid,
-                      nickName: that.userInfo.userName,
-                      name: "realName",
-                      avatarUrl: that.userInfo.avatarUrl,
-                      studentId: that.userInfo.studentId,
-                      gender: that.userInfo.gender,
-                      tasks: {
-                        joining: that.userInfo.tasks.joining,
-                        doing: that.userInfo.tasks.doing,
-                        finished: that.userInfo.tasks.finished,
-                        publishing: that.userInfo.tasks.publishing,
-                        verified: that.userInfo.tasks.verified,
-                        ended: that.userInfo.tasks.ended
-                      },
-                      tags: {
-                        name: that.userInfo.tags.name,
-                        flag: that.userInfo.tags.flag
-                      },
-                      balance: that.userInfo.balance,
-                      isVerified: that.userInfo.isVerified,
-                      personalStatement: that.userInfo.personalStatement,
-                      credit: that.userInfo.credit
-                    };
-                    console.log(user);
-
-                    //insert the new user if not existed
-                    api
-                      .insertOneUser(user)
-                      .then(res => {
-                        console.log(res);
-                      })
-                      .catch(rej => {
-                        console.warn(rej);
-                        //if user already exsited, query uesrInfo by wechatopenid
-                        //and init all the info with the returned message
-                        api
-                          .querySomeByModel("users", {
-                            wechatopenid: that.userInfo.wechatopenid
-                          })
-                          .then(result => {
-                            console.log(result);
-
-                            that.userInfo.id = result.result[0]._id;
-                            that.userInfo.userName = result.result[0].nickName;
-                            that.userInfo.studentId =
-                              result.result[0].studentId;
-                            that.userInfo.gender = result.result[0].gender;
-                            that.userInfo.isVerified =
-                              result.result[0].isVerified;
-                            that.userInfo.balance = result.result[0].balance;
-                            that.userInfo.credit = result.result[0].credit;
-                            that.userInfo.avatarUrl =
-                              result.result[0].avatarUrl;
-                            that.userInfo.personalStatement =
-                              result.result[0].personalStatement;
-                            //init tasks
-                            that.userInfo.tasks.joining =
-                              result.result[0].tasks.joining;
-                            that.userInfo.tasks.doing =
-                              result.result[0].tasks.doing;
-                            that.userInfo.tasks.finished =
-                              result.result[0].tasks.finished;
-                            that.userInfo.tasks.publishing =
-                              result.result[0].tasks.publishing;
-                            that.userInfo.tasks.verified =
-                              result.result[0].tasks.verified;
-                            that.userInfo.tasks.ended =
-                              result.result[0].tasks.ended;
-                            //init tags
-                            that.userInfo.tags.name =
-                              result.result[0].tags.name;
-                            that.userInfo.tags.flag =
-                              result.result[0].tags.flag;
-                          })
-                          .catch(error => {
-                            console.warn(error);
-                          });
-                      });
+                    // console.log(res);
                   })
                   .catch(rej => {
-                    console.warn(rej);
+                    // console.warn(rej);
+                    //if user already exsited, query uesrInfo by wechatopenid 
+                    //and init all the info with the returned message
+                    api.querySomeByModel("users", {
+                        'wechatopenid':this.userInfo.wechatopenid
+                      })
+                      .then(result => {
+                        console.log(result)
+                        
+                        this.userInfo.id = result.result[0]._id
+                        this.userInfo.userName = result.result[0].nickName
+                        this.userInfo.studentId = result.result[0].studentId
+                        this.userInfo.gender = result.result[0].gender
+                        this.userInfo.isVerified = result.result[0].isVerified
+                        this.userInfo.balance = result.result[0].balance
+                        this.userInfo.credit = result.result[0].credit
+                        this.userInfo.avatarUrl = result.result[0].avatarUrl
+                        this.userInfo.personalStatement = result.result[0].personalStatement
+                        //init tasks
+                        this.userInfo.tasks.joining = result.result[0].tasks.joining
+                        this.userInfo.tasks.doing = result.result[0].tasks.doing
+                        this.userInfo.tasks.finished = result.result[0].tasks.finished
+                        this.userInfo.tasks.publishing = result.result[0].tasks.publishing
+                        this.userInfo.tasks.verified = result.result[0].tasks.verified
+                        this.userInfo.tasks.ended = result.result[0].tasks.ended
+                        //init tags
+                        this.userInfo.tags.name = result.result[0].tags.name
+                        this.userInfo.tags.flag = result.result[0].tags.flag
+
+                        let user = {
+                          'wechatopenid':this.userInfo.wechatopenid,
+                          'nickName': this.userInfo.userName, 
+                          'name':'realName',
+                          'avatarUrl':this.userInfo.avatarUrl,
+                          'studentId':this.userInfo.studentId,
+                          'gender':this.userInfo.gender,
+                          'tasks':{ 
+                            'joining':this.userInfo.tasks.joining,
+                            'doing':this.userInfo.tasks.doing,
+                            'finished':this.userInfo.tasks.finished,
+                            'publishing':this.userInfo.tasks.publishing,
+                            'verified':this.userInfo.tasks.verified,
+                            'ended':this.userInfo.tasks.ended
+                          },
+                          'tags':{
+                            'name':this.userInfo.tags.name,
+                            'flag':this.userInfo.tags.flag
+                          },
+                          'balance':this.userInfo.balance,
+                          'isVerified': this.userInfo.isVerified,
+                          'personalStatement':this.userInfo.personalStatement,
+                          'credit': this.userInfo.credit
+                        }
+                        store.commit('changeUser', user)
+                        console.log("globalUser is :")
+                        console.log(store.state.user)
+
+                      })
+                      .catch(error => {
+                        console.warn(error);
+                      });
                   });
               }
             });
