@@ -1,11 +1,11 @@
 <template>
   <div id="base-singleSelect">
     <radio-group class="radio-group" @change="radioChange">
-      <label class="base_singleSelect_one">{{temData.description}}</label>
+      <label class="base_singleSelect_one" for="radio_one">{{temData.description}}</label>
       <div class="base_singleSelect_radio">
         <radio
-          name="one"
-          id="one"
+          name="radio_one"
+          id="radio_one"
           value="true"
           v-for="it in temData.content"
           :key="it"

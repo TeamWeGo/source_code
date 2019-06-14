@@ -34,7 +34,7 @@ export default {
       this.temDatas.splice(size-1, 1)
       this.template.splice(size-1, 1)
     },
-    getOpenId:function() {
+    getOpenId: function() {
       api
         .getOpenId()
         .then(res => {
@@ -84,4 +84,11 @@ export default {
 </script>
 
 <style scoped>
+button {
+  background-color: #1aad19;
+  color: #ffffff;
+  font-size: 14pt;
+  margin: 8px 15px 8px 15px;
+  border-radius: 5px;
+}
 </style>

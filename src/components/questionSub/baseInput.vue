@@ -1,12 +1,13 @@
 <template>
   <div id="base-input">
-    <label class="base_input_one" for="one">{{temData.description}}</label>
+    <label class="base_input_one" for="input_one">{{temData.description}}</label>
     <input
-      name="one"
-      id="one"
+      name="input_one"
+      id="input_one"
       class="base_input_input"
       placeholder="输入"
       type="text"
+      autofocus="true"
       v-model="temData.content[0].result"
     >
   </div>
