@@ -1,34 +1,36 @@
 <template>
-  <div class="missionlist">
-    <missionList v-bind:list="missionlist"></missionList>
+  <div class="mission-main">
+    <div v-bind:class="pageClass">
+      <div class="missionlist">
+        <missionList v-bind:list="missionlist" task_state="已发布"></missionList>
+      </div>
+    </div>
   </div>
 </template>
 
 
 <script>
-import store from "@/components/store";
+import searchBar from "@/components/logs/searchBar";
 import missionList from "@/components/logs/missionList";
+import mpNavbar from "@/components/logs/mpnavbar";
 
 import { api } from "../../utils/api.js";
 
 export default {
+  components: {
+    searchBar,
+    missionList,
+    mpNavbar
+  },
+
   data() {
     return {
       missionlist: [],
-      type: "",
-      curCity: ""
     };
   },
-  components: {
-    missionList
-  },
-  methods: {},
-  onLoad: function(options) {
-    this.missionlist = [];
-    this.type = options.type;
-    console.log(this.type);
-    this.curCity = store.state.curCity;
 
+
+  onLoad() {
     Date.prototype.Format = function(fmt) {
       //author: meizz
       var o = {
@@ -55,41 +57,64 @@ export default {
           );
       return fmt;
     };
+
     api
-      .querySomeByModel("tasks", {
-        type: this.type
-      })
+      .querySomeByModel("tasks", {})
       .then(res => {
-        console.log(res);
-        let tempList = res.result;
-        for (let i in tempList) {
-          let li = tempList[i];
-          //console.log(li);
-          if (
-            String(li["location"]).includes(this.curCity) &&
-            String(li["state"]).includes("publishing")
-          ) {
-            this.missionlist.push(li);
-          }
-        }
-        //this.missionlist = res.result;
-        console.log(this.missionlist);
+        //   console.log(res);
+        this.missionlist = res.result;
+        //  console.log(this.missionlist);
         this.missionlist.forEach(element => {
           var date = new Date(element.publish.beginTime);
           element.publish.beginTime = date.Format("yyyy-MM-dd");
           element.publish.endTime = date.Format("yyyy-MM-dd");
         });
+        this.tabs_index = 1
+        this.tabs_index = 0
+        console.log("ok！")
       })
       .catch(rej => {
         console.warn(rej);
-        //console.log("NOOOOOO");
+        console.log("NOOOOOO");
       });
   }
 };
 </script>
 
-<style scoped>
-.missionList {
-  margin: 5px;
+<style>
+page{
+  height: 100%;
 }
+
+.navbar.weui-navbar__item.weui-bar__item_on{
+  color: orangered !important;
+}
+
+</style>
+
+
+<style scoped>
+.mission-main {
+  height: 100%;
+}
+
+.site {
+  width: 25%;
+  text-align: center;
+}
+
+.mission-add {
+  width: 15%;
+  text-align: center;
+}
+
+.navbar {
+  position: fixed; /* 绝对定位，fixed是相对于浏览器窗口定位。 */
+  top: 0; /* 距离窗口顶部距离 */
+  left: 0; /* 距离窗口左边的距离 */
+  width: 100%;
+  background-color: white;
+  z-index: 0;
+}
+
 </style>

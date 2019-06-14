@@ -84,7 +84,7 @@ export default {
     }
   },
 
-  created() {
+  onLoad() {
     Date.prototype.Format = function(fmt) {
       //author: meizz
       var o = {

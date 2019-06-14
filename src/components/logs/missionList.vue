@@ -39,7 +39,12 @@ export default {
         return []
       }
     },
-    task_state:"doing"
+    task_state: {
+      type: String,
+      default: function () {
+        return 'publishing'
+      }
+    },
   },
 
   data () {
@@ -51,16 +56,21 @@ export default {
     }
   },
   watch: {
-    list: function (value){
-      this.missionlist = value;
-    },
-    task_state:function(value){
-      this.task_state = value;
+    list: function (newVal,oldVal){
+      this.missionlist = newVal;
+      console.log(newVal)
       var task_type = this.map[this.task_state];
       this.show_list = this.missionlist.filter(function (x){
         return x.state == this;
       },task_type);
-
+    },
+    task_state:function(newVal,oldVal){
+      this.task_state = newVal;
+      console.log(newVal)
+      var task_type = this.map[this.task_state];
+      this.show_list = this.missionlist.filter(function (x){
+        return x.state == this;
+      },task_type);
       console.log(this.map[this.task_state])
     }
   },
