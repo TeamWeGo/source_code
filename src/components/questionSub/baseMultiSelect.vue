@@ -1,10 +1,10 @@
 <template>
   <div id="base-multiSelect">
-    <label class="base_multiSelect_one">{{temData.description}}</label>
+    <label class="base_multiSelect_one" for="check_one">{{temData.description}}</label>
     <div>
       <checkbox
-        name="one"
-        id="one"
+        name="check_one"
+        id="check_one"
         value="true"
         v-for="it in temData.content"
         :key="it"

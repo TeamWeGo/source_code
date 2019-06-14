@@ -20,50 +20,58 @@
     "backgroundColor": "#fafafa",
     "selectedColor": "#333",
     "borderStyle": "white",
-
-    "list": [{
-      "text": "首页",
-      "pagePath": "pages/index/main",
-      "iconPath": "static/tabs/home.png",
-      "selectedIconPath": "static/tabs/home-active.png"
-    }, {
-      "text": "订单",
-      "pagePath": "pages/logs/main",
-      "iconPath": "static/tabs/orders.png",
-      "selectedIconPath": "static/tabs/orders-active.png"
-    }, {
-      "text": "社区",
-      "pagePath": "pages/community/main",
-      "iconPath": "static/tabs/comments.png",
-      "selectedIconPath": "static/tabs/comments-active.png"
-    }, {
-      "text": "个人",
-      "pagePath": "pages/user/main",
-      "iconPath": "static/tabs/user.png",
-      "selectedIconPath": "static/tabs/user-active.png"
-    }],
-
-    "items": [{
-      "name": "首页",
-      "pagePath": "pages/index/main",
-      "icon": "static/tabs/home.png",
-      "activeIcon": "static/tabs/home-active.png"
-    }, {
-      "name": "订单",
-      "pagePath": "pages/logs/main",
-      "icon": "static/tabs/orders.png",
-      "activeIcon": "static/tabs/orders-active.png"
-    }, {
-      "name": "社区",
-      "pagePath": "pages/community/main",
-      "icon": "static/tabs/comments.png",
-      "activeIcon": "static/tabs/comments-active.png"
-    }, {
-      "name": "个人",
-      "pagePath": "pages/user/main",
-      "icon": "static/tabs/user.png",
-      "activeIcon": "static/tabs/user-active.png"
-    }],
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/main",
+        "iconPath": "static/tabs/home.png",
+        "selectedIconPath": "static/tabs/home-active.png"
+      },
+      {
+        "text": "订单",
+        "pagePath": "pages/logs/main",
+        "iconPath": "static/tabs/orders.png",
+        "selectedIconPath": "static/tabs/orders-active.png"
+      },
+      {
+        "text": "任务",
+        "pagePath": "pages/community/main",
+        "iconPath": "static/tabs/comments.png",
+        "selectedIconPath": "static/tabs/comments-active.png"
+      },
+      {
+        "text": "个人",
+        "pagePath": "pages/user/main",
+        "iconPath": "static/tabs/user.png",
+        "selectedIconPath": "static/tabs/user-active.png"
+      }
+    ],
+    "items": [
+      {
+        "name": "首页",
+        "pagePath": "pages/index/main",
+        "icon": "static/tabs/home.png",
+        "activeIcon": "static/tabs/home-active.png"
+      },
+      {
+        "name": "订单",
+        "pagePath": "pages/logs/main",
+        "icon": "static/tabs/orders.png",
+        "activeIcon": "static/tabs/orders-active.png"
+      },
+      {
+        "name": "任务",
+        "pagePath": "pages/community/main",
+        "icon": "static/tabs/comments.png",
+        "activeIcon": "static/tabs/comments-active.png"
+      },
+      {
+        "name": "个人",
+        "pagePath": "pages/user/main",
+        "icon": "static/tabs/user.png",
+        "activeIcon": "static/tabs/user-active.png"
+      }
+    ],
     "position": "bottom"
   },
   "permission": {

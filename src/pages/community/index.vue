@@ -1,5 +1,5 @@
 <template>
-  <view class="ttt">
+  <view class="community">
     <view class="createTask">
       <p>{{createTask}}</p>
     </view>
@@ -191,7 +191,7 @@ export default {
 };
 </script>
 <style scoped>
-.ttt {
+.community {
   background-color: #efeff4;
 }
 .createTask {
@@ -205,7 +205,7 @@ input {
 .createTask p {
   font-size: 50rpx;
   font-weight: bold;
-  text-align: center;
+  text-align: left;
 }
 .Task-basicInfo {
   width: 500rpx;
