@@ -2,10 +2,13 @@
 <template>
   <div>
     <p class="commiunitytitle">{{ commiunitytitle }}</p>
-    <qContainer :temDatas="temDatas" ></qContainer>
-    <button @click="deleteQues">Delete</button>
-    <qEdit @addMultiSelectQues="addMultiSelect" @addSingleSelectQues="addSingleSelect" 
-    @addInputQues="addInput"></qEdit>
+    <qContainer :temDatas="temDatas"></qContainer>
+    <button @click="deleteQues">删除一条问题</button>
+    <qEdit
+      @addMultiSelectQues="addMultiSelect"
+      @addSingleSelectQues="addSingleSelect"
+      @addInputQues="addInput"
+    ></qEdit>
     <button @click="getOpenId">getOpenId</button>
   </div>
 </template>
@@ -16,9 +19,9 @@ import qEdit from "@/components/qEdit";
 export default {
   data() {
     return {
-      commiunitytitle: "社区",
+      commiunitytitle: "创建问卷",
       temDatas: [
-        {
+        /*  {
           type: "baseInput",
           description: "你的学号",
           content: [
@@ -58,7 +61,7 @@ export default {
               result: false
             }
           ]
-        }
+        }*/
       ]
     };
   },
@@ -68,11 +71,11 @@ export default {
     qEdit
   },
   methods: {
-    deleteQues:function(){
+    deleteQues: function() {
       var size = this.temDatas.length;
-      this.temDatas.splice(size-1, 1);
+      this.temDatas.splice(size - 1, 1);
     },
-    getOpenId:function() {
+    getOpenId: function() {
       api
         .getOpenId()
         .then(res => {
@@ -82,13 +85,13 @@ export default {
           console.warn(rej);
         });
     },
-    addMultiSelect:function(val) {
+    addMultiSelect: function(val) {
       this.temDatas.push(val);
     },
-    addSingleSelect:function(val){
+    addSingleSelect: function(val) {
       this.temDatas.push(val);
     },
-    addInput:function(val){
+    addInput: function(val) {
       this.temDatas.push(val);
     }
   }
@@ -96,4 +99,11 @@ export default {
 </script>
 
 <style scoped>
+button {
+  background-color: #1aad19;
+  color: #ffffff;
+  font-size: 14pt;
+  margin: 8px 15px 8px 15px;
+  border-radius: 5px;
+}
 </style>

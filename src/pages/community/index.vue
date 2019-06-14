@@ -1,5 +1,5 @@
 <template>
-  <view class="ttt">
+  <view class="community">
     <view class="createTask">
       <p>{{createTask}}</p>
     </view>
@@ -183,16 +183,15 @@ export default {
     bindTagChange: function(e) {
       this.index = e.mp.detail.value;
     },
-    addQues: function(){
-      let url = "./createQuestionnaire/main"
+    addQues: function() {
+      let url = "./createQuestionnaire/main";
       wx.navigateTo({ url });
     }
   }
 };
 </script>
-
 <style scoped>
-.ttt {
+.community {
   background-color: #efeff4;
 }
 .createTask {
@@ -206,7 +205,7 @@ input {
 .createTask p {
   font-size: 50rpx;
   font-weight: bold;
-  text-align: center;
+  text-align: left;
 }
 .Task-basicInfo {
   width: 500rpx;
@@ -281,7 +280,8 @@ input {
   width: 100rpx;
 }
 
-.publish, .addQues {
+.publish,
+.addQues {
   margin-top: 10rpx;
   width: 300rpx;
   margin-left: auto;
@@ -292,7 +292,7 @@ input {
   color: white;
   background-color: #1aad19;
 }
-.addQues button{
+.addQues button {
   font-size: 30rpx;
   color: white;
   background-color: #1aad19;

@@ -63,5 +63,8 @@ export default {
 </script>
 
 <style scoped>
+ul {
+  margin: 4rpx 5rpx 4rpx 5rpx;
+}
 </style>
 
