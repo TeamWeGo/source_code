@@ -7,8 +7,8 @@ var store = new Vuex.Store({
   state: {
     curCity: "",
     city_alphabet: 'A',
-    user: {}
-
+    user: {},
+    quesID: ''
   },
   mutations: {
     changeCity (state, city) {
@@ -19,6 +19,9 @@ var store = new Vuex.Store({
     },
     changeUser(state, curUser){
       state.user = curUser
+    },
+    changeQuesID(state, quesID){
+      state.quesID = quesID
     }
   }
 })
