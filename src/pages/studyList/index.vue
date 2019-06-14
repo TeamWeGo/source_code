@@ -1,58 +1,37 @@
 <template>
-<<<<<<< HEAD
   <div class="mission-main">
     <div v-bind:class="pageClass">
       <div class="missionlist">
         <missionList v-bind:list="missionlist" task_state="已发布"></missionList>
       </div>
     </div>
-=======
-  <div class="missionlist">
-    <missionList v-bind:list="mmissionlist" v-bind:task_state="已发布"></missionList>
->>>>>>> upstream/master
   </div>
 </template>
 
 
 <script>
-import searchBar from "@/components/logs/searchBar";
+import store from "@/components/store";
 import missionList from "@/components/logs/missionList";
-import mpNavbar from "@/components/logs/mpnavbar";
 
 import { api } from "../../utils/api.js";
 
 export default {
   components: {
-    searchBar,
     missionList,
-    mpNavbar
   },
 
   data() {
     return {
-<<<<<<< HEAD
       missionlist: [],
     };
   },
-=======
-      mmissionlist: [121],
-      type: "",
-      curCity: ""
-    };
-  },
-  components: {
-    missionList
-  },
-  methods: {},
+
   onLoad: function(options) {
-    this.mmissionlist = [];
+    this.missionlist = ['123']
     this.type = options.type;
     console.log(this.type);
     this.curCity = store.state.curCity;
->>>>>>> upstream/master
 
-
-  onLoad() {
     Date.prototype.Format = function(fmt) {
       //author: meizz
       var o = {
@@ -79,16 +58,12 @@ export default {
           );
       return fmt;
     };
-
+    console.log(this.missionlist)
     api
-      .querySomeByModel("tasks", {})
+      .querySomeByModel("tasks", {
+        type: this.type
+      })
       .then(res => {
-<<<<<<< HEAD
-        //   console.log(res);
-        this.missionlist = res.result;
-        //  console.log(this.missionlist);
-        this.missionlist.forEach(element => {
-=======
         console.log(res);
         let tempList = res.result;
         for (let i in tempList) {
@@ -98,24 +73,20 @@ export default {
             String(li["location"]).includes(this.curCity) &&
             String(li["state"]).includes("publishing")
           ) {
-            this.mmissionlist.push(li);
+            this.missionlist.push(li);
           }
         }
-        this.mmissionlist = res.result;
-        console.log(this.mmissionlist);
-        this.mmissionlist.forEach(element => {
->>>>>>> upstream/master
+        //this.missionlist = res.result;
+        console.log(this.missionlist);
+        this.missionlist.forEach(element => {
           var date = new Date(element.publish.beginTime);
           element.publish.beginTime = date.Format("yyyy-MM-dd");
           element.publish.endTime = date.Format("yyyy-MM-dd");
         });
-        this.tabs_index = 1
-        this.tabs_index = 0
-        console.log("ok！")
       })
       .catch(rej => {
         console.warn(rej);
-        console.log("NOOOOOO");
+        //console.log("NOOOOOO");
       });
   }
 };
