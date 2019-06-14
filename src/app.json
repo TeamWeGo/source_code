@@ -6,7 +6,8 @@
     "pages/citySelect/main",
     "pages/community/main",
     "pages/studyList/main",
-    "pages/logs/taskDetails/main"
+    "pages/community/taskDetails/main",
+    "pages/community/createQuestionnaire/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
