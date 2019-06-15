@@ -99,6 +99,9 @@ export default {
 </script>
 
 <style scoped>
+qContainer {
+  margin: 2rpx;
+}
 button {
   background-color: #1aad19;
   color: #ffffff;
