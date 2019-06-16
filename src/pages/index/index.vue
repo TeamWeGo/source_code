@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="index-page">
     <div class="search-bar">
       <button class="city-button" @click="chooseCity">{{ curCity }}</button>
       <input type="text" class="search-input" placeholder="搜索相关任务">
@@ -107,7 +107,7 @@ export default {
             },
             success: res => {
               if (res && res.data) {
-                console.log(res.data.result.addressComponent);
+                // console.log(res.data.result.addressComponent);
                 let city = res.data.result.addressComponent.city;
                 store.commit("changeCity", city.replace("市", ""));
                 this.curCity = store.state.curCity;
@@ -118,7 +118,7 @@ export default {
             }
           });
         }
-      })
+      });
     }
   },
 
@@ -137,6 +137,9 @@ export default {
 </script>
 
 <style scoped>
+.index-page {
+  margin: 0rpx 8rpx 0rpx 8rpx;
+}
 .search-bar {
   display: flex;
   height: 40px;

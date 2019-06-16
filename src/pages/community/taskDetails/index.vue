@@ -81,7 +81,7 @@ export default {
   },
   onLoad (options) {
     var obj =JSON.parse(decodeURIComponent(options.obj));
-    console.log(obj);
+   // console.log(obj);
     this.Task = obj;
   },
   methods: {

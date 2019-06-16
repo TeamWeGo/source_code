@@ -967,7 +967,7 @@ export var api = {
         name: 'getOpenId',
       }).then((result) => {
 
-        console.log(result);
+        //console.log(result);
 
         let msg = {
           result: result.result.userInfo.openId,

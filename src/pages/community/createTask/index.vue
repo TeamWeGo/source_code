@@ -151,7 +151,7 @@ export default {
       api
         .publishOneTask(task)
         .then(res => {
-          console.log(res);
+         // console.log(res);
         })
         .catch(rej => {
           console.warn(rej);

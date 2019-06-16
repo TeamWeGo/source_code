@@ -1,4 +1,4 @@
-<template>
+<template >
   <view class="community">
     <view class="createTask">
       <p>{{createTask}}</p>
@@ -103,11 +103,11 @@
 
 <script>
 import { api } from "../../utils/api.js";
-import store from '../../components/store'
+import store from "../../components/store";
 export default {
   data() {
     return {
-      quesID: '08560c9e5d03a57c01520baf556bba86',
+      quesID: "08560c9e5d03a57c01520baf556bba86",
       createTask: "创建任务",
       index: 0,
       Task: {
@@ -133,7 +133,7 @@ export default {
   },
   methods: {
     publishTask() {
-      console.log(store.state.quesID)
+      console.log(store.state.quesID);
       // let task = {
       //   name: this.Task.name,
       //   type: this.Task.tag[index].name,
@@ -186,42 +186,44 @@ export default {
     bindTagChange: function(e) {
       this.index = e.mp.detail.value;
     },
-    addQues: function(){
-      if(this.quesID == ''){
-        console.log('new')
-        let url = "./createQuestionnaire/main"
-        wx.navigateTo({ url })
-        this.quesID = store.state.quesID
+    addQues: function() {
+      if (this.quesID == "") {
+        //  console.log("new");
+        let url = "./createQuestionnaire/main";
+        wx.navigateTo({ url });
+        this.quesID = store.state.quesID;
+      } else {
+        //  console.log("old");
+        let url = "./createQuestionnaire/main?obj=" + this.quesID;
+        wx.navigateTo({ url });
       }
-      else{
-        console.log('old')
-        let url = "./createQuestionnaire/main?obj="+this.quesID
-        wx.navigateTo({ url })
-      }
-      
     }
   }
 };
 </script>
 <style scoped>
 .community {
-  background-color: #efeff4;
+  margin: 0rpx 8rpx 0rpx 8rpx;
+  background-color: #ffffff;
 }
 .createTask {
-  width: 500rpx;
+  width: 600rpx;
   margin: 0 auto;
   border-bottom: 1rpx solid gray;
 }
 input {
-  border-bottom: 1rpx solid gray;
+  width: 500rpx;
+  border-radius: 10rpx;
+  background-color: #efeff4;
 }
+
 .createTask p {
   font-size: 50rpx;
   font-weight: bold;
   text-align: left;
 }
 .Task-basicInfo {
-  width: 500rpx;
+  width: 600rpx;
   margin-left: auto;
   margin-right: auto;
   margin-top: 10rpx;
@@ -237,7 +239,7 @@ input {
 }
 
 .Task-description {
-  width: 500rpx;
+  width: 600rpx;
   height: 230rpx;
   margin: 0 auto;
   margin-top: 10rpx;
@@ -246,13 +248,14 @@ input {
 
 .Task-description textarea {
   margin-top: 10rpx;
-  width: 500rpx;
+  width: 600rpx;
   height: 170rpx;
-  background-color: white;
+  border-radius: 10rpx;
+  background-color: #efeff4;
 }
 
 .Task-time {
-  width: 500rpx;
+  width: 600rpx;
   margin-left: auto;
   margin-right: auto;
   margin-top: 10rpx;
@@ -269,7 +272,7 @@ input {
 }
 
 .Task-location {
-  width: 500rpx;
+  width: 600rpx;
   display: flex;
   flex-direction: row;
   margin-left: auto;
@@ -281,7 +284,7 @@ input {
   width: 100rpx;
 }
 .Task-tag {
-  width: 500rpx;
+  width: 600rpx;
   display: flex;
   flex-direction: row;
   margin-top: 10rpx;
