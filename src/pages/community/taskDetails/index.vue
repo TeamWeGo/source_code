@@ -39,7 +39,15 @@
     <view class='Task-location'>
         <view>地点：{{Task.location}}</view>
     </view>
-    <view class='accept' @click='acceptTask'>
+    <view v-if='Task.isQuestionnaire == true && Task.publish.publisher != userID' class='accept' @click='fillQuestionnaire'>
+      <button>填写问卷</button>
+    </view>
+
+    <view v-if="Task.isQuestionnaire == true && Task.publish.publisher == userID" class='accept' @click='checkQuestionnaire'>
+      <button>查看问卷</button>
+    </view>
+
+    <view v-if="Task.state == 'publishing' && Task.publish.publisher != userID" class='accept' @click='acceptTask'>
       <button>{{ accept }}</button>
     </view>
   </view>
@@ -50,16 +58,18 @@
 
 <script>
 import { api } from "../../../utils/api.js";
+import store from "../../../components/store.js"
 export default {
   data () {
     return {
       title: '任务详情',
+      userID: store.state.user._id,
       Task: {
         title: '',
         avatarId: '',
         type: '学习',
         description: '',
-        state: 'publishing', 
+        state: '', 
         maxJoiner: 10,
         joiners: '',
         location: '北京市,北京市,东城区',
@@ -73,8 +83,8 @@ export default {
           beginTime: '',
           endTime: ''
         },
-        isQuestionnaire: true,
-        questionnaireId: ''
+        isQuestionnaire: false,
+        questionnaireID: ''
       },
       accept: '接♂受'
     }
@@ -83,35 +93,64 @@ export default {
     var obj =JSON.parse(decodeURIComponent(options.obj));
     console.log(obj);
     this.Task = obj;
+    console.log(this.Task.questionnaireID)
+    this.userID = 'ee3099285cc7c051093255c93e1edebc'
   },
   methods: {
-    accpetTask (){
-      Date.prototype.Format = function(fmt) {
-        //author: meizz
-        var o = {
-          "M+": this.getMonth() + 1, //月份
-          "d+": this.getDate(), //日
-          "h+": this.getHours(), //小时
-          "m+": this.getMinutes(), //分
-          "s+": this.getSeconds(), //秒
-          "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-          S: this.getMilliseconds() //毫秒
-        };
-        if (/(y+)/.test(fmt))
-          fmt = fmt.replace(
-            RegExp.$1,
-            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
-          );
-        for (var k in o)
-          if (new RegExp("(" + k + ")").test(fmt))
-            fmt = fmt.replace(
-              RegExp.$1,
-              RegExp.$1.length == 1
-                ? o[k]
-                : ("00" + o[k]).substr(("" + o[k]).length)
-            );
-        return fmt;
-      };
+    acceptTask (){
+      // Date.prototype.Format = function(fmt) {
+      //   //author: meizz
+      //   var o = {
+      //     "M+": this.getMonth() + 1, //月份
+      //     "d+": this.getDate(), //日
+      //     "h+": this.getHours(), //小时
+      //     "m+": this.getMinutes(), //分
+      //     "s+": this.getSeconds(), //秒
+      //     "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+      //     S: this.getMilliseconds() //毫秒
+      //   };
+      //   if (/(y+)/.test(fmt))
+      //     fmt = fmt.replace(
+      //       RegExp.$1,
+      //       (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+      //     );
+      //   for (var k in o)
+      //     if (new RegExp("(" + k + ")").test(fmt))
+      //       fmt = fmt.replace(
+      //         RegExp.$1,
+      //         RegExp.$1.length == 1
+      //           ? o[k]
+      //           : ("00" + o[k]).substr(("" + o[k]).length)
+      //       );
+      //   return fmt;
+      // };
+      console.log(this.Task)
+      api.joinOneTask(this.Task, this.userID).then(result=>{
+        console.log('success')
+      }).catch(error => {
+        console.warn(error);
+      })
+
+
+    },
+    fillQuestionnaire() {
+      console.log(this.Task.questionnaireID)
+      api.queryOneById("questionnaires", this.Task.questionnaireID).then((res)=>{
+        console.log(res)
+        var obj = JSON.stringify(res)
+        let url = "../fillQuestionnaire/main?obj="+obj
+        console.log(url)
+        wx.navigateTo({ url })
+      })
+    },
+    checkQuestionnaire() {
+      api.queryOneById("questionnaires", this.Task.questionnaireID).then((res)=>{
+        console.log(res)
+        var obj = JSON.stringify(res)
+        let url = "../fillQuestionnaire/main?obj="+obj
+        console.log(url)
+        wx.navigateTo({ url })
+      })
     }
   }
 }

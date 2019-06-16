@@ -102,6 +102,13 @@ export default {
       
     }
   },
+  onload(){
+    this.edit_multiSelect_des = ''
+    this.edit_multiSelect_indes = ''
+    this.edit_singleSelect_des = ''
+    this.edit_singleSelect_indes = ''
+    this.edit_input_des = ''
+  },
   components: {}
 }
 </script>

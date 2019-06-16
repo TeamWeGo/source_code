@@ -199,13 +199,18 @@ export default {
     addQues: function(){
       let pages = getCurrentPages()
       let prevPage = pages[pages.length - 1]
+      console.log(prevPage.data.quesID)
       if(prevPage.data.quesID == undefined){
         let url = "./createQuestionnaire/main"
         wx.navigateTo({ url })
       }
       else{
-        let url = "./createQuestionnaire/main?obj="+prevPage.data.quesID
-        wx.navigateTo({ url })
+        api.queryOneById("questionnaires", prevPage.data.quesID).then((res)=>{
+          var obj = JSON.stringify(res)
+          let url = "./createQuestionnaire/main?obj="+obj
+          console.log(url)
+          wx.navigateTo({ url })
+        })
       }
         
 

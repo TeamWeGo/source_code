@@ -18,9 +18,9 @@ import store from '../../../components/store';
 export default {
   data() {
     return {
+      id: '',
       commiunitytitle: "社区",
-      temDatas: [],
-      template: []
+      temDatas: []
     };
   },
 
@@ -32,7 +32,6 @@ export default {
     deleteQues:function(){
       var size = this.temDatas.length
       this.temDatas.splice(size-1, 1)
-      this.template.splice(size-1, 1)
     },
     getOpenId: function() {
       api
@@ -46,45 +45,76 @@ export default {
     },
     addMultiSelect:function(val) {
       this.temDatas.push(val)
-      this.template.push(val)
     },
     addSingleSelect:function(val){
       this.temDatas.push(val)
-      this.template.push(val)
     },
     addInput:function(val){
       this.temDatas.push(val)
-      this.template.push(val)
     },
     publish: function(){
-      let questionnaire = {
-        title: 'nothing',
-        description: 'nothing',
-        maxMount: 50,
-        template: this.template,
-        results: []
+      if(this.temDatas.length != 0){
+        if(this.id == ''){
+          let questionnaire = {
+            title: 'nothing',
+            description: 'nothing',
+            maxMount: 50,
+            template: this.temDatas,
+            results: []
+          }
+          this.temDatas = []
+          api
+            .insertOne('questionnaires', questionnaire)
+            .then(res => {
+              let pages = getCurrentPages()
+              let prevPage = pages[pages.length - 2]
+              console.log("insert")
+              prevPage.setData({
+                quesID: res.result
+              })
+              wx.navigateBack({
+                    delta: 1
+              })
+            })
+            .catch(rej => {
+              console.warn(rej);
+            })
+        }
+        else{
+          api
+            .updateOneById('questionnaires', this.id, {
+              template: this.temDatas
+            })
+            .then(res => {
+              let pages = getCurrentPages()
+              let prevPage = pages[pages.length - 2]
+              console.log("update")
+              this.temDatas = []
+              wx.navigateBack({
+                    delta: 1
+              })
+            })
+            .catch(rej => {
+              console.warn(rej);
+              wx.navigateBack({
+                    delta: 1
+              })
+            })
+            
+        }
+      }else{
+        console.log("nothing")
+        wx.navigateBack({
+              delta: 1
+        })
       }
-      this.temDatas = []
-      this.template = []
-      api
-        .insertOne('questionnaires', questionnaire)
-        .then(res => {
-          console.log(res.result)
-          let pages = getCurrentPages()
-          let prevPage = pages[pages.length - 2]
-          console.log(prevPage)
-          prevPage.setData({
-            quesID: res.result
-          })
-          wx.navigateBack({
-                delta: 1
-          })
-        })
-        .catch(rej => {
-          console.warn(rej);
-        })
-      
     }
+  },
+  onLoad (options) {
+    var obj =JSON.parse(decodeURIComponent(options.obj))
+    this.temDatas = obj.result[0].template
+    this.id = obj.result[0]._id
+    console.log(this.id)
   }
 };
 </script>

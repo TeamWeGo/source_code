@@ -33,6 +33,7 @@ export default {
     return {
       motto: "Hello miniprograme",
       curCity: store.state.curCity,
+      taskList: '',
       userInfo: {
         nickName: "mpvue",
         avatarUrl: "http://mpvue.com/assets/logo.png"
@@ -121,7 +122,6 @@ export default {
       })
     }
   },
-
   created() {
     // let app = getApp()
     this.getLocation();
