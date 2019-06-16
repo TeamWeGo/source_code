@@ -62,22 +62,28 @@ export default {
         description: 'nothing',
         maxMount: 50,
         template: this.template,
-        results: this.temDatas
+        results: []
       }
+      this.temDatas = []
+      this.template = []
       api
         .insertOne('questionnaires', questionnaire)
         .then(res => {
-          store.commit('changeQuesID',res.result)
+          console.log(res.result)
+          let pages = getCurrentPages()
+          let prevPage = pages[pages.length - 2]
+          console.log(prevPage)
+          prevPage.setData({
+            quesID: res.result
+          })
+          wx.navigateBack({
+                delta: 1
+          })
         })
         .catch(rej => {
           console.warn(rej);
         })
-      let pages = getCurrentPages();
-      let prevPage = pages[pages.length - 2];
       
-      wx.navigateBack({
-            delta: 1
-      })
     }
   }
 };

@@ -107,7 +107,6 @@ import store from '../../components/store'
 export default {
   data() {
     return {
-      quesID: '08560c9e5d03a57c01520baf556bba86',
       createTask: "创建任务",
       index: 0,
       Task: {
@@ -133,34 +132,45 @@ export default {
   },
   methods: {
     publishTask() {
-      console.log(store.state.quesID)
-      // let task = {
-      //   name: this.Task.name,
-      //   type: this.Task.tag[index].name,
-      //   description: this.Task.description,
-      //   state: "publishing",
-      //   numberOfJoiner: 10,
-      //   joiner: [],
-      //   location: this.Task.location,
-      //   publish: {
-      //     publisher: "ee3099285cc7c051093255c93e1edebc",
-      //     beginTime: "",
-      //     endTime: this.Task.startDate + this.Task.startTime
-      //   },
-      //   payment: this.Task.payment,
-      //   work: {
-      //     beginTime: this.Task.startDate + this.Task.startTime,
-      //     endTime: this.Task.completeDate + this.Task.completeTime
-      //   }
-      // };
-      // api
-      //   .publishOneTask(task)
-      //   .then(res => {
-      //     console.log(res);
-      //   })
-      //   .catch(rej => {
-      //     console.warn(rej);
-      //   });
+      let pages = getCurrentPages()
+      let prevPage = pages[pages.length - 1]
+      console.log(prevPage.data.quesID)
+      let task = {
+        name: this.Task.name,
+        type: this.Task.tag[this.index].name,
+        description: this.Task.description,
+        state: "publishing",
+        numberOfJoiner: 10,
+        joiner: [],
+        location: this.Task.location,
+        publish: {
+          publisher: "ee3099285cc7c051093255c93e1edebc",
+          beginTime: "",
+          endTime: this.Task.startDate + this.Task.startTime
+        },
+        payment: this.Task.payment,
+        work: {
+          beginTime: this.Task.startDate + this.Task.startTime,
+          endTime: this.Task.completeDate + this.Task.completeTime
+        },
+        isQuestionnaire: false,
+        questionnaireID: ''
+      };
+      if(prevPage.data.quesID == undefined){
+        task.isQuestionnaire = false
+        task.questionnaireID = ''
+      }else{
+        task.isQuestionnaire = true
+        task.questionnaireID = prevPage.data.quesID
+      }
+      api
+        .publishOneTask(task)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
     },
     bindStartDate: function(e) {
       this.Task.startDate = e.mp.detail.value;
@@ -187,17 +197,29 @@ export default {
       this.index = e.mp.detail.value;
     },
     addQues: function(){
-      if(this.quesID == ''){
-        console.log('new')
+      let pages = getCurrentPages()
+      let prevPage = pages[pages.length - 1]
+      if(prevPage.data.quesID == undefined){
         let url = "./createQuestionnaire/main"
         wx.navigateTo({ url })
-        this.quesID = store.state.quesID
       }
       else{
-        console.log('old')
-        let url = "./createQuestionnaire/main?obj="+this.quesID
+        let url = "./createQuestionnaire/main?obj="+prevPage.data.quesID
         wx.navigateTo({ url })
       }
+        
+
+      // if(this.quesID == ''){
+      //   console.log('new')
+      //   let url = "./createQuestionnaire/main"
+      //   wx.navigateTo({ url })
+      //   this.quesID = store.state.quesID
+      // }
+      // else{
+      //   console.log('old')
+      //   let url = "./createQuestionnaire/main?obj="+this.quesID
+      //   wx.navigateTo({ url })
+      // }
       
     }
   }
