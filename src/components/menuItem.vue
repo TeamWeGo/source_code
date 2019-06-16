@@ -1,5 +1,5 @@
 <template>
-  <div class="detail">
+  <div class="detail" @click="toDetail">
     <img class="detail-img" :src="mission.imgSrc">
     <div class="detail-info">
       <p class="title">{{mission.title}}</p>
@@ -12,7 +12,15 @@
 
 </<script>
 export default {
-  props: [ 'mission' ]
+  props: [ 'mission' ],
+  methods: {
+    toDetail() {
+      let temp = this.mission.task;
+      var obj = JSON.stringify(temp);
+      let url = "../logs/taskDetails/main?obj=" + obj;
+      wx.navigateTo({ url });
+    }
+  }
 }
 </script>
 
