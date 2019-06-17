@@ -109,11 +109,15 @@ export default {
       }
     }
   },
-  onShow(options) {
+  onLoad(options) {
     var obj = JSON.parse(decodeURIComponent(options.obj));
     this.temDatas = obj.result[0].template;
     this.id = obj.result[0]._id;
     console.log(this.id);
+  },
+  onUnload: function (){
+    this.temDatas = []
+    this.id = ''
   }
 };
 </script>
