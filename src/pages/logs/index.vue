@@ -88,6 +88,7 @@ export default {
   },
 
   onLoad() {
+    console.log("rilixianren")
     Date.prototype.Format = function(fmt) {
       //author: meizz
       var o = {
@@ -118,7 +119,7 @@ export default {
     api
       .querySomeByModel("tasks", {})
       .then(res => {
-        //   console.log(res);
+           console.log("nothing");
         this.missionlist = res.result;
         //  console.log(this.missionlist);
         this.missionlist.forEach(element => {

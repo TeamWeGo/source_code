@@ -91,7 +91,7 @@
         <view class="picker">地点：{{Task.location}}</view>
       </picker>
     </view>
-    
+
     <view class="publish" @click="publishTask">
       <button>{{ publish }}</button>
     </view>
@@ -151,7 +151,7 @@ export default {
       api
         .publishOneTask(task)
         .then(res => {
-         // console.log(res);
+          // console.log(res);
         })
         .catch(rej => {
           console.warn(rej);

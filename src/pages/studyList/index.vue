@@ -27,7 +27,7 @@ export default {
   },
 
   onLoad: function(options) {
-    this.missionlist = ["123"];
+    this.missionList = []
     this.type = options.type;
     //  console.log(this.type);
     this.curCity = store.state.curCity;
@@ -68,7 +68,7 @@ export default {
         let tempList = res.result;
         for (let i in tempList) {
           let li = tempList[i];
-          //console.log(li);
+          //this.missionlist.push(li);
           if (
             String(li["location"]).includes(this.curCity) &&
             String(li["state"]).includes("publishing")

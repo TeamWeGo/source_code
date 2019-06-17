@@ -122,7 +122,6 @@ export default {
       });
     }
   },
-
   created() {
     // let app = getApp()
     this.getLocation();
