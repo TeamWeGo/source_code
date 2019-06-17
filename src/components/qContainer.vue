@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <label>{{title}}</label>
+    <!-- <label>{{title}}</label> -->
     <div v-for="(item, index) in temDatas" :key="index">
       <ul v-if="item.type=='baseInput'">
         <baseInput :baseData="item"></baseInput>
@@ -42,7 +42,7 @@ export default {
     baseSingleSelect,
     baseMultiSelect
   },
-  props: ["temDatas", "title"],
+  props: ["temDatas"],
   data: function() {
     return {
       temDatas: this.temDatas
@@ -63,8 +63,17 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  margin: 8rpx 10rpx 8rpx 10rpx;
+  padding: 10rpx;
+}
 ul {
-  margin: 4rpx 5rpx 4rpx 5rpx;
+  margin: 0rpx;
+  width: 700rpx;
+}
+baseInput {
+  margin: 0rpx;
+  left: 0rpx;
 }
 </style>
 

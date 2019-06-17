@@ -46,71 +46,66 @@ export default {
   },
   methods: {
     addOneMultiSelect() {
-      if(this.edit_multiSelect_des!=''){
+      if (this.edit_multiSelect_des != "") {
         var question = {
-            type: "baseMultiSelect",
-            description: this.edit_multiSelect_des,
-            content: [
-            ]
+          type: "baseMultiSelect",
+          description: this.edit_multiSelect_des,
+          content: []
         };
-        var options = this.edit_multiSelect_indes.split(';');
-        for(var i = 0;i < options.length; i++){
-          if(options[i] != ""){
-            question.content.push({label:options[i], result:false});
+        var options = this.edit_multiSelect_indes.split(";");
+        for (var i = 0; i < options.length; i++) {
+          if (options[i] != "") {
+            question.content.push({ label: options[i], result: false });
           }
         }
-        this.edit_multiSelect_des = ''
-        this.edit_multiSelect_indes = ''
+        this.edit_multiSelect_des = "";
+        this.edit_multiSelect_indes = "";
         this.$emit("addMultiSelectQues", question);
       }
-      
     },
     addOneSingleSelect() {
-      if(this.edit_singleSelect_des!=''){
+      if (this.edit_singleSelect_des != "") {
         var question = {
-            type: "baseSingleSelect",
-            description: this.edit_singleSelect_des,
-            content: [
-            ]
+          type: "baseSingleSelect",
+          description: this.edit_singleSelect_des,
+          content: []
         };
-        var options = this.edit_singleSelect_indes.split(';');
-        for(var i = 0;i < options.length; i++){
-          if(options[i] != ""){
-            question.content.push({label:options[i], result:false});
+        var options = this.edit_singleSelect_indes.split(";");
+        for (var i = 0; i < options.length; i++) {
+          if (options[i] != "") {
+            question.content.push({ label: options[i], result: false });
           }
         }
-        this.edit_singleSelect_des = ''
-        this.edit_singleSelect_indes = ''
+        this.edit_singleSelect_des = "";
+        this.edit_singleSelect_indes = "";
         this.$emit("addSingleSelectQues", question);
       }
-      
     },
     addOneInput() {
-      if(this.edit_input_des!=''){
+      if (this.edit_input_des != "") {
         var question = {
-            type: "baseInput",
-            description: this.edit_input_des,
-            content: [
-              {
-                result: ""
-              }
-            ]
-        }
-        this.edit_input_des = ''
-        this.$emit("addInputQues", question)
+          type: "baseInput",
+          description: this.edit_input_des,
+          content: [
+            {
+              result: ""
+            }
+          ]
+        };
+        this.edit_input_des = "";
+        this.$emit("addInputQues", question);
       }
-      
     }
   },
-  onload(){
-    this.edit_multiSelect_des = ''
-    this.edit_multiSelect_indes = ''
-    this.edit_singleSelect_des = ''
-    this.edit_singleSelect_indes = ''
-    this.edit_input_des = ''
+  onShow() {
+    this.edit_multiSelect_des = "";
+    this.edit_multiSelect_indes = "";
+    this.edit_singleSelect_des = "";
+    this.edit_singleSelect_indes = "";
+    this.edit_input_des = "";
   },
   components: {}
-}
+};
 </script>
 
 <style scoped>

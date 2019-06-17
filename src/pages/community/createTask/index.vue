@@ -1,5 +1,5 @@
-<template >
-  <view class="community">
+<template>
+  <view class="ttt">
     <view class="createTask">
       <p>{{createTask}}</p>
     </view>
@@ -10,11 +10,11 @@
       </view>
       <view class="participatorNum">
         <label>人数</label>
-        <input type="number" id="participatorNum" v-model="Task.maxJoiner">
+        <input type="text" id="participatorNum" v-model="Task.participatorNum">
       </view>
       <view class="payment">
         <label>报酬</label>
-        <input type="number" id="payment" v-model="Task.payment">
+        <input type="text" id="payment" v-model="Task.payment">
       </view>
     </view>
     <view class="Task-description">
@@ -91,9 +91,7 @@
         <view class="picker">地点：{{Task.location}}</view>
       </picker>
     </view>
-    <view class="addQues" @click="addQues">
-      <button>添加问卷</button>
-    </view>
+
     <view class="publish" @click="publishTask">
       <button>{{ publish }}</button>
     </view>
@@ -102,8 +100,8 @@
 
 
 <script>
-import { api } from "../../utils/api.js";
-import store from "../../components/store";
+import { api } from "../../../utils/api";
+import store from "../../../components/store";
 export default {
   data() {
     return {
@@ -111,10 +109,9 @@ export default {
       index: 0,
       Task: {
         name: "",
-        maxJoiner: 0,
-        payment: 0,
+        participatorNum: "",
+        payment: "",
         description: "",
-        joiners: [],
         startDate: "2019-04-25",
         startTime: "00:00",
         completeDate: "2019-04-25",
@@ -133,77 +130,41 @@ export default {
   },
   methods: {
     publishTask() {
-      let curuser = store.state.user;
-      let pages = getCurrentPages();
-      let prevPage = pages[pages.length - 1];
-      console.log(prevPage.data.quesID);
+      curuser = store.state.user;
       let task = {
         name: this.Task.name,
-        type: this.Task.tag[this.index].name,
+        type: this.Task.tag[index].name,
         description: this.Task.description,
         state: "publishing",
-        maxJoiner: this.Task.maxJoiner,
-        joiners: [],
+        numberOfJoiner: 10,
+        joiner: [],
         location: this.Task.location,
         publish: {
           publisher: curuser._id,
-          beginTime: "",
+          beginTime: this.Task.publishDate + this.Task.publishTime,
           endTime: this.Task.startDate + this.Task.startTime
         },
         payment: this.Task.payment,
         work: {
           beginTime: this.Task.startDate + this.Task.startTime,
           endTime: this.Task.completeDate + this.Task.completeTime
-        },
-        isQuestionnaire: false,
-        questionnaireID: ""
+        }
       };
-      if (prevPage.data.quesID == undefined) {
-        task.isQuestionnaire = false;
-        task.questionnaireID = "";
-      } else {
-        task.isQuestionnaire = true;
-        task.questionnaireID = prevPage.data.quesID;
-      }
       api
         .publishOneTask(task)
         .then(res => {
-          console.log(res);
           wx.showToast({
             title: "创建任务成功",
             icon: "success",
             duration: 2000
           });
-          this.Task.name = "";
-          this.Task.maxJoiner = 0;
-          this.Task.payment = 0;
-          this.Task.description = "";
-          this.Task.startDate = "2019-04-25";
-          this.Task.startTime = "00:00";
-          this.Task.completeDate = "2019-04-25";
-          this.Task.completeTime = "00:00";
-          this.Task.publishDate = "2019-04-25";
-          this.Task.publishTime = "00:00";
-          this.Task.location = "北京市,北京市,东城区";
         })
         .catch(rej => {
-          console.warn(rej);
           wx.showToast({
             title: "创建任务失败",
             icon: "success",
             duration: 2000
           });
-          this.Task.name = "";
-          this.Task.maxJoiner = 0;
-          this.Task.payment = 0;
-          this.Task.description = "";
-          this.Task.startDate = "2019-04-25";
-          this.Task.startTime = "00:00";
-          this.Task.completeDate = "2019-04-25";
-          this.Task.completeTime = "00:00";
-          this.Task.publishDate = "2019-04-25";
-          this.Task.publishTime = "00:00";
-          this.Task.location = "北京市,北京市,东城区";
         });
     },
     bindStartDate: function(e) {
@@ -229,62 +190,30 @@ export default {
     },
     bindTagChange: function(e) {
       this.index = e.mp.detail.value;
-    },
-    addQues: function() {
-      let pages = getCurrentPages();
-      let prevPage = pages[pages.length - 1];
-      console.log(prevPage.data.quesID);
-      if (prevPage.data.quesID == undefined) {
-        let url = "./createQuestionnaire/main";
-        wx.navigateTo({ url });
-      } else {
-        api.queryOneById("questionnaires", prevPage.data.quesID).then(res => {
-          var obj = JSON.stringify(res);
-          let url = "./createQuestionnaire/main?obj=" + obj;
-          console.log(url);
-          wx.navigateTo({ url });
-        });
-      }
-
-      // if(this.quesID == ''){
-      //   console.log('new')
-      //   let url = "./createQuestionnaire/main"
-      //   wx.navigateTo({ url })
-      //   this.quesID = store.state.quesID
-      // }
-      // else{
-      //   console.log('old')
-      //   let url = "./createQuestionnaire/main?obj="+this.quesID
-      //   wx.navigateTo({ url })
-      // }
     }
   }
 };
 </script>
+
 <style scoped>
-.community {
-  margin: 0rpx 8rpx 0rpx 8rpx;
-  background-color: #ffffff;
+.ttt {
+  background-color: #efeff4;
 }
 .createTask {
-  width: 600rpx;
+  width: 500rpx;
   margin: 0 auto;
   border-bottom: 1rpx solid gray;
 }
 input {
-  width: 500rpx;
-  border-radius: 5rpx;
-  padding-left: 5rpx;
-  background-color: #efeff4;
+  border-bottom: 1rpx solid gray;
 }
-
 .createTask p {
   font-size: 50rpx;
   font-weight: bold;
-  text-align: left;
+  text-align: center;
 }
 .Task-basicInfo {
-  width: 600rpx;
+  width: 500rpx;
   margin-left: auto;
   margin-right: auto;
   margin-top: 10rpx;
@@ -300,7 +229,7 @@ input {
 }
 
 .Task-description {
-  width: 600rpx;
+  width: 500rpx;
   height: 230rpx;
   margin: 0 auto;
   margin-top: 10rpx;
@@ -309,14 +238,13 @@ input {
 
 .Task-description textarea {
   margin-top: 10rpx;
-  width: 600rpx;
+  width: 500rpx;
   height: 170rpx;
-  border-radius: 5rpx;
-  background-color: #efeff4;
+  background-color: white;
 }
 
 .Task-time {
-  width: 600rpx;
+  width: 500rpx;
   margin-left: auto;
   margin-right: auto;
   margin-top: 10rpx;
@@ -333,7 +261,7 @@ input {
 }
 
 .Task-location {
-  width: 600rpx;
+  width: 500rpx;
   display: flex;
   flex-direction: row;
   margin-left: auto;
@@ -345,7 +273,7 @@ input {
   width: 100rpx;
 }
 .Task-tag {
-  width: 600rpx;
+  width: 500rpx;
   display: flex;
   flex-direction: row;
   margin-top: 10rpx;
@@ -357,19 +285,13 @@ input {
   width: 100rpx;
 }
 
-.publish,
-.addQues {
+.publish {
   margin-top: 10rpx;
   width: 300rpx;
   margin-left: auto;
   margin-right: auto;
 }
 .publish button {
-  font-size: 30rpx;
-  color: white;
-  background-color: #1aad19;
-}
-.addQues button {
   font-size: 30rpx;
   color: white;
   background-color: #1aad19;

@@ -75,7 +75,7 @@ export var mydb = {
           'result': console.error.toString(),
           'errMsg': 'query a user:eror'
         }
-        console.log(msg);
+        //  console.log(msg);
         callback(null)
       }
     })
@@ -99,7 +99,7 @@ export var mydb = {
             'result': console.error.toString(),
             'errMsg': 'query a user:eror'
           }
-          console.log(msg);
+          // console.log(msg);
           callback(null)
         }
       })
@@ -180,7 +180,7 @@ export var mydb = {
             'result': console.error.toString(),
             'errMsg': 'query a task:eror'
           }
-          console.log(msg);
+          //  console.log(msg);
         }
       })
     } else {
@@ -236,7 +236,7 @@ export var mydb = {
           'result': console.error.toString(),
           'errMsg': 'query a task:eror'
         }
-        console.log(msg);
+        //   console.log(msg);
       }
     })
   },

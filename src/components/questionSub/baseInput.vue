@@ -1,6 +1,6 @@
 <template>
   <div id="base-input">
-    <label class="base_input_one" for="input_one">{{temData.description}}</label>
+    <label class="base_input_one" for="input_one">{{"*"+temData.description}}</label>
     <input
       name="input_one"
       id="input_one"
@@ -39,10 +39,12 @@ input {
   padding-left: 8px;
   height: 24pt;
   font-size: 13pt;
-  margin: 8rpx 0rpx 8rpx 0rpx;
+  margin: 8rpx 8rpx 8rpx 8rpx;
 }
 #base-input {
   margin: 0rpx;
+  background-color: gainsboro;
+  border-radius: 10rpx;
 }
 .base_input_one {
   height: 20pt;
