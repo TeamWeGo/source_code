@@ -104,9 +104,10 @@ export default {
 <style scoped>
 .swiper-container {
   margin-top: 20px;
+  padding-bottom: 6px;
   position: relative;
   width: 100%;
-  height: 180px !important;
+  height: auto;
   background: #303030;
 }
 .item{
@@ -130,7 +131,7 @@ export default {
 .dot-wrapper {
   position: absolute;
   left: 45%;
-  bottom: 25%;
+  bottom: 15%;
   width: 10%;
   height: 15rpx;
 }
