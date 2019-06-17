@@ -56,13 +56,14 @@
       <button>查看问卷</button>
     </view>
 
-    <view
-      v-if="Task.state == 'publishing' && Task.publish.publisher != userID"
+    <!-- <view
+       v-if="Task.state == 'publishing' && Task.publish.publisher != userID"
       class="accept"
-      @click="acceptTask"
+      @click="acceptTask" 
     >
-      <button>{{ accept }}</button>
-    </view>
+    </view>-->
+
+    <button @click="dealwithtask">{{ accept }}</button>
   </view>
   <!-- Today is Monday, our air conditioner ran out of money in the midnight, fuck! I wake up because of the heat, and heard xiaofan getting out of bed to turn on the fan
   Bye Bye! See you next time.-->
@@ -107,46 +108,35 @@ export default {
     // console.log(obj);
     this.Task = obj;
     console.log(this.Task.questionnaireID);
-    this.userID = "ee3099285cc7c051093255c93e1edebc";
+    this.userID = store.state.user._id;
+    if (this.Task.publish.publisher == this.userID) {
+      if (this.Task.state == "publishing") {
+        this.accept = "确认";
+      } else if (this.Task.state == "doing") {
+        this.accept = "结束";
+      } else {
+        this.accept = "^_^";
+      }
+    } else {
+      if (this.Task.state == "publishing") {
+        this.accept = "加入";
+      } else {
+        this.accept = "^_^";
+      }
+    }
   },
   methods: {
-    acceptTask() {
-      // Date.prototype.Format = function(fmt) {
-      //   //author: meizz
-      //   var o = {
-      //     "M+": this.getMonth() + 1, //月份
-      //     "d+": this.getDate(), //日
-      //     "h+": this.getHours(), //小时
-      //     "m+": this.getMinutes(), //分
-      //     "s+": this.getSeconds(), //秒
-      //     "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-      //     S: this.getMilliseconds() //毫秒
-      //   };
-      //   if (/(y+)/.test(fmt))
-      //     fmt = fmt.replace(
-      //       RegExp.$1,
-      //       (this.getFullYear() + "").substr(4 - RegExp.$1.length)
-      //     );
-      //   for (var k in o)
-      //     if (new RegExp("(" + k + ")").test(fmt))
-      //       fmt = fmt.replace(
-      //         RegExp.$1,
-      //         RegExp.$1.length == 1
-      //           ? o[k]
-      //           : ("00" + o[k]).substr(("" + o[k]).length)
-      //       );
-      //   return fmt;
-      // };
-      console.log(this.Task);
-      api
-        .joinOneTask(this.Task, this.userID)
-        .then(result => {
-          console.log("success");
-        })
-        .catch(error => {
-          console.warn(error);
-        });
-    },
+    // acceptTask() {
+    //   console.log(this.Task);
+    //   api
+    //     .joinOneTask(this.Task, this.userID)
+    //     .then(result => {
+    //       console.log("success");
+    //     })
+    //     .catch(error => {
+    //       console.warn(error);
+    //     });
+    // },
     fillQuestionnaire() {
       console.log(this.Task.questionnaireID);
       api
@@ -169,6 +159,42 @@ export default {
           console.log(url);
           wx.navigateTo({ url });
         });
+    },
+    dealwithtask() {
+      if (this.Task.publish.publisher == this.userID) {
+        if (this.Task.state == "publishing") {
+          api
+            .verifyOneTask(this.Task, store.state.user)
+            .then(res => {
+              console.log("verify" + res);
+            })
+            .catch(err => {
+              console.warn(err);
+            });
+        } else if (this.Task.state == "doing") {
+          api
+            .endOneTask(this.Task, store.state.user)
+            .then(res => {
+              console.log("end" + res);
+            })
+            .catch(err => {
+              console.warn(err);
+            });
+        } else {
+        }
+      } else {
+        if (this.Task.state == "publishing") {
+          api
+            .joinOneTask(this.Task, store.state.user)
+            .then(res => {
+              console.log("join" + res);
+            })
+            .catch(err => {
+              console.warn(err);
+            });
+        } else {
+        }
+      }
     }
   }
 };

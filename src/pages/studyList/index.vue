@@ -27,7 +27,7 @@ export default {
   },
 
   onLoad: function(options) {
-    this.missionList = []
+    this.missionList = [];
     this.type = options.type;
     //  console.log(this.type);
     this.curCity = store.state.curCity;
@@ -65,6 +65,7 @@ export default {
       })
       .then(res => {
         //  console.log(res);
+        this.missionList = [];
         let tempList = res.result;
         for (let i in tempList) {
           let li = tempList[i];

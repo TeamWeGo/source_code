@@ -228,7 +228,7 @@ export var api = {
    * publish a task and update publiser
    * @param {Object} task task
    */
-  publishOneTask: async function (task) {
+  publishOneTask: function (task) {
     let user;
     let p1 = new Promise((resolve, reject) => {
       wx.cloud
@@ -346,7 +346,11 @@ export var api = {
    */
   joinOneTask: function (task, user) {
     return new Promise((resolve, reject) => {
-      if (task.joiners.length >= task.maxJoiner || task.state != "publishing") {
+      let joinernum = 0
+      if (task.joiners) {
+        joinernum = task.joiners.length;
+      }
+      if (joinernum >= task.maxJoiner || task.state != "publishing") {
         let msg = {
           result: null,
           msg: "join a task:error",
@@ -448,9 +452,15 @@ export var api = {
         })
         .then(result => {
           publisher = result.result.data[0];
+          let joinernum = 0;
+          if (task.joiners) {
+            joinernum = task.joiners.length;
+          } else {
+            task.joiners = [];
+          }
           if (
             task.publish.publisher != publisher._id || task.state != "publishing" ||
-            publisher.balance - task.payment * task.joiners.length < 0
+            publisher.balance - task.payment * joinernum < 0
           ) {
             let msg = {
               result: null,
@@ -487,8 +497,8 @@ export var api = {
             });
 
             let upPubliser = new Promise((resolve, reject) => {
-              let verifyed = publisher.tasks.verifyed;
-              verifyed.push(task._id);
+              let verified = publisher.tasks.verified;
+              verified.push(task._id);
               let publishing = publisher.tasks.publishing;
               let i = publishing.indexOf(task._id);
               publishing.splice(i, 1);
@@ -502,7 +512,7 @@ export var api = {
                       balance:
                         publisher.balance - task.payment * task.joiners.length,
                       tasks: {
-                        verifyed: verifyed,
+                        verified: verified,
                         publishing: publishing
                       }
                     }
@@ -627,9 +637,15 @@ export var api = {
         })
         .then(result => {
           publisher = result.result.data[0];
+          let joinernum = 0;
+          if (task.joiners) {
+            joinernum = task.joiners.length;
+          } else {
+            task.joiners = [];
+          }
           if (
             task.publish.publisher != publisher._id || task.state != "doing" ||
-            publisher.balance - task.payment * task.joiners.length < 0
+            publisher.balance - task.payment * joinernum < 0
           ) {
             let msg = {
               result: null,
@@ -666,11 +682,11 @@ export var api = {
             });
 
             let upPubliser = new Promise((resolve, reject) => {
-              let verifyed = publisher.tasks.verifyed;
+              let verified = publisher.tasks.verified;
               let ended = publisher.tasks.ended;
 
-              let i = verifyed.indexOf(task._id);
-              verifyed.splice(i, 1);
+              let i = verified.indexOf(task._id);
+              verified.splice(i, 1);
               ended.push(task._id);
               wx.cloud
                 .callFunction({
@@ -680,7 +696,7 @@ export var api = {
                     _id: publisher._id,
                     updateInfo: {
                       tasks: {
-                        verifyed: verifyed,
+                        verified: verified,
                         ended: ended
                       }
                     }
@@ -790,7 +806,7 @@ export var api = {
   },
 
   /**
-   * publisher delete a task before verifyed
+   * publisher delete a task before verified
    * @param {object} task task object
    * @param {object} publisher user object
    */

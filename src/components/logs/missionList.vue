@@ -52,7 +52,7 @@ export default {
       missionlist: this.list,
       task_state: this.task_state,
       show_list: [],
-      map: {"已接收":'joining',"待完成":'doing',"已完成":'finished',"已发布":'publishing', "已确认":'verifyed', "已结束":'ended'}
+      map: {"已接收":'joining',"待完成":'doing',"已完成":'finished',"已发布":'publishing', "已确认":'verified', "已结束":'ended'}
     }
   },
   watch: {

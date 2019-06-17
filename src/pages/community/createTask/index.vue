@@ -101,6 +101,7 @@
 
 <script>
 import { api } from "../../../utils/api";
+import store from "../../../components/store";
 export default {
   data() {
     return {
@@ -129,6 +130,7 @@ export default {
   },
   methods: {
     publishTask() {
+      curuser = store.state.user;
       let task = {
         name: this.Task.name,
         type: this.Task.tag[index].name,
@@ -138,8 +140,8 @@ export default {
         joiner: [],
         location: this.Task.location,
         publish: {
-          publisher: "ee3099285cc7c051093255c93e1edebc",
-          beginTime: "",
+          publisher: curuser._id,
+          beginTime: this.Task.publishDate + this.Task.publishTime,
           endTime: this.Task.startDate + this.Task.startTime
         },
         payment: this.Task.payment,
@@ -151,10 +153,18 @@ export default {
       api
         .publishOneTask(task)
         .then(res => {
-          // console.log(res);
+          wx.showToast({
+            title: "创建任务成功",
+            icon: "success",
+            duration: 2000
+          });
         })
         .catch(rej => {
-          console.warn(rej);
+          wx.showToast({
+            title: "创建任务失败",
+            icon: "success",
+            duration: 2000
+          });
         });
     },
     bindStartDate: function(e) {

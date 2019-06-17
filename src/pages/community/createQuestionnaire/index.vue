@@ -58,6 +58,11 @@ export default {
           api
             .insertOne("questionnaires", questionnaire)
             .then(res => {
+              wx.showToast({
+                title: "创建问卷成功",
+                icon: "success",
+                duration: 2000
+              });
               let pages = getCurrentPages();
               let prevPage = pages[pages.length - 2];
               console.log("insert");
@@ -69,7 +74,11 @@ export default {
               });
             })
             .catch(rej => {
-              console.warn(rej);
+              wx.showToast({
+                title: "创建问卷失败",
+                icon: "success",
+                duration: 2000
+              });
             });
         } else {
           api
@@ -100,7 +109,7 @@ export default {
       }
     }
   },
-  onLoad(options) {
+  onShow(options) {
     var obj = JSON.parse(decodeURIComponent(options.obj));
     this.temDatas = obj.result[0].template;
     this.id = obj.result[0]._id;

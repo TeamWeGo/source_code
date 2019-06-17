@@ -209,7 +209,7 @@ export default {
                           .then(result => {
                             console.log(result);
 
-                            that.userInfo.id = result.result[0]._id;
+                            that.userInfo._id = result.result[0]._id;
                             that.userInfo.userName = result.result[0].nickName;
                             that.userInfo.studentId =
                               result.result[0].studentId;
@@ -242,6 +242,7 @@ export default {
                               result.result[0].tags.flag;
 
                             let user = {
+                              _id: that.userInfo._id,
                               wechatopenid: that.userInfo.wechatopenid,
                               nickName: that.userInfo.userName,
                               name: "realName",
@@ -290,7 +291,7 @@ export default {
 
   created() {
     // let app = getApp()
-    console.log(this.userInfo.nickName);
+    //  console.log(this.userInfo.nickName);
     this.getUserInfo();
   }
 };

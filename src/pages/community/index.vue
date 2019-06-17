@@ -10,11 +10,11 @@
       </view>
       <view class="participatorNum">
         <label>人数</label>
-        <input type="text" id="participatorNum" v-model="Task.participatorNum">
+        <input type="number" id="participatorNum" v-model="Task.maxJoiner">
       </view>
       <view class="payment">
         <label>报酬</label>
-        <input type="text" id="payment" v-model="Task.payment">
+        <input type="number" id="payment" v-model="Task.payment">
       </view>
     </view>
     <view class="Task-description">
@@ -111,9 +111,10 @@ export default {
       index: 0,
       Task: {
         name: "",
-        participatorNum: "",
-        payment: "",
+        maxJoiner: 0,
+        payment: 0,
         description: "",
+        joiners: [],
         startDate: "2019-04-25",
         startTime: "00:00",
         completeDate: "2019-04-25",
@@ -132,6 +133,7 @@ export default {
   },
   methods: {
     publishTask() {
+      let curuser = store.state.user;
       let pages = getCurrentPages();
       let prevPage = pages[pages.length - 1];
       console.log(prevPage.data.quesID);
@@ -140,11 +142,11 @@ export default {
         type: this.Task.tag[this.index].name,
         description: this.Task.description,
         state: "publishing",
-        numberOfJoiner: 10,
-        joiner: [],
+        maxJoiner: this.Task.maxJoiner,
+        joiners: [],
         location: this.Task.location,
         publish: {
-          publisher: "ee3099285cc7c051093255c93e1edebc",
+          publisher: curuser._id,
           beginTime: "",
           endTime: this.Task.startDate + this.Task.startTime
         },
@@ -167,9 +169,41 @@ export default {
         .publishOneTask(task)
         .then(res => {
           console.log(res);
+          wx.showToast({
+            title: "创建任务成功",
+            icon: "success",
+            duration: 2000
+          });
+          this.Task.name = "";
+          this.Task.maxJoiner = 0;
+          this.Task.payment = 0;
+          this.Task.description = "";
+          this.Task.startDate = "2019-04-25";
+          this.Task.startTime = "00:00";
+          this.Task.completeDate = "2019-04-25";
+          this.Task.completeTime = "00:00";
+          this.Task.publishDate = "2019-04-25";
+          this.Task.publishTime = "00:00";
+          this.Task.location = "北京市,北京市,东城区";
         })
         .catch(rej => {
           console.warn(rej);
+          wx.showToast({
+            title: "创建任务失败",
+            icon: "success",
+            duration: 2000
+          });
+          this.Task.name = "";
+          this.Task.maxJoiner = 0;
+          this.Task.payment = 0;
+          this.Task.description = "";
+          this.Task.startDate = "2019-04-25";
+          this.Task.startTime = "00:00";
+          this.Task.completeDate = "2019-04-25";
+          this.Task.completeTime = "00:00";
+          this.Task.publishDate = "2019-04-25";
+          this.Task.publishTime = "00:00";
+          this.Task.location = "北京市,北京市,东城区";
         });
     },
     bindStartDate: function(e) {
@@ -240,6 +274,7 @@ export default {
 input {
   width: 500rpx;
   border-radius: 5rpx;
+  padding-left: 5rpx;
   background-color: #efeff4;
 }
 

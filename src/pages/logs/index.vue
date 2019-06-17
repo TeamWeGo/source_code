@@ -24,8 +24,9 @@
 import searchBar from "@/components/logs/searchBar";
 import missionList from "@/components/logs/missionList";
 import mpNavbar from "@/components/logs/mpnavbar";
-
+import store from "../../components/store";
 import { api } from "../../utils/api.js";
+import { userInfo } from "os";
 
 export default {
   components: {
@@ -39,7 +40,7 @@ export default {
       missionlist: [],
       tabs: ["已接收", "待完成", "已完成"],
       tabs_index: 0,
-      curRole: "worker"
+      curRole: "cow"
     };
   },
 
@@ -47,7 +48,7 @@ export default {
     touchStart(e) {
       this.startX = e.mp.changedTouches[0].pageX;
       this.startY = e.mp.changedTouches[0].pageY;
-    //  console.log(this.startX, this.startY);
+      //  console.log(this.startX, this.startY);
     },
     touchmove(e) {
       this.endX = e.mp.changedTouches[0].pageX;
@@ -67,18 +68,18 @@ export default {
           }
           this.startX = this.endX;
           this.startY = this.endY;
-         // console.log(this.endX, this.endY);
+          // console.log(this.endX, this.endY);
         }
       }
     },
     touchEnd(e) {},
     switchRole() {
-     // console.log("click!");
-      if (this.curRole == "worker") {
-        this.curRole = "cow";
+      // console.log("click!");
+      if (this.curRole == "cow") {
+        this.curRole = "worker";
         this.tabs = ["已发布", "已确认", "已结束"];
       } else {
-        this.curRole = "worker";
+        this.curRole = "cow";
         this.tabs = ["已接收", "待完成", "已完成"];
       }
     },
@@ -87,8 +88,8 @@ export default {
     }
   },
 
-  onLoad() {
-    console.log("rilixianren")
+  onShow() {
+    console.log("rilixianren");
     Date.prototype.Format = function(fmt) {
       //author: meizz
       var o = {
@@ -115,14 +116,24 @@ export default {
           );
       return fmt;
     };
-
+    let curuser = store.state.user;
     api
-      .querySomeByModel("tasks", {})
+      .querySomeByModel("tasks", {
+        publish: {
+          publisher: curuser._id
+        }
+      })
       .then(res => {
-           console.log("nothing");
+        console.log("nothing");
         this.missionlist = res.result;
         //  console.log(this.missionlist);
         this.missionlist.forEach(element => {
+          if (element.publish.publisher != curuser._id) {
+            let index = this.missionlist.indexOf(element);
+            if (index > -1) {
+              this.missionlist.splice(index, 1);
+            }
+          }
           var date = new Date(element.publish.beginTime);
           element.publish.beginTime = date.Format("yyyy-MM-dd");
           element.publish.endTime = date.Format("yyyy-MM-dd");
