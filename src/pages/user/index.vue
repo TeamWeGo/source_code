@@ -71,12 +71,12 @@ export default {
         },
         index: [0, 1, 1],
         tasks: {
-          joining: [0, 1, 2],
-          doing: [0, 1, 2],
-          finished: [0, 1, 2],
-          publishing: [0, 1, 2],
-          verified: [0],
-          ended: [0]
+          joining: [],
+          doing: [],
+          finished: [],
+          publishing: [],
+          verified: [],
+          ended: []
         },
         isVerified: true,
         wechatopenid: 1,
