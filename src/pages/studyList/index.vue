@@ -17,19 +17,19 @@ import { api } from "../../utils/api.js";
 
 export default {
   components: {
-    missionList,
+    missionList
   },
 
   data() {
     return {
-      missionlist: [],
+      missionlist: []
     };
   },
 
   onLoad: function(options) {
-    this.missionlist = ['123']
+    this.missionList = [];
     this.type = options.type;
-    console.log(this.type);
+    //  console.log(this.type);
     this.curCity = store.state.curCity;
 
     Date.prototype.Format = function(fmt) {
@@ -58,17 +58,18 @@ export default {
           );
       return fmt;
     };
-    console.log(this.missionlist)
+    // console.log(this.missionlist)
     api
       .querySomeByModel("tasks", {
         type: this.type
       })
       .then(res => {
-        console.log(res);
+        //  console.log(res);
+        this.missionList = [];
         let tempList = res.result;
         for (let i in tempList) {
           let li = tempList[i];
-          //console.log(li);
+          //this.missionlist.push(li);
           if (
             String(li["location"]).includes(this.curCity) &&
             String(li["state"]).includes("publishing")
@@ -93,14 +94,13 @@ export default {
 </script>
 
 <style>
-page{
+page {
   height: 100%;
 }
 
-.navbar.weui-navbar__item.weui-bar__item_on{
+.navbar.weui-navbar__item.weui-bar__item_on {
   color: orangered !important;
 }
-
 </style>
 
 
@@ -127,5 +127,4 @@ page{
   background-color: white;
   z-index: 0;
 }
-
 </style>

@@ -7,7 +7,8 @@
     "pages/community/main",
     "pages/studyList/main",
     "pages/community/taskDetails/main",
-    "pages/community/createQuestionnaire/main"
+    "pages/community/createQuestionnaire/main",
+    "pages/community/fillQuestionnaire/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

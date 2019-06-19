@@ -49,32 +49,31 @@
 </template>
 
 <script>
-
-import '@/../static/weui/weui.css'
+import "@/../static/weui/weui.css";
 
 export default {
-  props: { },
-  data () {
+  props: {},
+  data() {
     return {
       inputShowed: false,
-      inputVal: ''
-    }
+      inputVal: ""
+    };
   },
   methods: {
-    showInput () {
-      this.inputShowed = true
+    showInput() {
+      this.inputShowed = true;
     },
-    hideInput () {
-      this.inputVal = ''
-      this.inputShowed = false
+    hideInput() {
+      this.inputVal = "";
+      this.inputShowed = false;
     },
-    clearInput () {
-      this.inputVal = ''
+    clearInput() {
+      this.inputVal = "";
     },
-    inputTyping (e) {
-      console.log(e)
-      this.inputVal = e.mp.detail.value
+    inputTyping(e) {
+      // console.log(e)
+      this.inputVal = e.mp.detail.value;
     }
   }
-}
+};
 </script>

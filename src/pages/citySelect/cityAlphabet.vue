@@ -1,37 +1,41 @@
 <template>
   <div class="alphabet">
     <ul>
-      <li class="alpItem" v-for="item in letters" :key="item" :ref="item"
-          @click="handleClick($event)"
-          @touchstart="handleTouchStart"
-          @touchmove="handleTouchMove"
-          @touchend="handleTouchEnd"
+      <li
+        class="alpItem"
+        v-for="item in letters"
+        :key="item"
+        :ref="item"
+        @click="handleClick($event)"
+        @touchstart="handleTouchStart"
+        @touchmove="handleTouchMove"
+        @touchend="handleTouchEnd"
       >{{ item }}</li>
     </ul>
   </div>
 </template>
 
 <script>
-import store from '@/components/store'
+import store from "@/components/store";
 
 export default {
   props: {
     cities: {}
   },
-  data () {
+  data() {
     return {
       touchStatus: false,
       startY: 0,
       dis: 0
-    }
+    };
   },
   computed: {
-    letters () {
-      var letters = []
-      for(let key in this.cities) {
-        letters.push(key)
+    letters() {
+      var letters = [];
+      for (let key in this.cities) {
+        letters.push(key);
       }
-      return letters
+      return letters;
     }
   },
   /*updated () {
@@ -39,29 +43,29 @@ export default {
   },*/
   methods: {
     handleLetterClick(e) {
-      store.commit('changeAlphabet', e.target.innerText);
+      store.commit("changeAlphabet", e.target.innerText);
     },
     handleClick(e) {
-      console.log(e.mp._relatedInfo.anchorTargetText);
+      //console.log(e.mp._relatedInfo.anchorTargetText);
       //console.log(this.$refs['A'])
       let txt = e.mp._relatedInfo.anchorTargetText;
-      store.commit('changeAlphabet', txt);
+      store.commit("changeAlphabet", txt);
       //console.log(store.state.city_alphabet);
     },
     handleTouchStart(e) {
       this.touchStatus = true;
     },
     handleTouchMove(e) {
-      if(this.touchStatus) {
-        if(this.timer) {
+      if (this.touchStatus) {
+        if (this.timer) {
           clearTimeout(this.timer);
         }
         this.timer = setTimeout(() => {
-          const startY = this.$refs['A'].offsetTop
-          const touchY = e.touches[0].clientY - 40
-          const index = Math.floor((touchY - this.startY)/20)
-          if(index >= 0 && index < this.letters.length){
-            store.commit('changeAlphabet', e.target.innerText);
+          const startY = this.$refs["A"].offsetTop;
+          const touchY = e.touches[0].clientY - 40;
+          const index = Math.floor((touchY - this.startY) / 20);
+          if (index >= 0 && index < this.letters.length) {
+            store.commit("changeAlphabet", e.target.innerText);
           }
         }, 16);
       }
@@ -70,7 +74,7 @@ export default {
       this.touchStatus = false;
     }
   }
-}
+};
 </script>
 
 <style scoped>

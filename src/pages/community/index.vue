@@ -1,4 +1,4 @@
-<template>
+<template >
   <view class="community">
     <view class="createTask">
       <p>{{createTask}}</p>
@@ -10,11 +10,11 @@
       </view>
       <view class="participatorNum">
         <label>人数</label>
-        <input type="text" id="participatorNum" v-model="Task.participatorNum">
+        <input type="number" id="participatorNum" v-model="Task.maxJoiner">
       </view>
       <view class="payment">
         <label>报酬</label>
-        <input type="text" id="payment" v-model="Task.payment">
+        <input type="number" id="payment" v-model="Task.payment">
       </view>
     </view>
     <view class="Task-description">
@@ -103,18 +103,18 @@
 
 <script>
 import { api } from "../../utils/api.js";
-import store from '../../components/store'
+import store from "../../components/store";
 export default {
   data() {
     return {
-      quesID: '08560c9e5d03a57c01520baf556bba86',
       createTask: "创建任务",
       index: 0,
       Task: {
         name: "",
-        participatorNum: "",
-        payment: "",
+        maxJoiner: 0,
+        payment: 0,
         description: "",
+        joiners: [],
         startDate: "2019-04-25",
         startTime: "00:00",
         completeDate: "2019-04-25",
@@ -133,34 +133,98 @@ export default {
   },
   methods: {
     publishTask() {
-      console.log(store.state.quesID)
-      // let task = {
-      //   name: this.Task.name,
-      //   type: this.Task.tag[index].name,
-      //   description: this.Task.description,
-      //   state: "publishing",
-      //   numberOfJoiner: 10,
-      //   joiner: [],
-      //   location: this.Task.location,
-      //   publish: {
-      //     publisher: "ee3099285cc7c051093255c93e1edebc",
-      //     beginTime: "",
-      //     endTime: this.Task.startDate + this.Task.startTime
-      //   },
-      //   payment: this.Task.payment,
-      //   work: {
-      //     beginTime: this.Task.startDate + this.Task.startTime,
-      //     endTime: this.Task.completeDate + this.Task.completeTime
-      //   }
-      // };
-      // api
-      //   .publishOneTask(task)
-      //   .then(res => {
-      //     console.log(res);
-      //   })
-      //   .catch(rej => {
-      //     console.warn(rej);
-      //   });
+      let curuser = store.state.user;
+      let pages = getCurrentPages();
+      let prevPage = pages[pages.length - 1];
+      console.log(prevPage.data.quesID);
+      var date = new Date()
+      var year = date.getFullYear()
+      var month = date.getMonth()+1
+      var day = date.getDay()
+      var hours = date.getHours()
+      var minutes = date.getMinutes()
+
+      if(month >= 1 && month <= 9){
+        month = "0" + month
+      }
+      if(day >= 1 && day <= 9){
+        day = "0" + day
+      }
+      if(hours >= 0 && hours <= 9){
+        hours = "0" + hours
+      }
+      if(minutes >= 0 && minutes <= 9){
+        minutes = "0" + minutes
+      }
+      
+      let task = {
+        name: this.Task.name,
+        type: this.Task.tag[this.index].name,
+        description: this.Task.description,
+        state: "publishing",
+        maxJoiner: this.Task.maxJoiner,
+        joiners: [],
+        location: this.Task.location,
+        publish: {
+          publisher: curuser._id,
+          beginTime: year+"-"+month+'-'+day+'/'+hours+':'+minutes,
+          endTime: this.Task.startDate + '/' + this.Task.startTime
+        },
+        payment: this.Task.payment,
+        work: {
+          beginTime: this.Task.startDate + '/' + this.Task.startTime,
+          endTime: this.Task.completeDate + '/' + this.Task.completeTime
+        },
+        isQuestionnaire: false,
+        questionnaireID: ""
+      };
+      if (prevPage.data.quesID == undefined) {
+        task.isQuestionnaire = false;
+        task.questionnaireID = "";
+      } else {
+        task.isQuestionnaire = true;
+        task.questionnaireID = prevPage.data.quesID;
+      }
+      api
+        .publishOneTask(task)
+        .then(res => {
+          console.log(res);
+          wx.showToast({
+            title: "创建任务成功",
+            icon: "success",
+            duration: 2000
+          });
+          this.Task.name = "";
+          this.Task.maxJoiner = 0;
+          this.Task.payment = 0;
+          this.Task.description = "";
+          this.Task.startDate = "2019-04-25";
+          this.Task.startTime = "00:00";
+          this.Task.completeDate = "2019-04-25";
+          this.Task.completeTime = "00:00";
+          this.Task.publishDate = "2019-04-25";
+          this.Task.publishTime = "00:00";
+          this.Task.location = "北京市,北京市,东城区";
+        })
+        .catch(rej => {
+          console.warn(rej);
+          wx.showToast({
+            title: "创建任务失败",
+            icon: "success",
+            duration: 2000
+          });
+          this.Task.name = "";
+          this.Task.maxJoiner = 0;
+          this.Task.payment = 0;
+          this.Task.description = "";
+          this.Task.startDate = "2019-04-25";
+          this.Task.startTime = "00:00";
+          this.Task.completeDate = "2019-04-25";
+          this.Task.completeTime = "00:00";
+          this.Task.publishDate = "2019-04-25";
+          this.Task.publishTime = "00:00";
+          this.Task.location = "北京市,北京市,东城区";
+        });
     },
     bindStartDate: function(e) {
       this.Task.startDate = e.mp.detail.value;
@@ -186,42 +250,61 @@ export default {
     bindTagChange: function(e) {
       this.index = e.mp.detail.value;
     },
-    addQues: function(){
-      if(this.quesID == ''){
-        console.log('new')
-        let url = "./createQuestionnaire/main"
-        wx.navigateTo({ url })
-        this.quesID = store.state.quesID
+    addQues: function() {
+      let pages = getCurrentPages();
+      let prevPage = pages[pages.length - 1];
+      console.log(prevPage.data.quesID);
+      if (prevPage.data.quesID == undefined) {
+        let url = "./createQuestionnaire/main";
+        wx.navigateTo({ url });
+      } else {
+        api.queryOneById("questionnaires", prevPage.data.quesID).then(res => {
+          var obj = JSON.stringify(res);
+          let url = "./createQuestionnaire/main?obj=" + obj;
+          console.log(url);
+          wx.navigateTo({ url });
+        });
       }
-      else{
-        console.log('old')
-        let url = "./createQuestionnaire/main?obj="+this.quesID
-        wx.navigateTo({ url })
-      }
-      
+
+      // if(this.quesID == ''){
+      //   console.log('new')
+      //   let url = "./createQuestionnaire/main"
+      //   wx.navigateTo({ url })
+      //   this.quesID = store.state.quesID
+      // }
+      // else{
+      //   console.log('old')
+      //   let url = "./createQuestionnaire/main?obj="+this.quesID
+      //   wx.navigateTo({ url })
+      // }
     }
   }
 };
 </script>
 <style scoped>
 .community {
-  background-color: #efeff4;
+  margin: 0rpx 8rpx 0rpx 8rpx;
+  background-color: #ffffff;
 }
 .createTask {
-  width: 500rpx;
+  width: 600rpx;
   margin: 0 auto;
   border-bottom: 1rpx solid gray;
 }
 input {
-  border-bottom: 1rpx solid gray;
+  width: 500rpx;
+  border-radius: 5rpx;
+  padding-left: 5rpx;
+  background-color: #efeff4;
 }
+
 .createTask p {
   font-size: 50rpx;
   font-weight: bold;
   text-align: left;
 }
 .Task-basicInfo {
-  width: 500rpx;
+  width: 600rpx;
   margin-left: auto;
   margin-right: auto;
   margin-top: 10rpx;
@@ -237,7 +320,7 @@ input {
 }
 
 .Task-description {
-  width: 500rpx;
+  width: 600rpx;
   height: 230rpx;
   margin: 0 auto;
   margin-top: 10rpx;
@@ -246,13 +329,14 @@ input {
 
 .Task-description textarea {
   margin-top: 10rpx;
-  width: 500rpx;
+  width: 600rpx;
   height: 170rpx;
-  background-color: white;
+  border-radius: 5rpx;
+  background-color: #efeff4;
 }
 
 .Task-time {
-  width: 500rpx;
+  width: 600rpx;
   margin-left: auto;
   margin-right: auto;
   margin-top: 10rpx;
@@ -269,7 +353,7 @@ input {
 }
 
 .Task-location {
-  width: 500rpx;
+  width: 600rpx;
   display: flex;
   flex-direction: row;
   margin-left: auto;
@@ -281,7 +365,7 @@ input {
   width: 100rpx;
 }
 .Task-tag {
-  width: 500rpx;
+  width: 600rpx;
   display: flex;
   flex-direction: row;
   margin-top: 10rpx;

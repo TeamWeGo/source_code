@@ -52,13 +52,13 @@ export default {
       missionlist: this.list,
       task_state: this.task_state,
       show_list: [],
-      map: {"已接收":'joining',"待完成":'doing',"已完成":'finished',"已发布":'publishing', "已确认":'verifyed', "已结束":'ended'}
+      map: {"已接收":'joining',"待完成":'doing',"已完成":'finished',"已发布":'publishing', "已确认":'verified', "已结束":'ended'}
     }
   },
   watch: {
     list: function (newVal,oldVal){
       this.missionlist = newVal;
-      console.log(newVal)
+     // console.log(newVal)
       var task_type = this.map[this.task_state];
       this.show_list = this.missionlist.filter(function (x){
         return x.state == this;
@@ -66,19 +66,19 @@ export default {
     },
     task_state:function(newVal,oldVal){
       this.task_state = newVal;
-      console.log(newVal)
+    //  console.log(newVal)
       var task_type = this.map[this.task_state];
       this.show_list = this.missionlist.filter(function (x){
         return x.state == this;
       },task_type);
-      console.log(this.map[this.task_state])
+    //  console.log(this.map[this.task_state])
     }
   },
   methods:{
     goto(index) {
-      console.log(index);
+     // console.log(index);
       this.mission = this.missionlist[index];
-      console.log(this.mission);
+    //  console.log(this.mission);
       var obj = JSON.stringify(this.mission);
       let url = "../community/taskDetails/main?obj=" + obj;
       wx.navigateTo({ url });
