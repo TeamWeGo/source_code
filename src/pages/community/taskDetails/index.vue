@@ -45,7 +45,7 @@
       class="accept"
       @click="fillQuestionnaire"
     >
-      <button>填写问卷</button>
+      <button class="btn-if">填写问卷</button>
     </view>
 
     <view
@@ -53,7 +53,7 @@
       class="accept"
       @click="checkQuestionnaire"
     >
-      <button>查看问卷</button>
+      <button class="btn-if">查看问卷</button>
     </view>
 
     <!-- <view
@@ -63,7 +63,7 @@
     >
     </view>-->
 
-    <button @click="dealwithtask">{{ accept }}</button>
+    <button class="btn-deal" @click="dealwithtask">{{ accept }}</button>
   </view>
   <!-- Today is Monday, our air conditioner ran out of money in the midnight, fuck! I wake up because of the heat, and heard xiaofan getting out of bed to turn on the fan
   Bye Bye! See you next time.-->
@@ -201,6 +201,10 @@ export default {
 </script>
 
 <style scoped>
+.btn-deal {
+  width: 600rpx;
+  background-color: #1aad19;
+}
 .Task-basicInfo {
   width: 600rpx;
   margin-left: auto;
@@ -320,5 +324,6 @@ input {
   font-size: 30rpx;
   color: white;
   background-color: #1aad19;
+  margin: 20rpx;
 }
 </style>

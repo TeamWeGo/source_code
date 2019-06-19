@@ -46,7 +46,7 @@ export default {
         });
     }
   },
-  onShow(options) {
+  onLoad(options) {
     var obj = JSON.parse(decodeURIComponent(options.obj));
     console.log(obj);
     this.temDatas = obj.result[0].template;
