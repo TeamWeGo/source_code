@@ -10,8 +10,10 @@
       </view>
       <view class="participatorNum">
         <label class="task-res-title">人数:</label>
-        <label class="task-res">{{Task.maxJoiner}}</label>
+        <label class="task-res" v-if="Task.publish.publisher != userID">{{Task.maxJoiner}}</label>
+        <label class="task-res" v-if="Task.publish.publisher == userID">{{Task.joiners.length}}</label>
       </view>
+
       <view class="payment">
         <label class="task-res-title">报酬:</label>
         <label class="task-res">{{Task.payment}}</label>
@@ -72,7 +74,7 @@
 
 <script>
 import { api } from "../../../utils/api.js";
-import store from "../../../components/store.js";
+import store from "../../../components/store";
 export default {
   data() {
     return {
@@ -155,7 +157,7 @@ export default {
         .then(res => {
           console.log(res);
           var obj = JSON.stringify(res);
-          let url = "../fillQuestionnaire/main?obj=" + obj;
+          let url = "../checkQuestionnaire/main?obj=" + obj;
           console.log(url);
           wx.navigateTo({ url });
         });
