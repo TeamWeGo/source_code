@@ -6,7 +6,7 @@
     <view class="Task-basicInfo">
       <view class="name">
         <label>标题</label>
-        <input type="text" id="name" v-model="Task.name">
+        <input type="text" id="name" v-model="Task.title">
       </view>
       <view class="participatorNum">
         <label>人数</label>
@@ -110,7 +110,7 @@ export default {
       createTask: "创建任务",
       index: 0,
       Task: {
-        name: "",
+        title: "",
         maxJoiner: 0,
         payment: 0,
         description: "",
@@ -137,28 +137,28 @@ export default {
       let pages = getCurrentPages();
       let prevPage = pages[pages.length - 1];
       console.log(prevPage.data.quesID);
-      var date = new Date()
-      var year = date.getFullYear()
-      var month = date.getMonth()+1
-      var day = date.getDay()
-      var hours = date.getHours()
-      var minutes = date.getMinutes()
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var day = date.getDay();
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
 
-      if(month >= 1 && month <= 9){
-        month = "0" + month
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
       }
-      if(day >= 1 && day <= 9){
-        day = "0" + day
+      if (day >= 1 && day <= 9) {
+        day = "0" + day;
       }
-      if(hours >= 0 && hours <= 9){
-        hours = "0" + hours
+      if (hours >= 0 && hours <= 9) {
+        hours = "0" + hours;
       }
-      if(minutes >= 0 && minutes <= 9){
-        minutes = "0" + minutes
+      if (minutes >= 0 && minutes <= 9) {
+        minutes = "0" + minutes;
       }
-      
+
       let task = {
-        name: this.Task.name,
+        title: this.Task.title,
         type: this.Task.tag[this.index].name,
         description: this.Task.description,
         state: "publishing",
@@ -167,13 +167,14 @@ export default {
         location: this.Task.location,
         publish: {
           publisher: curuser._id,
-          beginTime: year+"-"+month+'-'+day+'/'+hours+':'+minutes,
-          endTime: this.Task.startDate + '/' + this.Task.startTime
+          beginTime:
+            year + "-" + month + "-" + day + "/" + hours + ":" + minutes,
+          endTime: this.Task.startDate + "/" + this.Task.startTime
         },
         payment: this.Task.payment,
         work: {
-          beginTime: this.Task.startDate + '/' + this.Task.startTime,
-          endTime: this.Task.completeDate + '/' + this.Task.completeTime
+          beginTime: this.Task.startDate + "/" + this.Task.startTime,
+          endTime: this.Task.completeDate + "/" + this.Task.completeTime
         },
         isQuestionnaire: false,
         questionnaireID: ""
@@ -194,7 +195,7 @@ export default {
             icon: "success",
             duration: 2000
           });
-          this.Task.name = "";
+          this.Task.title = "";
           this.Task.maxJoiner = 0;
           this.Task.payment = 0;
           this.Task.description = "";
@@ -213,7 +214,7 @@ export default {
             icon: "success",
             duration: 2000
           });
-          this.Task.name = "";
+          this.Task.title = "";
           this.Task.maxJoiner = 0;
           this.Task.payment = 0;
           this.Task.description = "";
