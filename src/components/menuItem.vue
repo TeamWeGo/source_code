@@ -17,7 +17,7 @@ export default {
     toDetail() {
       let temp = this.mission.task;
       var obj = JSON.stringify(temp);
-      let url = "../logs/taskDetails/main?obj=" + obj;
+      let url = "../community/taskDetails/main?obj=" + obj;
       wx.navigateTo({ url });
     }
   }
