@@ -171,18 +171,38 @@ export default {
             .verifyOneTask(this.Task, store.state.user)
             .then(res => {
               console.log("verify" + res);
+              wx.showToast({
+                title: "奶牛确认任务成功",
+                icon: "none",
+                duration: 2000
+              });
             })
             .catch(err => {
               console.warn(err);
+              wx.showToast({
+                title: "奶牛确认任务失败",
+                icon: "none",
+                duration: 2000
+              });
             });
         } else if (this.Task.state == "doing") {
           api
             .endOneTask(this.Task, store.state.user)
             .then(res => {
               console.log("end" + res);
+              wx.showToast({
+                title: "奶牛结束任务成功",
+                icon: "none",
+                duration: 2000
+              });
             })
             .catch(err => {
               console.warn(err);
+              wx.showToast({
+                title: "奶牛结束任务失败",
+                icon: "none",
+                duration: 2000
+              });
             });
         } else {
         }
@@ -192,9 +212,19 @@ export default {
             .joinOneTask(this.Task, store.state.user)
             .then(res => {
               console.log("join" + res);
+              wx.showToast({
+                title: "用户加入任务成功",
+                icon: "none",
+                duration: 2000
+              });
             })
             .catch(err => {
               console.warn(err);
+              wx.showToast({
+                title: "用户加入任务失败",
+                icon: "none",
+                duration: 2000
+              });
             });
         } else {
         }
