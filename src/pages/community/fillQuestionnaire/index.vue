@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p class="commiunitytitle">{{ commiunitytitle }}</p>
     <qContainer :temDatas="temDatas"></qContainer>
     <button @click="confirm">van♂成</button>
   </div>
@@ -12,7 +11,6 @@ export default {
   data() {
     return {
       id: "",
-      commiunitytitle: "社区",
       temDatas: [],
       results: []
     };
@@ -49,10 +47,10 @@ export default {
   onLoad(options) {
     var obj = JSON.parse(decodeURIComponent(options.obj));
     console.log(obj);
-    this.temDatas = obj.result[0].template;
+    this.temDatas = obj.template;
     console.log(this.temDatas);
-    this.results = obj.result[0].results;
-    this.id = obj.result[0]._id;
+    this.results = obj.results;
+    this.id = obj._id;
     console.log(this.id);
   }
 };
