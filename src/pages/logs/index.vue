@@ -1,7 +1,7 @@
 <template>
   <div class="mission-main" @touchstart="touchStart" @touchend="touchEnd" @touchmove="touchmove">
     <div v-bind:class="pageClass">
-      <button class="role-button" @click="switchRole">{{ curRole }}</button>
+      <button :class="curRole" @click="tanchuang">{{  }}</button>
       <div class="mission-toolbar"></div>
       <div class="navbar">
         <mp-navbar
@@ -15,6 +15,7 @@
       <div class="missionlist">
         <missionList v-bind:list="missionlist" v-bind:task_state="tabs[tabs_index]"></missionList>
       </div>
+      <questionnaire v-on:confirmSend="receiveMessage"></questionnaire>
     </div>
   </div>
 </template>
@@ -27,20 +28,22 @@ import mpNavbar from "@/components/logs/mpnavbar";
 import store from "../../components/store";
 import { api } from "../../utils/api.js";
 import { userInfo } from "os";
+import questionnaire from "@/components/logs/questionnaire"
 
 export default {
   components: {
     searchBar,
     missionList,
-    mpNavbar
+    mpNavbar,
+    questionnaire
   },
 
   data() {
     return {
       missionlist: [],
-      tabs: ["已接收", "待完成", "已完成"],
+      tabs: ["已接收", "待完成", "已完成","选择"],
       tabs_index: 0,
-      curRole: "cow"
+      curRole: "cow",
     };
   },
 
@@ -74,18 +77,25 @@ export default {
     },
     touchEnd(e) {},
     switchRole() {
-      // console.log("click!");
-      if (this.curRole == "cow") {
-        this.curRole = "worker";
-        this.tabs = ["已发布", "已确认", "已结束"];
-      } else {
-        this.curRole = "cow";
-        this.tabs = ["已接收", "待完成", "已完成"];
+      if(this.curRole == 'worker'){
+        this.curRole = 'cow'
+        this.tabs = ["已发布", "已确认", "已结束","选择"]
+      }else{
+        this.curRole = 'worker'
+        this.tabs = ["已接收", "待完成", "已完成","选择"]
       }
     },
-    tabClick(e) {
-      this.tabs_index = e;
+    tabClick(e){
+      if(e == 3){
+        this.switchRole() 
+      }else{
+        this.tabs_index = e
+      }
+    },
+    receiveMessage:function (data) {
+      console.log(data)
     }
+    // 打开模态框
   },
 
   onShow() {
@@ -188,57 +198,29 @@ page {
   height: 44px;
 }
 
-/* 侧边栏样式 */
-.page-slidebar-close {
-  height: 100%;
-  width: 50%;
-  left: -600rpx;
-  position: fixed;
-  background-color: white;
-  z-index: 1;
-  transition: 1s left;
-}
-
-.page-slidebar-open {
-  height: 100%;
-  width: 50%;
-  left: 0;
-  position: fixed;
-  background-color: white;
-  z-index: 1;
-  transition: 1s left;
-}
-
-.page-top-open {
-  left: 0;
-}
-.page-top-close {
-  left: 100rpx;
-}
-
-/* 控制侧边栏的内容距离顶部的距离 */
-.page-content {
-  padding-top: 60rpx;
-}
-
-/* 侧边栏内容的 css 样式 */
-.wc {
-  color: black;
-  padding: 30rpx 0 30rpx 150rpx;
-  border-bottom: 1px solid #eee;
-}
-
-.role-button {
+.worker{
   position: fixed; /* 绝对定位，fixed是相对于浏览器窗口定位。 */
-  bottom: 20rpx; /* 距离窗口顶部距离 */
+  top: 22rpx; /* 距离窗口顶部距离 */
   right: 10rpx; /* 距离窗口左边的距离 */
   height: 28px;
-  width: auto;
-  margin: 5px;
+  width: 4rpx;
   font-size: 12px;
   font-weight: bold;
   background: transparent;
   z-index: 1;
   background-color: green;
+}
+
+.role-button {
+  position: fixed; /* 绝对定位，fixed是相对于浏览器窗口定位。 */
+  top: 22rpx; /* 距离窗口顶部距离 */
+  right: 10rpx; /* 距离窗口左边的距离 */
+  height: 28px;
+  width: 4rpx;
+  font-size: 12px;
+  font-weight: bold;
+  background: transparent;
+  z-index: 1;
+  background-color: orangered;
 }
 </style>
