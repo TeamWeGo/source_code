@@ -1,6 +1,10 @@
 <template>
-  <div class="missionlist">
-    <missionList v-bind:list="missionlist"></missionList>
+  <div class="mission-main">
+    <div v-bind:class="pageClass">
+      <div class="missionlist">
+        <missionList v-bind:list="missionlist" task_state="已发布"></missionList>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -12,21 +16,20 @@ import missionList from "@/components/logs/missionList";
 import { api } from "../../utils/api.js";
 
 export default {
-  data() {
-    return {
-      missionlist: [],
-      type: "",
-      curCity: ""
-    };
-  },
   components: {
     missionList
   },
-  methods: {},
+
+  data() {
+    return {
+      missionlist: []
+    };
+  },
+
   onLoad: function(options) {
-    this.missionlist = [];
+    this.missionList = [];
     this.type = options.type;
-    console.log(this.type);
+    //  console.log(this.type);
     this.curCity = store.state.curCity;
 
     Date.prototype.Format = function(fmt) {
@@ -55,16 +58,18 @@ export default {
           );
       return fmt;
     };
+    // console.log(this.missionlist)
     api
       .querySomeByModel("tasks", {
         type: this.type
       })
       .then(res => {
-        console.log(res);
+        //  console.log(res);
+        this.missionList = [];
         let tempList = res.result;
         for (let i in tempList) {
           let li = tempList[i];
-          //console.log(li);
+          //this.missionlist.push(li);
           if (
             String(li["location"]).includes(this.curCity) &&
             String(li["state"]).includes("publishing")
@@ -88,8 +93,38 @@ export default {
 };
 </script>
 
+<style>
+page {
+  height: 100%;
+}
+
+.navbar.weui-navbar__item.weui-bar__item_on {
+  color: orangered !important;
+}
+</style>
+
+
 <style scoped>
-.missionList {
-  margin: 5px;
+.mission-main {
+  height: 100%;
+}
+
+.site {
+  width: 25%;
+  text-align: center;
+}
+
+.mission-add {
+  width: 15%;
+  text-align: center;
+}
+
+.navbar {
+  position: fixed; /* 绝对定位，fixed是相对于浏览器窗口定位。 */
+  top: 0; /* 距离窗口顶部距离 */
+  left: 0; /* 距离窗口左边的距离 */
+  width: 100%;
+  background-color: white;
+  z-index: 0;
 }
 </style>

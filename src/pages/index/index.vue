@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="index-page">
     <div class="search-bar">
       <button class="city-button" @click="chooseCity">{{ curCity }}</button>
       <input type="text" class="search-input" placeholder="搜索相关任务">
@@ -33,6 +33,7 @@ export default {
     return {
       motto: "Hello miniprograme",
       curCity: store.state.curCity,
+      cammond: [],
       userInfo: {
         nickName: "mpvue",
         avatarUrl: "http://mpvue.com/assets/logo.png"
@@ -107,7 +108,7 @@ export default {
             },
             success: res => {
               if (res && res.data) {
-                console.log(res.data.result.addressComponent);
+                // console.log(res.data.result.addressComponent);
                 let city = res.data.result.addressComponent.city;
                 store.commit("changeCity", city.replace("市", ""));
                 this.curCity = store.state.curCity;
@@ -118,13 +119,69 @@ export default {
             }
           });
         }
-      })
+      });
     }
   },
-
   created() {
     // let app = getApp()
     this.getLocation();
+  },
+
+  onLoad() {
+    let a = this.menuInfo[0];
+    this.menuInfo = [];
+    api
+      .querySomeByModel("tasks", {
+        state: "publishing"
+      })
+      .then(res => {
+        let tempList = res.result;
+        let curNum = 0;
+        let curType = "";
+        for (let i in tempList) {
+          if (curNum >= 2) break;
+          let li = tempList[i];
+          if (String(li["location"]).includes(this.curCity)) {
+            curType = li["type"];
+            let pid = li["publish"]["publisher"];
+            let userCredit = 0;
+            api
+              .queryOneById("users", pid)
+              .then(res => {
+                userCredit = res.result[0]["credit"];
+                //console.log(res);
+                if (userCredit >= 95) {
+                  if (curType == "咨询")
+                    a["imgSrc"] = "/static/images/info.png";
+                  else if (curType == "学习")
+                    a["imgSrc"] = "/static/images/study.png";
+                  else if (curType == "生活")
+                    a["imgSrc"] = "/static/images/live.png";
+                  else a["imgSrc"] = "/static/images/play.png";
+                  var date = new Date(li["work"]["beginTime"]);
+                  a["time"] = date.Format("yyyy-MM-dd");
+                  a["address"] = li["location"];
+                  a["account"] = li["payment"];
+                  a["title"] = li["description"];
+                  a["task"] = li;
+                  if (this.menuInfo.length < 2) {
+                    this.menuInfo.push(a);
+                  }
+                  curNum += 1;
+                }
+              })
+              .catch(rej => {
+                console.warn("22222", rej);
+              });
+          }
+        }
+        //this.missionlist = res.result;
+        console.log(this.missionlist);
+      })
+      .catch(rej => {
+        console.warn(rej);
+        //console.log("NOOOOOO");
+      });
   },
 
   mounted() {},
@@ -151,6 +208,9 @@ export default {
 </script>
 
 <style scoped>
+.index-page {
+  margin: 0rpx 8rpx 0rpx 8rpx;
+}
 .search-bar {
   display: flex;
   height: 40px;

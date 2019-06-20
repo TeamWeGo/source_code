@@ -6,25 +6,25 @@
 </template>
 
 <script>
-import store from './store'
+import store from "./store";
 export default {
-  props: ['city'],
+  props: ["city"],
   methods: {
-    goBack () {
+    goBack() {
       let pages = getCurrentPages();
-      if(pages.length > 1){
+      if (pages.length > 1) {
         //上一个页面实例对象
         //var prePage = pages[pages.length - 2];
         //关键在这里
-        store.commit('changeCity', this.city);
-        console.log("goback");
+        store.commit("changeCity", this.city);
+        //   console.log("goback");
         wx.navigateBack();
-      }else{
-        console.log("return page fail!");
+      } else {
+        //console.log("return page fail!");
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -39,6 +39,6 @@ export default {
 }
 .line {
   margin-left: 10px;
-  border-bottom: 1px solid #C9C5C7;
+  border-bottom: 1px solid #c9c5c7;
 }
 </style>
