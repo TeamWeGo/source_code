@@ -1,7 +1,7 @@
 <template>
   <div class="mission-main" @touchstart="touchStart" @touchend="touchEnd" @touchmove="touchmove">
     <div v-bind:class="pageClass">
-      <button :class="curRole" @click="tanchuang">{{  }}</button>
+      <!-- <button :class="curRole" @click="tanchuang">{{  }}</button> -->
       <div class="mission-toolbar"></div>
       <div class="navbar">
         <mp-navbar
@@ -28,7 +28,7 @@ import mpNavbar from "@/components/logs/mpnavbar";
 import store from "../../components/store";
 import { api } from "../../utils/api.js";
 import { userInfo } from "os";
-import questionnaire from "@/components/logs/questionnaire"
+import questionnaire from "@/components/logs/questionnaire";
 
 export default {
   components: {
@@ -41,9 +41,9 @@ export default {
   data() {
     return {
       missionlist: [],
-      tabs: ["已接收", "待完成", "已完成","选择"],
+      tabs: ["已接收", "待完成", "已完成", "选择"],
       tabs_index: 0,
-      curRole: "cow",
+      curRole: "cow"
     };
   },
 
@@ -77,23 +77,23 @@ export default {
     },
     touchEnd(e) {},
     switchRole() {
-      if(this.curRole == 'worker'){
-        this.curRole = 'cow'
-        this.tabs = ["已发布", "已确认", "已结束","选择"]
-      }else{
-        this.curRole = 'worker'
-        this.tabs = ["已接收", "待完成", "已完成","选择"]
+      if (this.curRole == "worker") {
+        this.curRole = "cow";
+        this.tabs = ["已发布", "已确认", "已结束", "选择"];
+      } else {
+        this.curRole = "worker";
+        this.tabs = ["已接收", "待完成", "已完成", "选择"];
       }
     },
-    tabClick(e){
-      if(e == 3){
-        this.switchRole() 
-      }else{
-        this.tabs_index = e
+    tabClick(e) {
+      if (e == 3) {
+        this.switchRole();
+      } else {
+        this.tabs_index = e;
       }
     },
-    receiveMessage:function (data) {
-      console.log(data)
+    receiveMessage: function(data) {
+      console.log(data);
     }
     // 打开模态框
   },
@@ -198,7 +198,7 @@ page {
   height: 44px;
 }
 
-.worker{
+.worker {
   position: fixed; /* 绝对定位，fixed是相对于浏览器窗口定位。 */
   top: 22rpx; /* 距离窗口顶部距离 */
   right: 10rpx; /* 距离窗口左边的距离 */
