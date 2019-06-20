@@ -12,7 +12,7 @@
           <input class="qtitle" name="单选" v-model="title" placeholder="请输入问题的标题">
           <div class="selectionList" v-for="(item, index) in selections" :key="index">
             <img class="icon" mode="widthFix" src="/static/images/question/单选.png">
-            <input class="selection" v-model="selections[index]" placeholder="输入选项描述 例如：开心;不开心;">
+            <input class="selection" v-model="selections[index]" placeholder="输入选项描述">
             <img
               class="icon"
               mode="widthFix"
@@ -32,11 +32,7 @@
           <input class="qtitle" name="多选" v-model="title" placeholder="请输入问题的标题">
           <div class="selectionList" v-for="(item, index) in selections" :key="index">
             <img class="icon" mode="widthFix" src="/static/images/question/多选.png">
-            <input
-              class="selection"
-              v-model="selections[index]"
-              placeholder="输入选项描述 例如：开心;不开心;沮丧;兴奋;"
-            >
+            <input class="selection" v-model="selections[index]" placeholder="输入选项描述">
             <img
               class="icon"
               mode="widthFix"
