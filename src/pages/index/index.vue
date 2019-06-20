@@ -187,6 +187,7 @@ export default {
             }
             var date = new Date(li["work"]["beginTime"]);
             // a["time"] = date.Format("yyyy-MM-dd");
+            console.warn(date);
             a["address"] = li["location"];
             a["account"] = li["payment"];
             a["title"] = li["description"];

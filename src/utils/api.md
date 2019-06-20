@@ -41,6 +41,10 @@
   * 增加 results 代表 每一份调查问卷的结果，是一个 array 类型，其中每一个结果都是 template 的实例
   * 增加 maxCount 代表 调查问卷最多需要多少份
 
+6.20
+* Task
+  * 增加 credit User的信誉度 
+
 ```javascript
   let User = {
    // '_id':'x',//String database main key
@@ -138,6 +142,7 @@ api
     'maxJoiner':1,//Number Max Nubmer of joiners
     'joiners':['x'],//String Array the joiners _id array
     'location':'x'
+    'credit':user.credit
     'publish':{
       'publisher':'X',//String user._id
       'beginTime':Date,
