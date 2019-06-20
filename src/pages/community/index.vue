@@ -109,6 +109,7 @@ export default {
     return {
       createTask: "创建任务",
       index: 0,
+      beginTime: "",
       Task: {
         title: "",
         maxJoiner: 0,
@@ -121,7 +122,7 @@ export default {
         completeTime: "00:00",
         publishDate: "2019-04-25",
         publishTime: "00:00",
-        location: "北京市,北京市,东城区",
+        location: "广东省,广州市,番禺区",
         tag: [
           { id: 0, name: "学习" },
           { id: 1, name: "娱乐" },
@@ -132,18 +133,13 @@ export default {
     };
   },
   methods: {
-    publishTask() {
-      let curuser = store.state.user;
-      let pages = getCurrentPages();
-      let prevPage = pages[pages.length - 1];
-      console.log(prevPage.data.quesID);
+    init() {
       var date = new Date();
       var year = date.getFullYear();
       var month = date.getMonth() + 1;
-      var day = date.getDay();
+      var day = date.getDate();
       var hours = date.getHours();
       var minutes = date.getMinutes();
-
       if (month >= 1 && month <= 9) {
         month = "0" + month;
       }
@@ -157,6 +153,21 @@ export default {
         minutes = "0" + minutes;
       }
 
+      this.beginTime =
+        year + "-" + month + "-" + day + "/" + hours + ":" + minutes;
+      this.Task.startDate = year + "-" + month + "-" + day;
+      this.Task.startTime = hours + ":" + minutes;
+      this.Task.completeDate = year + "-" + month + "-" + day;
+      this.Task.completeTime = hours + ":" + minutes;
+      this.Task.publishDate = year + "-" + month + "-" + day;
+      this.Task.publishTime = hours + ":" + minutes;
+    },
+    publishTask() {
+      let curuser = store.state.user;
+      let pages = getCurrentPages();
+      let prevPage = pages[pages.length - 1];
+      console.log(prevPage.data.quesID);
+
       let task = {
         title: this.Task.title,
         type: this.Task.tag[this.index].name,
@@ -167,8 +178,7 @@ export default {
         location: this.Task.location,
         publish: {
           publisher: curuser._id,
-          beginTime:
-            year + "-" + month + "-" + day + "/" + hours + ":" + minutes,
+          beginTime: this.beginTime,
           endTime: this.Task.startDate + "/" + this.Task.startTime
         },
         payment: this.Task.payment,
@@ -199,13 +209,8 @@ export default {
           this.Task.maxJoiner = 0;
           this.Task.payment = 0;
           this.Task.description = "";
-          this.Task.startDate = "2019-04-25";
-          this.Task.startTime = "00:00";
-          this.Task.completeDate = "2019-04-25";
-          this.Task.completeTime = "00:00";
-          this.Task.publishDate = "2019-04-25";
-          this.Task.publishTime = "00:00";
-          this.Task.location = "北京市,北京市,东城区";
+          this.init();
+          this.Task.location = "广东省,广州市,番禺区";
         })
         .catch(rej => {
           console.warn(rej);
@@ -218,13 +223,8 @@ export default {
           this.Task.maxJoiner = 0;
           this.Task.payment = 0;
           this.Task.description = "";
-          this.Task.startDate = "2019-04-25";
-          this.Task.startTime = "00:00";
-          this.Task.completeDate = "2019-04-25";
-          this.Task.completeTime = "00:00";
-          this.Task.publishDate = "2019-04-25";
-          this.Task.publishTime = "00:00";
-          this.Task.location = "北京市,北京市,东城区";
+          this.init();
+          this.Task.location = "广东省,广州市,番禺区";
         });
     },
     bindStartDate: function(e) {
@@ -279,6 +279,9 @@ export default {
       //   wx.navigateTo({ url })
       // }
     }
+  },
+  onShow() {
+    this.init();
   }
 };
 </script>

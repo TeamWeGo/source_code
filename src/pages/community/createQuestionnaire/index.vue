@@ -1,7 +1,6 @@
 
 <template>
   <div>
-    <p class="commiunitytitle">{{ commiunitytitle }}</p>
     <qContainer :temDatas="temDatas"></qContainer>
     <button @click="deleteQues">Delete</button>
     <qEdit
@@ -21,7 +20,6 @@ export default {
   data() {
     return {
       id: "",
-      commiunitytitle: "社区",
       temDatas: []
     };
   },
@@ -50,7 +48,7 @@ export default {
           let questionnaire = {
             title: "nothing",
             description: "nothing",
-            maxMount: 50,
+            maxCount: 50,
             template: this.temDatas,
             results: []
           };
@@ -115,9 +113,9 @@ export default {
     this.id = obj.result[0]._id;
     console.log(this.id);
   },
-  onUnload: function (){
-    this.temDatas = []
-    this.id = ''
+  onUnload: function() {
+    this.temDatas = [];
+    this.id = "";
   }
 };
 </script>
