@@ -195,14 +195,14 @@ export default {
     //     delta:1
     // })
 
-    // if(store.state.isAuthorized){
-    //   console.log('this is index')
-    // }else{
-    //   console.log('this is index2')
-    //   wx.navigateBack({
-    //     delta:-1
-    //   })
-    // }
+    if(store.state.isAuthorized){
+      console.log('already authorized')
+    }else{
+      console.log('not authorized')
+      wx.navigateBack({
+        delta:-1
+      })
+    }
   }
 };
 </script>
