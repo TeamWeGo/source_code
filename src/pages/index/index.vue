@@ -212,6 +212,20 @@ export default {
     //console.log(this.curCity);
     this.curCity = store.state.curCity;
     this.getTasks();
+
+    console.log("this is index");
+    // wx.navigateBack({
+    //     delta:1
+    // })
+
+    if (store.state.isAuthorized) {
+      console.log("already authorized");
+    } else {
+      console.log("not authorized");
+      wx.navigateBack({
+        delta: -1
+      });
+    }
   }
 };
 </script>
