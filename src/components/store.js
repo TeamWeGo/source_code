@@ -7,8 +7,8 @@ var store = new Vuex.Store({
   state: {
     curCity: "",
     city_alphabet: 'A',
-    user: {}
-
+    user: {},
+    isAuthorized:true
   },
   mutations: {
     changeCity (state, city) {
@@ -19,6 +19,9 @@ var store = new Vuex.Store({
     },
     changeUser(state, curUser){
       state.user = curUser
+    },
+    changeAuthorized(state, au){
+      state.isAuthorized = au
     }
   }
 })

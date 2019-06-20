@@ -132,6 +132,20 @@ export default {
   onShow() {
     //console.log(this.curCity);
     this.curCity = store.state.curCity;
+
+    console.log('this is index')
+    // wx.navigateBack({
+    //     delta:1
+    // })
+
+    // if(store.state.isAuthorized){
+    //   console.log('this is index')
+    // }else{
+    //   console.log('this is index2')
+    //   wx.navigateBack({
+    //     delta:-1
+    //   })
+    // }
   }
 };
 </script>

@@ -12,10 +12,11 @@
           <img class="userAvatar" v-bind:src=userInfo.avatarUrl background-size="cover" />
         </div>
         <div class = "info">
-          <div class= "infoRow">
+          <!-- <div class= "infoRow">
             <label class="lableClass">姓名: </label>
             <input type="text" id='name'  v-bind:disabled="disabled" v-model='userInfo.userName'/>
-          </div>
+          </div> -->
+          <p class= "infoRow">{{ '姓名: ' + userInfo.userName }}</p>
           <p class= "infoRow">{{ '性别: ' + userInfo.gender }}</p>
           <p class= "infoRow">{{ '闲钱币: ' + userInfo.balance }}</p>
           <p class= "infoRow">{{ '诚信度: ' + userInfo.credit }}</p>
@@ -281,6 +282,10 @@ export default {
       })
           } else if (res.cancel) {
             console.log('用户点击取消')
+            store.commit('changeAuthorized', false)
+            // wx.navigateTo({
+            //   url:'../index/main'
+            // })
           }
         }
       })
