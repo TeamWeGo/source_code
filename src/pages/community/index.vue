@@ -91,11 +91,13 @@
         <view class="picker">地点：{{Task.location}}</view>
       </picker>
     </view>
-    <view class="addQues" @click="addQues">
-      <button>添加问卷</button>
-    </view>
-    <view class="publish" @click="publishTask">
-      <button>{{ publish }}</button>
+    <view>
+      <view class="addQues" @click="addQues">
+        <button>添加问卷</button>
+      </view>
+      <view class="publish" @click="publishTask">
+        <button>{{ publish }}</button>
+      </view>
     </view>
   </view>
 </template>
@@ -410,9 +412,15 @@ input {
   width: 100rpx;
 }
 
-.publish,
-.addQues {
+.publish {
   margin-top: 10rpx;
+  margin-bottom: 20rpx;
+  width: 600rpx;
+  margin-left: auto;
+  margin-right: auto;
+}
+.addQues {
+  margin: 10rpx;
   width: 300rpx;
   margin-left: auto;
   margin-right: auto;
@@ -420,10 +428,12 @@ input {
 .publish button {
   font-size: 30rpx;
   color: white;
-  background-color: #1aad19;
+  width: 500rpx;
+  background-color: #fbdd30;
 }
 .addQues button {
   font-size: 30rpx;
+  width: 300rpx;
   color: white;
   background-color: #1aad19;
 }

@@ -11,9 +11,9 @@
 export default {
   props: ["text", "imgSrc"],
   methods: {
-    handleClick () {
-      let url = '../studyList/main?type=' + this.text;
-      wx.navigateTo({ url })
+    handleClick() {
+      let url = "../studyList/main?type=" + this.text;
+      wx.navigateTo({ url });
     }
   }
 };
@@ -22,11 +22,13 @@ export default {
 <style scoped>
 .circle {
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 140rpx;
+  height: 140rpx;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #f8f2a1;
+  box-shadow: 2rpx #f8f2a1;
 }
 .circle-img {
   width: 50px;
