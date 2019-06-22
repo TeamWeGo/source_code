@@ -94,9 +94,9 @@ export default {
       }
     },
     searchTask() {
-      if(this.inputText != "") {
-        let url = '../studyList/main?type=search&detail=' + this.inputText;
-        wx.navigateTo({ url })
+      if (this.inputText != "") {
+        let url = "../studyList/main?type=search&detail=" + this.inputText;
+        wx.navigateTo({ url });
       }
     },
     chooseCity() {
@@ -182,7 +182,7 @@ export default {
           }
           //this.missionlist = res.result;
 
-          if (this.menuInfo.length >= 1) {
+          if (this.menuInfo.length > 0) {
           } else {
             let li = tempList[0];
             let curType = li["type"];
@@ -250,25 +250,30 @@ export default {
   display: flex;
   height: 40px;
   align-items: center;
-  margin-bottom: 10px;
+  margin: 0rpx 10rpx 10rpx 10rpx;
   /*background-color:burlywood;*/
 }
-
+picslider {
+  margin: 40px;
+}
 .city-button {
   height: 28px;
   width: auto;
   margin: 5px;
-  font-size: 12px;
+  font-size: 24rpx;
   font-weight: bold;
+  text-align: center;
+  border: 1rpx solid gray;
   background: transparent;
 }
 
 .search-input {
   padding: 0 12px;
   height: 25px;
-  border: 1px solid black;
+  border: 1rpx solid gray;
   flex-grow: 1;
-  border-radius: 10px;
+  font-size: 24rpx;
+  border-radius: 10rpx;
 }
 
 .search-icon {
@@ -288,5 +293,8 @@ export default {
   margin-left: 8px;
   font-size: 16px;
   font-weight: bold;
+}
+menuitem {
+  margin: 5rpx 10rpx 5rpx 10rpx;
 }
 </style>
