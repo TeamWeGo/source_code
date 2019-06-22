@@ -2,18 +2,22 @@
 <template>
   <div>
     <qContainer :temDatas="temDatas"></qContainer>
+    <questionnaire @confirmSend="addQues"></questionnaire>
+    
+    <!-- <qContainer :temDatas="temDatas"></qContainer>
     <button @click="deleteQues">Delete</button>
     <qEdit
       @addMultiSelectQues="addMultiSelect"
       @addSingleSelectQues="addSingleSelect"
       @addInputQues="addInput"
-    ></qEdit>
-    <button @click="publish">fa♂布</button>
+    ></qEdit> -->
+    <button @click="publish">发布</button>
   </div>
 </template>
 <script>
 import { api } from "../../../utils/api.js";
 import qContainer from "@/components/qContainer";
+import questionnaire from '@/components/logs/questionnaire'
 import qEdit from "@/components/qEdit";
 import store from "../../../components/store";
 export default {
@@ -26,21 +30,18 @@ export default {
 
   components: {
     qContainer,
-    qEdit
+    qEdit,
+    questionnaire
   },
   methods: {
     deleteQues: function() {
       var size = this.temDatas.length;
       this.temDatas.splice(size - 1, 1);
     },
-    addMultiSelect: function(val) {
+    addQues: function(val) {
       this.temDatas.push(val);
-    },
-    addSingleSelect: function(val) {
-      this.temDatas.push(val);
-    },
-    addInput: function(val) {
-      this.temDatas.push(val);
+      console.log('addQues')
+      console.log(this.temDatas)
     },
     publish: function() {
       if (this.temDatas.length != 0) {
@@ -108,10 +109,12 @@ export default {
     }
   },
   onLoad(options) {
-    var obj = JSON.parse(decodeURIComponent(options.obj));
-    this.temDatas = obj.result[0].template;
-    this.id = obj.result[0]._id;
-    console.log(this.id);
+    if(Object.keys(options).length!=0){
+      var obj = JSON.parse(decodeURIComponent(options.obj));
+      this.temDatas = obj.result[0].template;
+      this.id = obj.result[0]._id;
+      console.log(this.id);
+    }
   },
   onUnload: function() {
     this.temDatas = [];

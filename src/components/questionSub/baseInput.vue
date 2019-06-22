@@ -1,6 +1,6 @@
 <template>
   <div id="base-input">
-    <label class="base_input_one" for="input_one">{{"*"+temData.description}}</label>
+    <label class="base_input_one" for="input_one">{{"★ "+temData.description}}</label>
     <input
       name="input_one"
       id="input_one"

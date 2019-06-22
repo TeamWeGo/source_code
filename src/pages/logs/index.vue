@@ -15,7 +15,6 @@
       <div class="missionlist">
         <missionList v-bind:list="missionlist" v-bind:task_state="tabs[tabs_index]"></missionList>
       </div>
-      <questionnaire v-on:confirmSend="receiveMessage"></questionnaire>
     </div>
   </div>
 </template>
@@ -91,9 +90,6 @@ export default {
       } else {
         this.tabs_index = e;
       }
-    },
-    receiveMessage: function(data) {
-      console.log(data);
     }
     // 打开模态框
   },

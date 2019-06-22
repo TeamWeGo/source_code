@@ -88,18 +88,14 @@ export default {
         {
           text: "多选",
           imgSrc: "/static/images/question/多选题.png"
-        },
-        {
-          text: "自定义",
-          imgSrc: "/static/images/info.png"
         }
       ],
       title: "",
       selections: [],
       question: {
         type: "",
-        title: "",
-        selections: []
+        description: "",
+        content: []
       }
     };
   },
@@ -114,11 +110,38 @@ export default {
     },
 
     confirmSend() {
-      this.question.type = this.type;
-      this.question.title = this.title;
-      this.question.selections = this.selections;
-      var obj = JSON.stringify(this.question);
-      this.show();
+      if(this.type == '简答'){
+        this.question.type = 'baseInput'
+        this.question.description = this.title
+        this.question.content = [{result: ""}]
+      }
+      if(this.type == '单选'){
+        this.question.type = 'baseSingleSelect'
+        this.question.description = this.title
+        this.question.content = []
+        var options = this.selections
+        for (var i = 0; i < options.length; i++) {
+          if (options[i] != "") {
+            this.question.content.push({ label: options[i], result: false });
+          }
+        }
+
+      }
+      if(this.type == '多选'){
+        this.question.type = 'baseMultiSelect'
+        this.question.description = this.title
+        this.question.content = []
+        var options = this.selections
+        for (var i = 0; i < options.length; i++) {
+          if (options[i] != "") {
+            this.question.content.push({ label: options[i], result: false });
+          }
+        }
+      }
+      this.show()
+      this.selections = []
+      var obj = this.question
+      this.question = {}
       this.$emit("confirmSend", obj);
     },
     typeclick(index) {
@@ -126,6 +149,7 @@ export default {
       this.selections = [];
       console.log(this.types[index].text);
       this.type = this.types[index].text;
+      this.question = {}
       this.show();
     },
     addselection() {

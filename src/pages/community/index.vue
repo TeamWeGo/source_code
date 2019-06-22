@@ -130,7 +130,7 @@ export default {
           { id: 2, name: "生活" }
         ]
       },
-      publish: "fa♂布"
+      publish: "发布"
     };
   },
   methods: {

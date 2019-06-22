@@ -1,7 +1,7 @@
 <template>
   <div>
     <qContainer :temDatas="temDatas"></qContainer>
-    <button @click="confirm">van♂成</button>
+    <button @click="confirm">完成</button>
   </div>
 </template>
 <script>

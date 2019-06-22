@@ -102,7 +102,7 @@ export default {
         isQuestionnaire: false,
         questionnaireID: ""
       },
-      accept: "接♂受"
+      accept: "接受"
     };
   },
   onLoad(options) {
