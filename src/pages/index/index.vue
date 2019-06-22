@@ -58,7 +58,7 @@ export default {
       },
       menuInfo: [
         {
-          imgSrc: "/static/images/info.png",
+          avatarId: "/static/images/info.png",
           time: "2019-11-11 11:11:11",
           endTime: "",
           title: "唱单身情歌",
@@ -66,7 +66,7 @@ export default {
           account: "11"
         },
         {
-          imgSrc: "/static/images/play.png",
+          avatarId: "/static/images/play.png",
           time: "2019-05-20 13:14",
           endTime: "",
           title: "给晓帆做一天女朋友",
@@ -155,13 +155,7 @@ export default {
                   userCredit = res.result[0]["credit"];
                   //console.log(res);
                   if (userCredit >= 95) {
-                    if (curType == "咨询")
-                      a["imgSrc"] = "/static/images/info.png";
-                    else if (curType == "学习")
-                      a["imgSrc"] = "/static/images/study.png";
-                    else if (curType == "生活")
-                      a["imgSrc"] = "/static/images/live.png";
-                    else a["imgSrc"] = "/static/images/play.png";
+                    a["avatarId"] = li["avatarId"];
                     a["time"] = li["work"]["beginTime"];
                     a["endTime"] = li["work"]["endTime"];
                     a["address"] = li["location"];

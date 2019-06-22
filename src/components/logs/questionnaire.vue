@@ -110,38 +110,37 @@ export default {
     },
 
     confirmSend() {
-      if(this.type == '简答'){
-        this.question.type = 'baseInput'
-        this.question.description = this.title
-        this.question.content = [{result: ""}]
+      if (this.type == "简答") {
+        this.question.type = "baseInput";
+        this.question.description = this.title;
+        this.question.content = [{ result: "" }];
       }
-      if(this.type == '单选'){
-        this.question.type = 'baseSingleSelect'
-        this.question.description = this.title
-        this.question.content = []
-        var options = this.selections
-        for (var i = 0; i < options.length; i++) {
-          if (options[i] != "") {
-            this.question.content.push({ label: options[i], result: false });
-          }
-        }
-
-      }
-      if(this.type == '多选'){
-        this.question.type = 'baseMultiSelect'
-        this.question.description = this.title
-        this.question.content = []
-        var options = this.selections
+      if (this.type == "单选") {
+        this.question.type = "baseSingleSelect";
+        this.question.description = this.title;
+        this.question.content = [];
+        var options = this.selections;
         for (var i = 0; i < options.length; i++) {
           if (options[i] != "") {
             this.question.content.push({ label: options[i], result: false });
           }
         }
       }
-      this.show()
-      this.selections = []
-      var obj = this.question
-      this.question = {}
+      if (this.type == "多选") {
+        this.question.type = "baseMultiSelect";
+        this.question.description = this.title;
+        this.question.content = [];
+        var options = this.selections;
+        for (var i = 0; i < options.length; i++) {
+          if (options[i] != "") {
+            this.question.content.push({ label: options[i], result: false });
+          }
+        }
+      }
+      this.show();
+      this.selections = [];
+      var obj = this.question;
+      this.question = {};
       this.$emit("confirmSend", obj);
     },
     typeclick(index) {
@@ -149,7 +148,7 @@ export default {
       this.selections = [];
       console.log(this.types[index].text);
       this.type = this.types[index].text;
-      this.question = {}
+      this.question = {};
       this.show();
     },
     addselection() {
@@ -257,11 +256,13 @@ export default {
 
 .qtitle {
   height: auto;
+  margin: 8rpx auto 8rpx auto;
 }
 
 .icon {
   height: 50rpx;
   width: 60rpx;
+   margin: 8rpx auto 8rpx auto;
 }
 
 .selectionList {
@@ -269,6 +270,7 @@ export default {
   flex-direction: row;
   padding: 1%;
   overflow: scroll;
+  margin: 8rpx auto 8rpx auto;
   align-items: center;
 }
 
