@@ -391,7 +391,12 @@ input {
   width: 100rpx;
 }
 
-.publish,
+.publish {
+  margin-top: 10rpx;
+  width: 600rpx;
+  margin-left: auto;
+  margin-right: auto;
+}
 .addQues {
   margin-top: 10rpx;
   width: 300rpx;
@@ -401,10 +406,12 @@ input {
 .publish button {
   font-size: 30rpx;
   color: white;
-  background-color: #1aad19;
+  width: 500rpx;
+  background-color: #fbdd30;
 }
 .addQues button {
   font-size: 30rpx;
+  width: 300rpx;
   color: white;
   background-color: #1aad19;
 }

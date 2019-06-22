@@ -31,13 +31,14 @@ export default {
 <style scoped>
 .outer {
   width: 100%;
+  margin: 10rpx;
   display: inline-flex;
   flex-direction: column;
 }
 .detail {
   margin: 6rpx;
   height: 90px;
-  width: 100%;
+  width: 98%;
   display: inline-flex;
   flex-direction: row;
 }
@@ -46,7 +47,7 @@ export default {
   width: 80px;
 }
 .detail-info {
-  margin-left: 8px;
+  margin-left: 36rpx;
   display: inline-flex;
   flex-direction: column;
 }
@@ -62,7 +63,8 @@ export default {
   margin-top: 1px;
 }
 .line {
-  margin-left: 10px;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
   border-bottom: 1px solid #c9c5c7;
 }
 </style>
