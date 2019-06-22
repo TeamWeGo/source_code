@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       missionlist: [],
-      tabs: ["已接收", "待完成", "已完成", "选择"],
+      tabs: ["已接收", "待完成", "已完成", "切换"],
       tabs_index: 0,
       curRole: "cow"
     };
@@ -78,10 +78,10 @@ export default {
     switchRole() {
       if (this.curRole == "worker") {
         this.curRole = "cow";
-        this.tabs = ["已发布", "已确认", "已结束", "选择"];
+        this.tabs = ["已发布", "已确认", "已结束", "切换"];
       } else {
         this.curRole = "worker";
-        this.tabs = ["已接收", "待完成", "已完成", "选择"];
+        this.tabs = ["已接收", "待完成", "已完成", "切换"];
       }
     },
     tabClick(e) {
