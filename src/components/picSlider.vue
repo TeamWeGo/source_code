@@ -72,7 +72,7 @@ export default {
         timingFunction: 'ease'
       })
       // this.animation2 = animation2
-      animation2.scale(0.85).opacity(0.3).step()
+      animation2.scale(0.5).opacity(0.3).step()
       this.animationData2 = animation2.export()
     },
     // 展开
@@ -106,12 +106,13 @@ export default {
   margin-top: 20px;
   padding-bottom: 6px;
   position: relative;
+  margin: auto;
   width: 100%;
   height: auto;
   background: #303030;
 }
 .item{
-  transform: scale(0.85);
+  transform: scale(0.5);
   transform-origin: 50% 50% 0px;
   opacity: 0.3;
 }

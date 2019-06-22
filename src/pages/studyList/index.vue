@@ -22,14 +22,14 @@ export default {
 
   data() {
     return {
-      missionlist: []
+      missionlist: [],
+      type: ""
     };
   },
 
   onLoad: function(options) {
-    this.missionList = [];
+    this.missionlist = [];
     this.type = options.type;
-    //  console.log(this.type);
     this.curCity = store.state.curCity;
 
     Date.prototype.Format = function(fmt) {
@@ -58,37 +58,85 @@ export default {
           );
       return fmt;
     };
-    // console.log(this.missionlist)
-    api
-      .querySomeByModel("tasks", {
-        type: this.type
-      })
-      .then(res => {
-        //  console.log(res);
-        this.missionList = [];
-        let tempList = res.result;
-        for (let i in tempList) {
-          let li = tempList[i];
-          //this.missionlist.push(li);
-          if (
-            String(li["location"]).includes(this.curCity) &&
-            String(li["state"]).includes("publishing")
-          ) {
-            this.missionlist.push(li);
+
+    if(this.type == "问卷"){
+      api
+        .querySomeByModel("tasks", {
+          isQuestionnaire: true
+        })
+        .then(res => {
+          let tempList = res.result;
+          for (let i in tempList) {
+            let li = tempList[i];
+            if (
+              String(li["state"]).includes("publishing")
+            ) {
+              this.missionlist.push(li);
+            }
           }
-        }
-        //this.missionlist = res.result;
-        console.log(this.missionlist);
-        this.missionlist.forEach(element => {
-          var date = new Date(element.publish.beginTime);
-          element.publish.beginTime = date.Format("yyyy-MM-dd");
-          element.publish.endTime = date.Format("yyyy-MM-dd");
+          console.log(this.missionlist);
+          this.missionlist.forEach(element => {
+            var date = new Date(element.publish.beginTime);
+            element.publish.beginTime = date.Format("yyyy-MM-dd");
+            element.publish.endTime = date.Format("yyyy-MM-dd");
+          });
+        })
+        .catch(rej => {
+          console.warn(rej);
         });
-      })
-      .catch(rej => {
-        console.warn(rej);
-        //console.log("NOOOOOO");
-      });
+    }else if(this.type == "search"){
+      let detail = options.detail;
+      api
+        .querySomeByModel("tasks", {})
+        .then(res => {
+          let tempList = res.result;
+          for (let i in tempList) {
+            let li = tempList[i];
+            if (
+              String(li["description"]).includes(detail) &&
+              String(li["state"]).includes("publishing")
+            ) {
+              this.missionlist.push(li);
+            }
+          }
+          console.log(this.missionlist);
+          this.missionlist.forEach(element => {
+            var date = new Date(element.publish.beginTime);
+            element.publish.beginTime = date.Format("yyyy-MM-dd");
+            element.publish.endTime = date.Format("yyyy-MM-dd");
+          });
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    }else {
+      api
+        .querySomeByModel("tasks", {
+          type: this.type
+        })
+        .then(res => {
+          this.missionList = [];
+          let tempList = res.result;
+          for (let i in tempList) {
+            let li = tempList[i];
+            if (
+              String(li["location"]).includes(this.curCity) &&
+              String(li["state"]).includes("publishing")
+            ) {
+              this.missionlist.push(li);
+            }
+          }
+          console.log(this.missionlist);
+          this.missionlist.forEach(element => {
+            var date = new Date(element.publish.beginTime);
+            element.publish.beginTime = date.Format("yyyy-MM-dd");
+            element.publish.endTime = date.Format("yyyy-MM-dd");
+          });
+        })
+        .catch(rej => {
+          console.warn(rej);
+        });
+    }
   }
 };
 </script>

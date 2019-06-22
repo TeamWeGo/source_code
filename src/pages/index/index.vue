@@ -2,8 +2,8 @@
   <div class="index-page">
     <div class="search-bar">
       <button class="city-button" @click="chooseCity">{{ curCity }}</button>
-      <input type="text" class="search-input" placeholder="搜索相关任务">
-      <img class="search-icon" src="/static/images/search.png">
+      <input type="text" class="search-input" placeholder="搜索相关任务" v-model="inputText">
+      <img class="search-icon" src="/static/images/search.png" @click="searchTask">
     </div>
 
     <picSlider/>
@@ -15,6 +15,7 @@
       <circleCard v-bind:text="info.text" v-bind:imgSrc="info.imgSrc"/>
     </div>
 
+    <div class="command">发布中任务推荐</div>
     <menuItem v-for="(item,index) in menuInfo" :key="index" :mission="item"/>
   </div>
 </template>
@@ -32,6 +33,7 @@ export default {
   data() {
     return {
       motto: "Hello miniprograme",
+      inputText: "",
       curCity: store.state.curCity,
       cammond: [],
       userInfo: {
@@ -51,13 +53,14 @@ export default {
         imgSrc: "/static/images/play.png"
       },
       info: {
-        text: "咨询",
+        text: "问卷",
         imgSrc: "/static/images/info.png"
       },
       menuInfo: [
         {
           imgSrc: "/static/images/info.png",
           time: "2019-11-11 11:11:11",
+          endTime: "",
           title: "唱单身情歌",
           address: "至二712",
           account: "11"
@@ -65,6 +68,7 @@ export default {
         {
           imgSrc: "/static/images/play.png",
           time: "2019-05-20 13:14",
+          endTime: "",
           title: "给晓帆做一天女朋友",
           address: "至二712",
           account: "520"
@@ -87,6 +91,12 @@ export default {
         mpvue.switchTab({ url });
       } else {
         mpvue.navigateTo({ url });
+      }
+    },
+    searchTask() {
+      if(this.inputText != "") {
+        let url = '../studyList/main?type=search&detail=' + this.inputText;
+        wx.navigateTo({ url })
       }
     },
     chooseCity() {
@@ -152,8 +162,8 @@ export default {
                     else if (curType == "生活")
                       a["imgSrc"] = "/static/images/live.png";
                     else a["imgSrc"] = "/static/images/play.png";
-                    var date = new Date(li["work"]["beginTime"]);
-                    a["time"] = date.Format("yyyy-MM-dd");
+                    a["time"] = li["work"]["beginTime"];
+                    a["endTime"] = li["work"]["endTime"];
                     a["address"] = li["location"];
                     a["account"] = li["payment"];
                     a["title"] = li["description"];
@@ -188,6 +198,8 @@ export default {
             var date = new Date(li["work"]["beginTime"]);
             // a["time"] = date.Format("yyyy-MM-dd");
             console.warn(date);
+            a["time"] = li["work"]["beginTime"];
+            a["endTime"] = li["work"]["endTime"];
             a["address"] = li["location"];
             a["account"] = li["payment"];
             a["title"] = li["description"];
@@ -270,5 +282,11 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+.command {
+  margin-left: 8px;
+  font-size: 16px;
+  font-weight: bold;
 }
 </style>
