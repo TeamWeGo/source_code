@@ -115,6 +115,7 @@ export default {
       curuser: {},
       Task: {
         title: "",
+        avatarId: '',
         maxJoiner: 0,
         payment: 0,
         description: "",
@@ -129,7 +130,8 @@ export default {
         tag: [
           { id: 0, name: "学习" },
           { id: 1, name: "娱乐" },
-          { id: 2, name: "生活" }
+          { id: 2, name: "生活" },
+          { id: 3, name: "咨询" }
         ]
       },
       publish: "发布"
@@ -169,10 +171,27 @@ export default {
       let pages = getCurrentPages();
       let prevPage = pages[pages.length - 1];
       console.log(prevPage.data.quesID);
-
+      var image = ''
+      switch(this.index){
+        case 0:
+          image = '/static/images/study.png'
+          break
+        case 1:
+          image = '/static/images/play.png'
+          break
+        case 2:
+          image = '/static/images/live.png'
+          break
+        case 4:
+          image = '/static/images/info.png'
+          break
+        default:
+          break
+      }
       let task = {
         title: this.Task.title,
         type: this.Task.tag[this.index].name,
+        avatarId: image,
         description: this.Task.description,
         state: "publishing",
         maxJoiner: this.Task.maxJoiner,
