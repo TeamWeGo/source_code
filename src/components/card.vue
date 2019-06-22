@@ -4,7 +4,7 @@
       <!-- picture -->
       <img class="item_image" :src="imgSrc">
       <!-- content -->
-      <div class="descript">{{ desc }}</div>
+      <!--<div class="descript">{{ desc }}</div>-->
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
 .card {
   position: relative;
   height: 170px;
-  width: 230px;
+  width: 250px;
   background: #ffffff;
 }
 .item_image {

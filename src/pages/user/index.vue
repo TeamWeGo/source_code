@@ -9,14 +9,15 @@
         <div class="avatar">
           <img class="userAvatar" v-bind:src="userInfo.avatarUrl" background-size="cover">
         </div>
-        <div class="info">
-          <div class="infoRow">
-            <label class="lableClass">姓名:</label>
-            <input type="text" id="name" v-bind:disabled="disabled" v-model="userInfo.userName">
-          </div>
-          <p class="infoRow">{{ '性别: ' + userInfo.gender }}</p>
-          <p class="infoRow">{{ '闲钱币: ' + userInfo.balance }}</p>
-          <p class="infoRow">{{ '诚信度: ' + userInfo.credit }}</p>
+        <div class = "info">
+          <!-- <div class= "infoRow">
+            <label class="lableClass">姓名: </label>
+            <input type="text" id='name'  v-bind:disabled="disabled" v-model='userInfo.userName'/>
+          </div> -->
+          <p class= "infoRow">{{ '姓名: ' + userInfo.userName }}</p>
+          <p class= "infoRow">{{ '性别: ' + userInfo.gender }}</p>
+          <p class= "infoRow">{{ '闲钱币: ' + userInfo.balance }}</p>
+          <p class= "infoRow">{{ '诚信度: ' + userInfo.credit }}</p>
         </div>
       </div>
 
@@ -28,20 +29,23 @@
       </div>
 
       <div class="div3">
-        <button class="unclickedTag" @click="tagButtonClicked(0)">{{userInfo.tags.name[0]}}</button>
-        <button class="unclickedTag" @click="tagButtonClicked(1)">{{userInfo.tags.name[1]}}</button>
-        <button class="unclickedTag" @click="tagButtonClicked(2)">{{userInfo.tags.name[2]}}</button>
-        <button class="unclickedTag" @click="tagButtonClicked(3)">{{userInfo.tags.name[3]}}</button>
-        <button class="unclickedTag" @click="tagButtonClicked(4)">{{userInfo.tags.name[4]}}</button>
+        <button v-bind:class="userInfo.tags.flag[0]" @click="tagButtonClicked(0)">{{userInfo.tags.name[0]}}</button>
+        <button v-bind:class="userInfo.tags.flag[1]" @click="tagButtonClicked(1)">{{userInfo.tags.name[1]}}</button>
+        <button v-bind:class="userInfo.tags.flag[2]" @click="tagButtonClicked(2)">{{userInfo.tags.name[2]}}</button>
+        <button v-bind:class="userInfo.tags.flag[3]" @click="tagButtonClicked(3)">{{userInfo.tags.name[3]}}</button>
+        <button v-bind:class="userInfo.tags.flag[4]" @click="tagButtonClicked(4)">{{userInfo.tags.name[4]}}</button>
+        <button v-bind:class="userInfo.tags.flag[5]" @click="tagButtonClicked(5)">{{userInfo.tags.name[5]}}</button>
+        <button v-bind:class="userInfo.tags.flag[6]" @click="tagButtonClicked(6)">{{userInfo.tags.name[6]}}</button>
+        <button v-bind:class="userInfo.tags.flag[7]" @click="tagButtonClicked(7)">{{userInfo.tags.name[7]}}</button>
       </div>
 
       <div class="div4">
-        <span class="task">{{'joining:' + userInfo.tasks.joining.length}}</span>
-        <span class="task">{{'doing:' + userInfo.tasks.doing.length}}</span>
-        <span class="task">{{'finished:' + userInfo.tasks.finished.length}}</span>
-        <span class="task">{{'publish:' + userInfo.tasks.publishing.length}}</span>
-        <span class="task">{{'verified:' + userInfo.tasks.verified.length}}</span>
-        <span class="task">{{'ended:' + userInfo.tasks.ended.length}}</span>
+        <span class="task">{{'参与中:' + userInfo.tasks.joining.length}}</span>
+        <span class="task">{{'完成中:' + userInfo.tasks.doing.length}}</span>
+        <span class="task">{{'已完成:' + userInfo.tasks.finished.length}}</span>
+        <span class="task">{{'已发布:' + userInfo.tasks.publishing.length}}</span>
+        <span class="task">{{'已确认:' + userInfo.tasks.verified.length}}</span>
+        <span class="task">{{'已结束:' + userInfo.tasks.ended.length}}</span>
       </div>
     </div>
   </div>
@@ -57,17 +61,18 @@ export default {
     return {
       pageTitle: "个人中心",
       userInfo: {
-        userName: "zjx",
-        studentId: "16340301",
+        _id:'',
+        userName: "-",
+        studentId: "-",
         avatarUrl: "/static/images/user.png",
-        gender: "男",
+        gender: "-",
         balance: 100,
         credit: 100,
         personalStatement: "Hello World!",
         isVerified: false,
         tags: {
-          name: ["学习", "维修", "快递", "社交", "娱乐"],
-          flag: ["1", "0", "1", "1", "1"]
+          name: ["学习", "维修", "快递", "社交", "娱乐", "哲学", "问卷", "吃货"],
+          flag: ["chosen", "unchosen", "unchosen", "unchosen", "unchosen", "chosen", "chosen", "chosen"]
         },
         index: [0, 1, 1],
         tasks: {
@@ -80,7 +85,7 @@ export default {
         },
         isVerified: true,
         wechatopenid: 1,
-        id: 1
+        
       },
       disabled: true,
       visibility: "invisible",
@@ -105,9 +110,10 @@ export default {
       this.isEditing = false;
       this.visibility = "invisible";
       this.disabled = true;
-
+      
+      console.log(this.userInfo)
       api
-        .updateOneById("users", this.userInfo.id, {
+        .updateOneById("users", this.userInfo._id, {
           personalStatement: this.userInfo.personalStatement,
           tags: {
             name: this.userInfo.tags.name,
@@ -124,12 +130,18 @@ export default {
 
     tagButtonClicked(index) {
       if (this.isEditing) {
-        if (this.tags.flag[index] == 1) {
-          this.tags.flag[index] = 0;
+        if (this.userInfo.tags.flag[index] == "chosen") {
+          this.userInfo.tags.flag[index] = "unchosen";
+          console.log(this.userInfo.tags.flag[index] )
+          
         } else {
-          this.tags.flag[index] = 1;
+          this.userInfo.tags.flag[index] = "chosen";
+          console.log(this.userInfo.tags.flag[index] )
         }
+        this.isEditing = false;
+        this.isEditing = true;
       }
+      
     },
 
     getUserInfo() {
@@ -268,12 +280,14 @@ export default {
                               credit: that.userInfo.credit
                             };
                             store.commit("changeUser", user);
-                            console.log("globalUser is :");
-                            console.log(store.state.user);
+                            // console.log("globalUser is :");
+                            // console.log(store.state.user);
                           })
                           .catch(error => {
                             console.warn(error);
                           });
+                      
+                      
                       });
                   })
                   .catch(rej => {
@@ -282,7 +296,8 @@ export default {
               }
             });
           } else if (res.cancel) {
-            console.log("用户点击取消");
+            console.log('用户点击取消')
+            store.commit('changeAuthorized', false)
           }
         }
       });
@@ -293,7 +308,91 @@ export default {
     // let app = getApp()
     //  console.log(this.userInfo.nickName);
     this.getUserInfo();
+  },
+
+  onShow(){
+    console.log("this is user page")
+    var that = this
+    if(that.userInfo.wechatopenid == 1){
+      console.log("return")
+    }else{
+      api
+      .querySomeByModel("users", {
+        wechatopenid: that.userInfo.wechatopenid
+      })
+      .then(result => {
+        console.log(result);
+
+        that.userInfo._id = result.result[0]._id;
+        that.userInfo.userName = result.result[0].nickName;
+        that.userInfo.studentId =
+          result.result[0].studentId;
+        that.userInfo.gender = result.result[0].gender;
+        that.userInfo.isVerified =
+          result.result[0].isVerified;
+        that.userInfo.balance = result.result[0].balance;
+        that.userInfo.credit = result.result[0].credit;
+        that.userInfo.avatarUrl =
+          result.result[0].avatarUrl;
+        that.userInfo.personalStatement =
+          result.result[0].personalStatement;
+        //init tasks
+        that.userInfo.tasks.joining =
+          result.result[0].tasks.joining;
+        that.userInfo.tasks.doing =
+          result.result[0].tasks.doing;
+        that.userInfo.tasks.finished =
+          result.result[0].tasks.finished;
+        that.userInfo.tasks.publishing =
+          result.result[0].tasks.publishing;
+        that.userInfo.tasks.verified =
+          result.result[0].tasks.verified;
+        that.userInfo.tasks.ended =
+          result.result[0].tasks.ended;
+        //init tags
+        that.userInfo.tags.name =
+          result.result[0].tags.name;
+        that.userInfo.tags.flag =
+          result.result[0].tags.flag;
+
+        let user = {
+          _id: that.userInfo._id,
+          wechatopenid: that.userInfo.wechatopenid,
+          nickName: that.userInfo.userName,
+          name: "realName",
+          avatarUrl: that.userInfo.avatarUrl,
+          studentId: that.userInfo.studentId,
+          gender: that.userInfo.gender,
+          tasks: {
+            joining: that.userInfo.tasks.joining,
+            doing: that.userInfo.tasks.doing,
+            finished: that.userInfo.tasks.finished,
+            publishing: that.userInfo.tasks.publishing,
+            verified: that.userInfo.tasks.verified,
+            ended: that.userInfo.tasks.ended
+          },
+          tags: {
+            name: that.userInfo.tags.name,
+            flag: that.userInfo.tags.flag
+          },
+          balance: that.userInfo.balance,
+          isVerified: that.userInfo.isVerified,
+          personalStatement:
+            that.userInfo.personalStatement,
+          credit: that.userInfo.credit
+        };
+        store.commit("changeUser", user);
+        console.log("globalUser is :");
+        console.log(store.state.user);
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+    }
+   
+    
   }
+
 };
 </script>
 
@@ -394,13 +493,24 @@ export default {
   text-align: center;
 }
 
-.unclickedTag {
+.chosen {
+  border: 1px solid #000;
+  background: rgb(168, 224, 122);
+  color: white;
+  margin: 10rpx;
+  width: 20%;
+  height: 15%;
+  float: left;
+  text-align: center;
+}
+
+.unchosen {
   border: 1px solid #000;
   background: white;
   color: black;
-  margin: 20rpx;
-  width: 22%;
-  height: 20%;
+  margin: 10rpx;
+  width: 20%;
+  height: 15%;
   float: left;
   text-align: center;
 }

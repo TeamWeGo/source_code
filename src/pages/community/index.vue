@@ -110,6 +110,7 @@ export default {
       createTask: "创建任务",
       index: 0,
       beginTime: "",
+      curuser: {},
       Task: {
         title: "",
         maxJoiner: 0,
@@ -163,7 +164,6 @@ export default {
       this.Task.publishTime = hours + ":" + minutes;
     },
     publishTask() {
-      let curuser = store.state.user;
       let pages = getCurrentPages();
       let prevPage = pages[pages.length - 1];
       console.log(prevPage.data.quesID);
@@ -176,8 +176,9 @@ export default {
         maxJoiner: this.Task.maxJoiner,
         joiners: [],
         location: this.Task.location,
+        credit: this.curuser.credit,
         publish: {
-          publisher: curuser._id,
+          publisher: this.curuser._id,
           beginTime: this.beginTime,
           endTime: this.Task.startDate + "/" + this.Task.startTime
         },
@@ -196,36 +197,44 @@ export default {
         task.isQuestionnaire = true;
         task.questionnaireID = prevPage.data.quesID;
       }
-      api
-        .publishOneTask(task)
-        .then(res => {
-          console.log(res);
-          wx.showToast({
-            title: "创建任务成功",
-            icon: "success",
-            duration: 2000
-          });
-          this.Task.title = "";
-          this.Task.maxJoiner = 0;
-          this.Task.payment = 0;
-          this.Task.description = "";
-          this.init();
-          this.Task.location = "广东省,广州市,番禺区";
-        })
-        .catch(rej => {
-          console.warn(rej);
-          wx.showToast({
-            title: "创建任务失败",
-            icon: "success",
-            duration: 2000
-          });
-          this.Task.title = "";
-          this.Task.maxJoiner = 0;
-          this.Task.payment = 0;
-          this.Task.description = "";
-          this.init();
-          this.Task.location = "广东省,广州市,番禺区";
+      if (task.publish.publisher == undefined) {
+        wx.showToast({
+          title: "创建任务失败",
+          icon: "success",
+          duration: 2000
         });
+      } else {
+        api
+          .publishOneTask(task)
+          .then(res => {
+            console.log(res);
+            wx.showToast({
+              title: "创建任务成功",
+              icon: "success",
+              duration: 2000
+            });
+            this.Task.title = "";
+            this.Task.maxJoiner = 0;
+            this.Task.payment = 0;
+            this.Task.description = "";
+            this.init();
+            this.Task.location = "广东省,广州市,番禺区";
+          })
+          .catch(rej => {
+            console.warn(rej);
+            wx.showToast({
+              title: "创建任务失败",
+              icon: "success",
+              duration: 2000
+            });
+            this.Task.title = "";
+            this.Task.maxJoiner = 0;
+            this.Task.payment = 0;
+            this.Task.description = "";
+            this.init();
+            this.Task.location = "广东省,广州市,番禺区";
+          });
+      }
     },
     bindStartDate: function(e) {
       this.Task.startDate = e.mp.detail.value;
@@ -282,6 +291,7 @@ export default {
   },
   onShow() {
     this.init();
+    this.curuser = store.state.user;
   }
 };
 </script>
