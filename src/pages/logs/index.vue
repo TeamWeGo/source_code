@@ -40,9 +40,9 @@ export default {
   data() {
     return {
       missionlist: [],
-      tabs: ["已接收", "待完成", "已完成", "选择"],
+      tabs: ["已接收", "待完成", "已完成", "切换"],
       tabs_index: 0,
-      curRole: "cow"
+      curRole: "worker"
     };
   },
 
@@ -78,10 +78,10 @@ export default {
     switchRole() {
       if (this.curRole == "worker") {
         this.curRole = "cow";
-        this.tabs = ["已发布", "已确认", "已结束", "选择"];
+        this.tabs = ["已发布", "已确认", "已结束", "切换"];
       } else {
         this.curRole = "worker";
-        this.tabs = ["已接收", "待完成", "已完成", "选择"];
+        this.tabs = ["已接收", "待完成", "已完成", "切换"];
       }
     },
     tabClick(e) {
@@ -94,7 +94,7 @@ export default {
     // 打开模态框
   },
 
-  onShow() {
+  onLoad() {
     console.log("rilixianren");
     Date.prototype.Format = function(fmt) {
       //author: meizz
@@ -123,6 +123,7 @@ export default {
       return fmt;
     };
     let curuser = store.state.user;
+    this.missionlist = []
     api
       .querySomeByModel("tasks", {
         publish: {
@@ -130,25 +131,48 @@ export default {
         }
       })
       .then(res => {
-        console.log("nothing");
-        this.missionlist = res.result;
+        this.result = res.result;
         //  console.log(this.missionlist);
-        this.missionlist.forEach(element => {
+        this.result.forEach(element => {
           if (element.publish.publisher != curuser._id) {
-            let index = this.missionlist.indexOf(element);
+            let index = this.result.indexOf(element);
             if (index > -1) {
-              this.missionlist.splice(index, 1);
+              this.result.splice(index, 1);
             }
           }
           var date = new Date(element.publish.beginTime);
           element.publish.beginTime = date.Format("yyyy-MM-dd");
           element.publish.endTime = date.Format("yyyy-MM-dd");
         });
+        this.missionlist.push(...this.result);
       })
       .catch(rej => {
         console.warn(rej);
-        console.log("NOOOOOO");
       });
+    // api
+    //   .querySomeByModel("tasks", {
+
+    //   })
+    //   .then(res => {
+    //     console.log(res)
+    //     this.result = res.result;
+    //     //  console.log(this.missionlist);
+    //     this.result.forEach(element => {
+    //       if (element.publish.publisher != curuser._id) {
+    //         let index = this.result.indexOf(element);
+    //         if (index > -1) {
+    //           this.result.splice(index, 1);
+    //         }
+    //       }
+    //       var date = new Date(element.publish.beginTime);
+    //       element.publish.beginTime = date.Format("yyyy-MM-dd");
+    //       element.publish.endTime = date.Format("yyyy-MM-dd");
+    //     });
+    //     this.missionlist.push(...this.result);
+    //   })
+    //   .catch(rej => {
+    //     console.warn(rej);
+    //   });
   }
 };
 </script>
@@ -218,5 +242,9 @@ page {
   background: transparent;
   z-index: 1;
   background-color: orangered;
+}
+
+.mark{
+  background-color: rgba(0, 128, 0, 0.466)
 }
 </style>
