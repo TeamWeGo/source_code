@@ -247,7 +247,10 @@ export default {
                     api
                       .insertOneUser(user)
                       .then(res => {
-                        // console.log(res);
+                        console.log(res);
+                        let temuser = user;
+                        temuser._id = res.result;
+                        store.commit("changeUser", temuser);
                       })
                       .catch(rej => {
                         // console.warn(rej);
