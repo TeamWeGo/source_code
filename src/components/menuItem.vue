@@ -1,7 +1,7 @@
 <template>
   <div class="outer">
     <div class="detail" @click="toDetail">
-      <img class="detail-img" :src="mission.imgSrc">
+      <img class="detail-img" :src="mission.avatarId">
       <div class="detail-info">
         <p class="title">{{mission.title}}</p>
         <p class="time">开始时间：{{mission.time}}</p>
