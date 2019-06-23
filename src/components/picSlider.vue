@@ -1,14 +1,19 @@
 <template>
   <div class="swiper-container">
-    <swiper class="swiper"
+    <swiper
+      class="swiper"
       :previous-margin="previousMargin"
       :next-margin="nextMargin"
       :circular="circular"
-      @change="handleChange($event)">
+      @change="handleChange($event)"
+    >
       <block v-for="(item, index) in sliders" :key="index">
         <swiper-item>
-          <div :class="curIndex==index ? 'active_item' : 'item'" :animation="index == curIndex ? animationData : animationData2" >
-            <card :imgSrc="item.img" :desc="item.desc" />
+          <div
+            :class="curIndex==index ? 'active_item' : 'item'"
+            :animation="index == curIndex ? animationData : animationData2"
+          >
+            <card :imgSrc="item.img" :desc="item.desc"/>
           </div>
         </swiper-item>
       </block>
@@ -23,36 +28,28 @@
 </template>
 
 <script>
-import card from '@/components/card'
+import card from "@/components/card";
 
 export default {
-  data () {
+  data() {
     return {
       curIndex: 0,
       sliders: [
         {
-          img: '/static/images/user.png',
-          desc: 'user'
+          img: "/static/images/ads/ad1.png",
+          desc: "user"
         },
         {
-          img: '/static/images/search.png',
-          desc: 'search'
-        },
-        {
-          img: '/static/tabs/home.png',
-          desc: 'home'
-        },
-        {
-          img: '/static/tabs/comments.png',
-          desc: 'comments'
+          img: "/static/images/ads/nasa.png",
+          desc: "search"
         }
       ],
       circular: true,
-      previousMargin: '60px',
-      nextMargin: '60px',
+      previousMargin: "60px",
+      nextMargin: "60px",
       animationData: {},
       animationData2: {}
-    }
+    };
   },
 
   components: {
@@ -60,65 +57,72 @@ export default {
   },
 
   methods: {
-    handleChange (e) {
-      this.curIndex = e.mp.detail.current
-      this.changeActive()
-      this.changeNormal()
+    handleChange(e) {
+      this.curIndex = e.mp.detail.current;
+      this.changeActive();
+      this.changeNormal();
     },
     // 收缩
-    changeNormal () {
+    changeNormal() {
       var animation2 = wx.createAnimation({
         duration: 500,
-        timingFunction: 'ease'
-      })
+        timingFunction: "ease"
+      });
       // this.animation2 = animation2
-      animation2.scale(0.85).opacity(0.3).step()
-      this.animationData2 = animation2.export()
+      animation2
+        .scale(0.5)
+        .opacity(0.3)
+        .step();
+      this.animationData2 = animation2.export();
     },
     // 展开
-    changeActive () {
+    changeActive() {
       var animation = wx.createAnimation({
         duration: 500,
-        timingFunction: 'ease'
-      })
+        timingFunction: "ease"
+      });
       // this.animation = animation
-      animation.scale(1).opacity(1).step()
-      this.animationData = animation.export()
+      animation
+        .scale(1)
+        .opacity(1)
+        .step();
+      this.animationData = animation.export();
     }
   },
 
   computed: {
-    containerStyle: function () {
+    containerStyle: function() {
       return {
         transform: `translated3d(${this.distance}px,0,0)`
-      }
+      };
     }
   },
 
-  created: function () {
+  created: function() {
     // None
   }
-}
+};
 </script>
 
 <style scoped>
 .swiper-container {
-  margin-top: 20px;
+  margin: 20rpx 20rpx 20rpx 20rpx;
+  padding-bottom: 6px;
   position: relative;
-  width: 100%;
-  height: 180px !important;
-  background: #303030;
+  width: 96%;
+  height: auto;
+  background: #f8eeee;
 }
-.item{
-  transform: scale(0.85);
+.item {
+  transform: scale(0.5);
   transform-origin: 50% 50% 0px;
   opacity: 0.3;
 }
-.active_item{
+.active_item {
   transform: scale(1);
   opacity: 1;
 }
-.active{
+.active {
   width: 15rpx;
   height: 15rpx;
   box-sizing: border-box;
@@ -130,17 +134,17 @@ export default {
 .dot-wrapper {
   position: absolute;
   left: 45%;
-  bottom: 25%;
+  bottom: 15%;
   width: 10%;
   height: 15rpx;
 }
-ul{
+ul {
   left: 0;
   margin: auto;
   overflow: hidden;
   display: inline-flex;
 }
-li{
+li {
   width: 15rpx;
   height: 15rpx;
   box-sizing: border-box;

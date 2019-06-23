@@ -1,54 +1,76 @@
 <template>
-  <div >
+  <div class="user-page">
     <p class="title">{{ pageTitle }}</p>
-    <img class="editButton" src="/static/images/edit.png" @click="updateUserInfo"/>
-    <button v-bind:class="visibility" @click="saveChanges" >完成</button>
+    <img class="editButton" src="/static/images/edit.png" @click="updateUserInfo">
+    <button v-bind:class="visibility" @click="saveChanges">完成</button>
     <!-- <button class="authorize" open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">授权登录</button> -->
-    <div class = container>
-
-
-      <div class = "div1">
-        <div class = "avatar">
-          <img class="userAvatar" v-bind:src=userInfo.avatarUrl background-size="cover" />
+    <div class="container">
+      <div class="div1">
+        <div class="avatar">
+          <img class="userAvatar" v-bind:src="userInfo.avatarUrl" background-size="cover">
         </div>
-        <div class = "info">
-          <div class= "infoRow">
+        <div class="info">
+          <!-- <div class= "infoRow">
             <label class="lableClass">姓名: </label>
             <input type="text" id='name'  v-bind:disabled="disabled" v-model='userInfo.userName'/>
-          </div>
-          <p class= "infoRow">{{ '性别: ' + userInfo.gender }}</p>
-          <p class= "infoRow">{{ '闲钱币: ' + userInfo.balance }}</p>
-          <p class= "infoRow">{{ '诚信度: ' + userInfo.credit }}</p>
+          </div>-->
+          <p class="infoRow">{{ '姓名: ' + userInfo.userName }}</p>
+          <p class="infoRow">{{ '性别: ' + userInfo.gender }}</p>
+          <p class="infoRow">{{ '闲钱币: ' + userInfo.balance }}</p>
+          <p class="infoRow">{{ '诚信度: ' + userInfo.credit }}</p>
         </div>
       </div>
 
-      <div class = "div2">
-        <div class= "ps">
-            <label class="lableClass">个签：</label>
-            <input type="text"  v-bind:disabled="disabled" v-model='userInfo.personalStatement'/> 
+      <div class="div2">
+        <div class="ps">
+          <label class="lableClass">个签：</label>
+          <input type="text" v-bind:disabled="disabled" v-model="userInfo.personalStatement">
         </div>
-      </div> 
-
-      <div class = "div3" >
-        <button class = "unclickedTag" @click="tagButtonClicked(0)">{{userInfo.tags.name[0]}}</button>
-        <button class = "unclickedTag" @click="tagButtonClicked(1)">{{userInfo.tags.name[1]}}</button>
-        <button class = "unclickedTag" @click="tagButtonClicked(2)">{{userInfo.tags.name[2]}}</button>
-        <button class = "unclickedTag" @click="tagButtonClicked(3)">{{userInfo.tags.name[3]}}</button>
-        <button class = "unclickedTag" @click="tagButtonClicked(4)">{{userInfo.tags.name[4]}}</button>
       </div>
 
-      
-
-      <div class = "div4">
-        <span class = "task">{{'joining:' + userInfo.tasks.joining.length}}</span>
-        <span class = "task">{{'doing:' + userInfo.tasks.doing.length}}</span>
-        <span class = "task">{{'finished:' + userInfo.tasks.finished.length}}</span>
-        <span class = "task">{{'publish:' + userInfo.tasks.publishing.length}}</span>
-        <span class = "task">{{'verified:' + userInfo.tasks.verified.length}}</span>
-        <span class = "task">{{'ended:' + userInfo.tasks.ended.length}}</span>
+      <div class="div3">
+        <button
+          v-bind:class="userInfo.tags.flag[0]"
+          @click="tagButtonClicked(0)"
+        >{{userInfo.tags.name[0]}}</button>
+        <button
+          v-bind:class="userInfo.tags.flag[1]"
+          @click="tagButtonClicked(1)"
+        >{{userInfo.tags.name[1]}}</button>
+        <button
+          v-bind:class="userInfo.tags.flag[2]"
+          @click="tagButtonClicked(2)"
+        >{{userInfo.tags.name[2]}}</button>
+        <button
+          v-bind:class="userInfo.tags.flag[3]"
+          @click="tagButtonClicked(3)"
+        >{{userInfo.tags.name[3]}}</button>
+        <button
+          v-bind:class="userInfo.tags.flag[4]"
+          @click="tagButtonClicked(4)"
+        >{{userInfo.tags.name[4]}}</button>
+        <button
+          v-bind:class="userInfo.tags.flag[5]"
+          @click="tagButtonClicked(5)"
+        >{{userInfo.tags.name[5]}}</button>
+        <button
+          v-bind:class="userInfo.tags.flag[6]"
+          @click="tagButtonClicked(6)"
+        >{{userInfo.tags.name[6]}}</button>
+        <button
+          v-bind:class="userInfo.tags.flag[7]"
+          @click="tagButtonClicked(7)"
+        >{{userInfo.tags.name[7]}}</button>
       </div>
 
-      
+      <div class="div4">
+        <span class="task">{{'参与中:' + userInfo.tasks.joining.length}}</span>
+        <span class="task">{{'完成中:' + userInfo.tasks.doing.length}}</span>
+        <span class="task">{{'已完成:' + userInfo.tasks.finished.length}}</span>
+        <span class="task">{{'已发布:' + userInfo.tasks.publishing.length}}</span>
+        <span class="task">{{'已确认:' + userInfo.tasks.verified.length}}</span>
+        <span class="task">{{'已结束:' + userInfo.tasks.ended.length}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -59,266 +81,367 @@ import { api } from "../../utils/api.js";
 import store from "@/components/store";
 
 export default {
-  data () {
+  data() {
     return {
-      pageTitle: '个人中心',
+      pageTitle: "个人中心",
       userInfo: {
-        userName: 'zjx',
-        studentId: '16340301',
-        avatarUrl: '/static/images/user.png',
-        gender: '男',
+        _id: "",
+        userName: "-",
+        studentId: "-",
+        avatarUrl: "/static/images/user.png",
+        gender: "-",
         balance: 100,
         credit: 100,
-        personalStatement: 'Hello World!',
+        personalStatement: "Hello World!",
         isVerified: false,
-        tags:{
-          name:['学习','维修','快递','社交','娱乐'],
-          flag:['1','0','1','1','1']
+        tags: {
+          name: [
+            "学习",
+            "维修",
+            "快递",
+            "社交",
+            "娱乐",
+            "哲学",
+            "问卷",
+            "吃货"
+          ],
+          flag: [
+            "chosen",
+            "unchosen",
+            "unchosen",
+            "unchosen",
+            "unchosen",
+            "chosen",
+            "chosen",
+            "chosen"
+          ]
         },
-        index:[0,1,1],
+        index: [0, 1, 1],
         tasks: {
-          joining:[0,1,2],
-          doing:[0,1,2],
-          finished:[0,1,2],
-          publishing: [0,1,2],
-          verified: [0],
-          ended: [0],
+          joining: [],
+          doing: [],
+          finished: [],
+          publishing: [],
+          verified: [],
+          ended: []
         },
         isVerified: true,
-        wechatopenid: 1,
-        id:1
+        wechatopenid: 1
       },
       disabled: true,
-      visibility: 'invisible',
-      isEditing: false,
-      
-    }
+      visibility: "invisible",
+      isEditing: false
+    };
   },
 
   methods: {
-    
-    updateUserInfo(){
-      
-      if(!this.isEditing){
-        console.log("Editing...")
+    updateUserInfo() {
+      if (!this.isEditing) {
+        console.log("Editing...");
         this.isEditing = true;
-        this.visibility = 'visible'
-        this.disabled = false
-      }
-      else{
+        this.visibility = "visible";
+        this.disabled = false;
+      } else {
         return;
       }
     },
 
-    saveChanges(){
-      console.log("Save changes.")
-      this.isEditing = false
-      this.visibility = 'invisible'
+    saveChanges() {
+      console.log("Save changes.");
+      this.isEditing = false;
+      this.visibility = "invisible";
       this.disabled = true;
-      
+
+      console.log(this.userInfo);
       api
-      .updateOneById("users", this.userInfo.id, 
-      { 
-        'personalStatement':this.userInfo.personalStatement,
-        'tags':{
-          'name':this.userInfo.tags.name,
-          'flag':this.userInfo.tags.flag
-        }})
-      .then(result => {
-        console.log(result);
-      })
-      .catch(error => {
-        console.warn(error);
-      });
-
-    },
-
-    tagButtonClicked(index){
-        if(this.isEditing){
-          if(this.tags.flag[index] == 1){
-            this.tags.flag[index] = 0
-          }else{
-            this.tags.flag[index] = 1
+        .updateOneById("users", this.userInfo._id, {
+          personalStatement: this.userInfo.personalStatement,
+          tags: {
+            name: this.userInfo.tags.name,
+            flag: this.userInfo.tags.flag
           }
-        }
+        })
+        .then(result => {
+          console.log(result);
+        })
+        .catch(error => {
+          console.warn(error);
+        });
     },
-    
-    getUserInfo(){
+
+    tagButtonClicked(index) {
+      if (this.isEditing) {
+        if (this.userInfo.tags.flag[index] == "chosen") {
+          this.userInfo.tags.flag[index] = "unchosen";
+          console.log(this.userInfo.tags.flag[index]);
+        } else {
+          this.userInfo.tags.flag[index] = "chosen";
+          console.log(this.userInfo.tags.flag[index]);
+        }
+        this.isEditing = false;
+        this.isEditing = true;
+      }
+    },
+
+    getUserInfo() {
       // 弹窗
-      var that = this
+      var that = this;
 
       wx.showModal({
-        title: '提示',
-        content: '是否授权登陆',
-        success (res) {
+        title: "提示",
+        content: "是否授权登陆",
+        success(res) {
           if (res.confirm) {
-            console.log('用户点击确定')
+            console.log("用户点击确定");
 
             //获取信息
             wx.getUserInfo({
-              success: (res) => {
-                  //get userInfo incluing nickname, avatar and gender
-                  console.log(res.userInfo)
-                  
-                  that.userInfo.userName = res.userInfo.nickName
-                  that.userInfo.avatarUrl = res.userInfo.avatarUrl
-                  if(res.userInfo.gender == 1 ){
-                    that.userInfo.gender = '男'
-                  }else{
-                    that.userInfo.gender = '女'
-                  }
-                  
-                  //get openid
-                  api.getOpenId()
-                    .then(res => {
-                      console.log(res);
-                      that.userInfo.wechatopenid = res.result
-                      
-                      let user = {
-                        'wechatopenid':that.userInfo.wechatopenid,
-                        'nickName': that.userInfo.userName, 
-                        'name':'realName',
-                        'avatarUrl':that.userInfo.avatarUrl,
-                        'studentId':that.userInfo.studentId,
-                        'gender':that.userInfo.gender,
-                        'tasks':{ 
-                          'joining':that.userInfo.tasks.joining,
-                          'doing':that.userInfo.tasks.doing,
-                          'finished':that.userInfo.tasks.finished,
-                          'publishing':that.userInfo.tasks.publishing,
-                          'verified':that.userInfo.tasks.verified,
-                          'ended':that.userInfo.tasks.ended
-                        },
-                        'tags':{
-                          'name':that.userInfo.tags.name,
-                          'flag':that.userInfo.tags.flag
-                        },
-                        'balance':that.userInfo.balance,
-                        'isVerified': that.userInfo.isVerified,
-                        'personalStatement':that.userInfo.personalStatement,
-                        'credit': that.userInfo.credit
-                      }
-                      store.commit('changeUser', user)
-                      console.log("globalUser is :")
-                      console.log(store.state.user)
-                      
-                      
-                      //insert the new user if not existed
-                      api.insertOneUser(user)
-                        .then(res => {
-                          // console.log(res);
-                        })
-                        .catch(rej => {
-                          // console.warn(rej);
-                          //if user already exsited, query uesrInfo by wechatopenid 
-                          //and init all the info with the returned message
-                          api.querySomeByModel("users", {
-                              'wechatopenid':that.userInfo.wechatopenid
-                            })
-                            .then(result => {
-                              console.log(result)
-                              
-                              that.userInfo.id = result.result[0]._id
-                              that.userInfo.userName = result.result[0].nickName
-                              that.userInfo.studentId = result.result[0].studentId
-                              that.userInfo.gender = result.result[0].gender
-                              that.userInfo.isVerified = result.result[0].isVerified
-                              that.userInfo.balance = result.result[0].balance
-                              that.userInfo.credit = result.result[0].credit
-                              that.userInfo.avatarUrl = result.result[0].avatarUrl
-                              that.userInfo.personalStatement = result.result[0].personalStatement
-                              //init tasks
-                              that.userInfo.tasks.joining = result.result[0].tasks.joining
-                              that.userInfo.tasks.doing = result.result[0].tasks.doing
-                              that.userInfo.tasks.finished = result.result[0].tasks.finished
-                              that.userInfo.tasks.publishing = result.result[0].tasks.publishing
-                              that.userInfo.tasks.verified = result.result[0].tasks.verified
-                              that.userInfo.tasks.ended = result.result[0].tasks.ended
-                              //init tags
-                              that.userInfo.tags.name = result.result[0].tags.name
-                              that.userInfo.tags.flag = result.result[0].tags.flag
+              success: res => {
+                //get userInfo incluing nickname, avatar and gender
+                console.log(res.userInfo);
 
-                              let user = {
-                                'wechatopenid':that.userInfo.wechatopenid,
-                                'nickName': that.userInfo.userName, 
-                                'name':'realName',
-                                'avatarUrl':that.userInfo.avatarUrl,
-                                'studentId':that.userInfo.studentId,
-                                'gender':that.userInfo.gender,
-                                'tasks':{ 
-                                  'joining':that.userInfo.tasks.joining,
-                                  'doing':that.userInfo.tasks.doing,
-                                  'finished':that.userInfo.tasks.finished,
-                                  'publishing':that.userInfo.tasks.publishing,
-                                  'verified':that.userInfo.tasks.verified,
-                                  'ended':that.userInfo.tasks.ended
-                                },
-                                'tags':{
-                                  'name':that.userInfo.tags.name,
-                                  'flag':that.userInfo.tags.flag
-                                },
-                                'balance':that.userInfo.balance,
-                                'isVerified': that.userInfo.isVerified,
-                                'personalStatement':that.userInfo.personalStatement,
-                                'credit': that.userInfo.credit
-                              }
-                              store.commit('changeUser', user)
-                              console.log("globalUser is :")
-                              console.log(store.state.user)
+                that.userInfo.userName = res.userInfo.nickName;
+                that.userInfo.avatarUrl = res.userInfo.avatarUrl;
+                if (res.userInfo.gender == 1) {
+                  that.userInfo.gender = "男";
+                } else {
+                  that.userInfo.gender = "女";
+                }
 
-                            })
-                            .catch(error => {
-                              console.warn(error);
-                            });
-                        });
+                //get openid
+                api
+                  .getOpenId()
+                  .then(res => {
+                    console.log(res);
+                    that.userInfo.wechatopenid = res.result;
 
-                    })
-                    .catch(rej => {
-                      console.warn(rej);
-                    });
+                    let user = {
+                      wechatopenid: that.userInfo.wechatopenid,
+                      nickName: that.userInfo.userName,
+                      name: "realName",
+                      avatarUrl: that.userInfo.avatarUrl,
+                      studentId: that.userInfo.studentId,
+                      gender: that.userInfo.gender,
+                      tasks: {
+                        joining: that.userInfo.tasks.joining,
+                        doing: that.userInfo.tasks.doing,
+                        finished: that.userInfo.tasks.finished,
+                        publishing: that.userInfo.tasks.publishing,
+                        verified: that.userInfo.tasks.verified,
+                        ended: that.userInfo.tasks.ended
+                      },
+                      tags: {
+                        name: that.userInfo.tags.name,
+                        flag: that.userInfo.tags.flag
+                      },
+                      balance: that.userInfo.balance,
+                      isVerified: that.userInfo.isVerified,
+                      personalStatement: that.userInfo.personalStatement,
+                      credit: that.userInfo.credit
+                    };
+                    store.commit("changeUser", user);
+                    console.log("globalUser is :");
+                    console.log(store.state.user);
 
-        }
-      })
+                    //insert the new user if not existed
+                    api
+                      .insertOneUser(user)
+                      .then(res => {
+                        console.log(res);
+                        let temuser = user;
+                        temuser._id = res.result;
+                        store.commit("changeUser", temuser);
+                      })
+                      .catch(rej => {
+                        // console.warn(rej);
+                        //if user already exsited, query uesrInfo by wechatopenid
+                        //and init all the info with the returned message
+                        api
+                          .querySomeByModel("users", {
+                            wechatopenid: that.userInfo.wechatopenid
+                          })
+                          .then(result => {
+                            console.log(result);
+
+                            that.userInfo._id = result.result[0]._id;
+                            that.userInfo.userName = result.result[0].nickName;
+                            that.userInfo.studentId =
+                              result.result[0].studentId;
+                            that.userInfo.gender = result.result[0].gender;
+                            that.userInfo.isVerified =
+                              result.result[0].isVerified;
+                            that.userInfo.balance = result.result[0].balance;
+                            that.userInfo.credit = result.result[0].credit;
+                            that.userInfo.avatarUrl =
+                              result.result[0].avatarUrl;
+                            that.userInfo.personalStatement =
+                              result.result[0].personalStatement;
+                            //init tasks
+                            that.userInfo.tasks.joining =
+                              result.result[0].tasks.joining;
+                            that.userInfo.tasks.doing =
+                              result.result[0].tasks.doing;
+                            that.userInfo.tasks.finished =
+                              result.result[0].tasks.finished;
+                            that.userInfo.tasks.publishing =
+                              result.result[0].tasks.publishing;
+                            that.userInfo.tasks.verified =
+                              result.result[0].tasks.verified;
+                            that.userInfo.tasks.ended =
+                              result.result[0].tasks.ended;
+                            //init tags
+                            that.userInfo.tags.name =
+                              result.result[0].tags.name;
+                            that.userInfo.tags.flag =
+                              result.result[0].tags.flag;
+
+                            let user = {
+                              _id: that.userInfo._id,
+                              wechatopenid: that.userInfo.wechatopenid,
+                              nickName: that.userInfo.userName,
+                              name: "realName",
+                              avatarUrl: that.userInfo.avatarUrl,
+                              studentId: that.userInfo.studentId,
+                              gender: that.userInfo.gender,
+                              tasks: {
+                                joining: that.userInfo.tasks.joining,
+                                doing: that.userInfo.tasks.doing,
+                                finished: that.userInfo.tasks.finished,
+                                publishing: that.userInfo.tasks.publishing,
+                                verified: that.userInfo.tasks.verified,
+                                ended: that.userInfo.tasks.ended
+                              },
+                              tags: {
+                                name: that.userInfo.tags.name,
+                                flag: that.userInfo.tags.flag
+                              },
+                              balance: that.userInfo.balance,
+                              isVerified: that.userInfo.isVerified,
+                              personalStatement:
+                                that.userInfo.personalStatement,
+                              credit: that.userInfo.credit
+                            };
+                            store.commit("changeUser", user);
+                            // console.log("globalUser is :");
+                            // console.log(store.state.user);
+                          })
+                          .catch(error => {
+                            console.warn(error);
+                          });
+                      });
+                  })
+                  .catch(rej => {
+                    console.warn(rej);
+                  });
+              }
+            });
           } else if (res.cancel) {
-            console.log('用户点击取消')
+            console.log("用户点击取消");
+            store.commit("changeAuthorized", false);
           }
         }
-      })
-
-
-      
+      });
     }
   },
 
-  created () {
+  created() {
     // let app = getApp()
-    console.log(this.userInfo.nickName);
+    //  console.log(this.userInfo.nickName);
     this.getUserInfo();
+  },
 
+  onShow() {
+    console.log("this is user page");
+    var that = this;
+    if (that.userInfo.wechatopenid == 1) {
+      console.log("return");
+    } else {
+      api
+        .querySomeByModel("users", {
+          wechatopenid: that.userInfo.wechatopenid
+        })
+        .then(result => {
+          console.log(result);
+
+          that.userInfo._id = result.result[0]._id;
+          that.userInfo.userName = result.result[0].nickName;
+          that.userInfo.studentId = result.result[0].studentId;
+          that.userInfo.gender = result.result[0].gender;
+          that.userInfo.isVerified = result.result[0].isVerified;
+          that.userInfo.balance = result.result[0].balance;
+          that.userInfo.credit = result.result[0].credit;
+          that.userInfo.avatarUrl = result.result[0].avatarUrl;
+          that.userInfo.personalStatement = result.result[0].personalStatement;
+          //init tasks
+          that.userInfo.tasks.joining = result.result[0].tasks.joining;
+          that.userInfo.tasks.doing = result.result[0].tasks.doing;
+          that.userInfo.tasks.finished = result.result[0].tasks.finished;
+          that.userInfo.tasks.publishing = result.result[0].tasks.publishing;
+          that.userInfo.tasks.verified = result.result[0].tasks.verified;
+          that.userInfo.tasks.ended = result.result[0].tasks.ended;
+          //init tags
+          that.userInfo.tags.name = result.result[0].tags.name;
+          that.userInfo.tags.flag = result.result[0].tags.flag;
+
+          let user = {
+            _id: that.userInfo._id,
+            wechatopenid: that.userInfo.wechatopenid,
+            nickName: that.userInfo.userName,
+            name: "realName",
+            avatarUrl: that.userInfo.avatarUrl,
+            studentId: that.userInfo.studentId,
+            gender: that.userInfo.gender,
+            tasks: {
+              joining: that.userInfo.tasks.joining,
+              doing: that.userInfo.tasks.doing,
+              finished: that.userInfo.tasks.finished,
+              publishing: that.userInfo.tasks.publishing,
+              verified: that.userInfo.tasks.verified,
+              ended: that.userInfo.tasks.ended
+            },
+            tags: {
+              name: that.userInfo.tags.name,
+              flag: that.userInfo.tags.flag
+            },
+            balance: that.userInfo.balance,
+            isVerified: that.userInfo.isVerified,
+            personalStatement: that.userInfo.personalStatement,
+            credit: that.userInfo.credit
+          };
+          store.commit("changeUser", user);
+          console.log("globalUser is :");
+          console.log(store.state.user);
+        })
+        .catch(error => {
+          console.warn(error);
+        });
+    }
   }
-}
+};
 </script>
 
 <style scoped>
-
-.title{
+.user-page {
+  margin: 0rpx 8rpx 0rpx 8rpx;
+}
+.title {
   size: 60px;
   font-weight: bold;
   text-align: center;
 }
 
-.editButton{
+.editButton {
   width: 40rpx;
   height: 40rpx;
   float: right;
   margin-right: 50rpx;
 }
 
-.authorize{
-  width:150rpx;
+.authorize {
+  width: 150rpx;
   font-size: 10pt;
 }
-.container{
+.container {
   width: 90%;
   margin: 50rpx;
   padding: 0;
@@ -326,65 +449,65 @@ export default {
   flex-direction: column;
 }
 
-.lableClass{
+.lableClass {
   float: left;
 }
 
-.div1{
+.div1 {
   width: 100%;
   display: flex;
   flex-direction: row;
   /* margin-bottom: 20rpx; */
 }
 
-.div2{
+.div2 {
   width: 100%;
   margin-bottom: 20rpx;
   border-top: 1px solid#DDDDDD;
 }
 
-.div3{
+.div3 {
   width: 100%;
   margin-bottom: 20rpx;
-  border-top: 1px solid #DDDDDD;
+  border-top: 1px solid #dddddd;
 }
 
-.div4{
+.div4 {
   width: 100%;
-  border-top: 1px solid #DDDDDD;
+  border-top: 1px solid #dddddd;
   padding-top: 30rpx;
 }
 
-.avatar{
+.avatar {
   width: 35%;
-  
+
   margin: 30rpx;
 }
 
-.userAvatar{
+.userAvatar {
   width: 120px;
   height: 120px;
   border-radius: 50%;
 }
 
-.info{
-  width:45%;
+.info {
+  width: 45%;
   display: flex;
   flex-direction: column;
   margin: 30rpx;
-  border-left: 1px solid #DDDDDD;
+  border-left: 1px solid #dddddd;
 }
 
-.infoRow{
-  margin:10rpx;
+.infoRow {
+  margin: 10rpx;
 }
 
-.ps{
+.ps {
   text-align: left;
   margin: 30rpx;
 }
 
-.clickedTag{
+.clickedTag {
   border: 1px solid #000;
   background: rgb(104, 204, 113);
   color: white;
@@ -394,26 +517,35 @@ export default {
   text-align: center;
 }
 
-.unclickedTag{
+.chosen {
   border: 1px solid #000;
-  background: white;
-  color: black;
-  margin: 20rpx;
-  width: 22%;
-  height: 20%;
+  background: rgb(168, 224, 122);
+  color: white;
+}
+
+button {
+  margin: 10rpx;
+  width: 20%;
+  height: 15%;
   float: left;
   text-align: center;
 }
 
-.task{
-  width:200rpx;
-  margin: 10rpx;
-  float:left;
+.unchosen {
+  border: 1px solid #000;
+  background: white;
+  color: black;
 }
 
-.invisible{
+.task {
+  width: 200rpx;
+  margin: 10rpx;
+  float: left;
+}
+
+.invisible {
   visibility: hidden;
-  width:110rpx;
+  width: 110rpx;
   font-size: 11pt;
   color: white;
   background-color: rgb(97, 196, 97);
@@ -422,9 +554,9 @@ export default {
   float: left;
 }
 
-.visible{
+.visible {
   visibility: visible;
-  width:110rpx;
+  width: 110rpx;
   font-size: 11pt;
   color: white;
   background-color: rgb(97, 196, 97);

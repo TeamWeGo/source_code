@@ -1,7 +1,7 @@
 <template>
   <div class="weui-tab">
     <div class="weui-navbar">
-      <div v-for="(item,index) in tabs" :key="index" :id="index" :class="{'weui-bar-item-on':activeIndex == index && role == 'worker', 'weui-bar-item-on-o':activeIndex == index && role == 'cow'}" class="weui-navbar__item" @click="tabClick">
+      <div v-for="(item,index) in tabs" :key="index" :id="index" :class="{'weui-bar-item-on':activeIndex == index && role == 'worker', 'weui-bar-item-on-o':activeIndex == index && role == 'cow' , 'mark':index ==3}" class="weui-navbar__item" @click="tabClick">
         <div class="weui-navbar__title">{{item}}</div>
       </div>
     </div>
@@ -88,5 +88,9 @@ export default {
 }
 .weui-bar-item-on-o{
   color: orangered;
+}
+.mark{
+  border-radius: 5%;
+  background-color: rgba(0, 128, 0, 0.466);
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="base-singleSelect">
     <radio-group class="radio-group" @change="radioChange">
-      <label class="base_singleSelect_one" for="radio_one">{{temData.description}}</label>
+      <label class="base_singleSelect_one" for="radio_one">{{"*"+temData.description}}</label>
       <div class="base_singleSelect_radio">
         <radio
           name="radio_one"
@@ -38,8 +38,13 @@ label {
   font-size: 13pt;
   margin: 8rpx 0rpx 8rpx 0rpx;
 }
+radio {
+  margin: 0rpx 8rpx 0rpx 8rpx;
+}
 #base-singleSelect {
   margin: 0rpx;
+  background-color: gainsboro;
+  border-radius: 10rpx;
 }
 .base_singleSelect_one {
   height: 20pt;

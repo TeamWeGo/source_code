@@ -21,7 +21,7 @@
   * 增加 tasks->joining （用于保存 用户加入任务的 id，该任务还在发布中）
   * 更改 tasks-> published 改为 tasks->publishing
   * 增加 tasks-> ended （发布者 已经结束的任务）
-  * 增加 tasks-> verifyed （发布者 已经确认的任务 还没有完成）
+  * 增加 tasks-> verified （发布者 已经确认的任务 还没有完成）
 
 * Task 属性更改
   * 增加 state 的选择 增加 verifying
@@ -41,6 +41,10 @@
   * 增加 results 代表 每一份调查问卷的结果，是一个 array 类型，其中每一个结果都是 template 的实例
   * 增加 maxCount 代表 调查问卷最多需要多少份
 
+6.20
+* Task
+  * 增加 credit User的信誉度 
+
 ```javascript
   let User = {
    // '_id':'x',//String database main key
@@ -56,7 +60,7 @@
       'finished':[task._id],//String Array the task._id that the user finished
 
       'publishing':[task._id],// String Array the tasks._id that the publihser published
-      'verifyed':[task._id]//Strng Array the tasl._id that the publish task has  verifed not end
+      'verified':[task._id]//Strng Array the tasl._id that the publish task has  verifed not end
       'ended':[task._id]//Strng Array the tasl._id that the publish task has  verifed and end
     },
     'balance':21,//Number free money coin
@@ -138,6 +142,7 @@ api
     'maxJoiner':1,//Number Max Nubmer of joiners
     'joiners':['x'],//String Array the joiners _id array
     'location':'x'
+    'credit':user.credit
     'publish':{
       'publisher':'X',//String user._id
       'beginTime':Date,
