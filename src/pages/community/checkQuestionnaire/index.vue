@@ -22,19 +22,19 @@ export default {
   },
   methods: {
     confirm: function() {
-        this.temDatas = []
-        wx.navigateBack({
-            delta: 1
-        });
+      this.temDatas = [];
+      wx.navigateBack({
+        delta: 1
+      });
     }
   },
   onLoad(options) {
-    if(Object.keys(options).length!=0){
+    if (Object.keys(options).length != 0) {
       var obj = JSON.parse(decodeURIComponent(options.obj));
       console.log(obj);
-      this.temDatas = obj.result[0].results;
+      this.temDatas = obj.results;
       console.log(this.temDatas);
-      this.id = obj.result[0]._id;
+      this.id = obj._id;
       console.log(this.id);
     }
   }

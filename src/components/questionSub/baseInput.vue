@@ -14,6 +14,7 @@
 </template>
 
 <script>
+6;
 export default {
   props: ["baseData"],
   components: {},
