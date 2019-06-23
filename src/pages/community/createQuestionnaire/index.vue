@@ -54,7 +54,6 @@ export default {
             template: this.temDatas,
             results: []
           };
-          this.temDatas = [];
           api
             .insertOne("questionnaires", questionnaire)
             .then(res => {
@@ -63,6 +62,7 @@ export default {
                 icon: "success",
                 duration: 2000
               });
+              this.temDatas = [];
               let pages = getCurrentPages();
               let prevPage = pages[pages.length - 2];
               console.log("insert");
@@ -79,6 +79,7 @@ export default {
                 icon: "success",
                 duration: 2000
               });
+              this.temDatas = [];
             });
         } else {
           api
@@ -95,6 +96,7 @@ export default {
               });
             })
             .catch(rej => {
+              this.temDatas = [];
               console.warn(rej);
               wx.navigateBack({
                 delta: 1
@@ -106,6 +108,7 @@ export default {
         wx.navigateBack({
           delta: 1
         });
+        this.temDatas = [];
       }
     }
   },

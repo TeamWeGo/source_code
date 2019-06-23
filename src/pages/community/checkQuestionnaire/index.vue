@@ -32,7 +32,7 @@ export default {
     if(Object.keys(options).length!=0){
       var obj = JSON.parse(decodeURIComponent(options.obj));
       console.log(obj);
-      this.temDatas = obj.result[0].results;
+      this.temDatas = obj.result[0].results[0];
       console.log(this.temDatas);
       this.id = obj.result[0]._id;
       console.log(this.id);

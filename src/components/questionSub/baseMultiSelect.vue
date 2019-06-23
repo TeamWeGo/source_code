@@ -6,10 +6,11 @@
         name="check_one"
         id="check_one"
         value="true"
-        v-for="it in temData.content"
-        :key="it"
-        v-model="it.result"
-      >{{it.label}}</checkbox>
+        v-for="(item, index) in temData.content"
+        :key="index"
+        :checked="item.result"
+        @click="radioChecked(index)"
+      >{{item.label}}</checkbox>
     </div>
   </div>
 </template>
@@ -24,7 +25,16 @@ export default {
     };
   },
 
-  methods: {},
+  methods: {
+    radioChecked: function(val){
+      console.log(this.temData.content)
+      if(this.temData.content[val].result == true){
+        this.temData.content[val].result = false
+      }else{
+        this.temData.content[val].result = true
+      }
+    }
+  },
   computed: {}
 };
 </script>
