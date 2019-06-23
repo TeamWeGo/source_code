@@ -11,8 +11,8 @@
       @addSingleSelectQues="addSingleSelect"
       @addInputQues="addInput"
     ></qEdit> -->
-    <button @click="deleteQues">Delete</button>
-    <button @click="publish">发布</button>
+    <button @click="deleteQues">删除问题</button>
+    <button @click="publish">发布问卷</button>
   </div>
 </template>
 <script>
