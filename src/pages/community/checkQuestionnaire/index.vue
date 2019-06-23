@@ -2,7 +2,7 @@
   <div>
     <p class="commiunitytitle">{{ commiunitytitle }}</p>
     <qContainer :temDatas="temDatas"></qContainer>
-    <button @click="confirm">van♂成</button>
+    <button @click="confirm">完成</button>
   </div>
 </template>
 <script>
@@ -29,12 +29,14 @@ export default {
     }
   },
   onLoad(options) {
-    var obj = JSON.parse(decodeURIComponent(options.obj));
-    console.log(obj);
-    this.temDatas = obj.result[0].results;
-    console.log(this.temDatas);
-    this.id = obj.result[0]._id;
-    console.log(this.id);
+    if(Object.keys(options).length!=0){
+      var obj = JSON.parse(decodeURIComponent(options.obj));
+      console.log(obj);
+      this.temDatas = obj.result[0].results;
+      console.log(this.temDatas);
+      this.id = obj.result[0]._id;
+      console.log(this.id);
+    }
   }
 };
 </script>
