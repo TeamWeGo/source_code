@@ -42,7 +42,7 @@ export default {
       missionlist: [],
       tabs: ["已接收", "待完成", "已完成", "切换"],
       tabs_index: 0,
-      curRole: "cow"
+      curRole: "worker"
     };
   },
 
@@ -78,7 +78,7 @@ export default {
     switchRole() {
       if (this.curRole == "worker") {
         this.curRole = "cow";
-        this.tabs = ["已发布", "已确认", "已结束", "切换"];
+        this.tabs = ["已发布", "完成中", "已结束", "切换"];
       } else {
         this.curRole = "worker";
         this.tabs = ["已接收", "待完成", "已完成", "切换"];
@@ -90,65 +90,138 @@ export default {
       } else {
         this.tabs_index = e;
       }
-    }
+    },
+    getData(){
+      this.load1 = 0;
+      this.load2 = 0;
+      Date.prototype.Format = function(fmt) {
+        //author: meizz
+        var o = {
+          "M+": this.getMonth() + 1, //月份
+          "d+": this.getDate(), //日
+          "h+": this.getHours(), //小时
+          "m+": this.getMinutes(), //分
+          "s+": this.getSeconds(), //秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+          S: this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt))
+          fmt = fmt.replace(
+            RegExp.$1,
+            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+          );
+        for (var k in o)
+          if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(
+              RegExp.$1,
+              RegExp.$1.length == 1
+                ? o[k]
+                : ("00" + o[k]).substr(("" + o[k]).length)
+            );
+        return fmt;
+      };
+      let curuser = store.state.user;
+      console.log(curuser)
+      this.missionlist = []
+      api
+        .querySomeByModel("tasks", {
+          publish: {
+            publisher: curuser._id
+          }
+        })
+        .then(res => {
+          console.log(curuser._id)
+          console.log("query publish")
+          this.result = res.result;
+          console.log(res.result)
+          //  console.log(this.missionlist);
+          this.result.forEach(element => {
+            if (element.publish.publisher != curuser._id) {
+              let index = this.result.indexOf(element);
+              if (index > -1) {
+                this.result.splice(index, 1);
+              }
+            }
+            var date = new Date(element.publish.beginTime);
+            element.publish.beginTime = date.Format("yyyy-MM-dd");
+            element.publish.endTime = date.Format("yyyy-MM-dd");
+          });
+          this.missionlist.push(...this.result);
+          this.load1 = 1;
+          if(this.load1 == 1 && this.load2 ==1){
+            wx.hideLoading()
+            wx.showToast({
+              title: '加载成功',
+              duration: 2000
+            })
+          }
+        })
+        .catch(rej => {
+          console.warn(rej);
+          wx.hideLoading()
+          wx.showToast({
+            title: '加载失败',
+            icon: 'none',
+            duration: 2000
+          })
+        });
+      api
+        .querySomeByModel("tasks", {
+          joiners: {
+              $regex:'.*'+curuser._id+'.*'
+            }
+        })
+        .then(res => {
+          console.log("query joinning")
+          console.log(res)
+          this.result = res.result;
+          this.result.forEach(element => {
+            if(element.state == 'publishing')
+            {
+              element.state = 'joining'
+            }else if(element.state == 'doing')
+            {
+              element.state = 'todo'
+            }else if(element.state == 'finished')
+            {
+              element.state = 'ended'
+            }
+            var date = new Date(element.publish.beginTime);
+            element.publish.beginTime = date.Format("yyyy-MM-dd");
+            element.publish.endTime = date.Format("yyyy-MM-dd");
+          });
+          this.missionlist.push(...this.result);
+          this.load2 = 1;
+          if(this.load1 == 1 && this.load2 ==1){
+            wx.hideLoading()
+            wx.showToast({
+              title: '加载成功',
+              duration: 2000
+            })
+          }
+        })
+        .catch(rej => {
+          console.warn(rej);
+          wx.hideLoading()
+          wx.showToast({
+            title: '加载失败',
+            icon: 'none',
+            mask: true,
+            duration: 2000
+          })
+        });
+    },
     // 打开模态框
   },
 
-  onShow() {
-    console.log("rilixianren");
-    Date.prototype.Format = function(fmt) {
-      //author: meizz
-      var o = {
-        "M+": this.getMonth() + 1, //月份
-        "d+": this.getDate(), //日
-        "h+": this.getHours(), //小时
-        "m+": this.getMinutes(), //分
-        "s+": this.getSeconds(), //秒
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-        S: this.getMilliseconds() //毫秒
-      };
-      if (/(y+)/.test(fmt))
-        fmt = fmt.replace(
-          RegExp.$1,
-          (this.getFullYear() + "").substr(4 - RegExp.$1.length)
-        );
-      for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt))
-          fmt = fmt.replace(
-            RegExp.$1,
-            RegExp.$1.length == 1
-              ? o[k]
-              : ("00" + o[k]).substr(("" + o[k]).length)
-          );
-      return fmt;
-    };
-    let curuser = store.state.user;
-    api
-      .querySomeByModel("tasks", {
-        publish: {
-          publisher: curuser._id
-        }
-      })
-      .then(res => {
-        console.log("nothing");
-        this.missionlist = res.result;
-        //  console.log(this.missionlist);
-        this.missionlist.forEach(element => {
-          if (element.publish.publisher != curuser._id) {
-            let index = this.missionlist.indexOf(element);
-            if (index > -1) {
-              this.missionlist.splice(index, 1);
-            }
-          }
-          var date = new Date(element.publish.beginTime);
-          element.publish.beginTime = date.Format("yyyy-MM-dd");
-          element.publish.endTime = date.Format("yyyy-MM-dd");
-        });
-      })
-      .catch(rej => {
-        console.warn(rej);
-        console.log("NOOOOOO");
-      });
+  onLoad() {
+  },
+  onShow() { //返回显示页面状态函数
+    wx.showLoading({
+      title: '加载中',
+      mask: true,
+    })
+    this.getData()
   }
 };
 </script>
@@ -218,5 +291,9 @@ page {
   background: transparent;
   z-index: 1;
   background-color: orangered;
+}
+
+.mark{
+  background-color: rgba(0, 128, 0, 0.466)
 }
 </style>

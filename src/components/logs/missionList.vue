@@ -6,7 +6,7 @@
       :key="index"
       v-on:click="goto(index)"
     >
-      <img class="mission-list-item-image" :src="item.avatarId">
+      <img class="mission-list-item-image" :src="item.avatarId"  mode="widthFix">
       <div class="mission-list-item-word">
         <ul>
           <li>
@@ -15,7 +15,7 @@
           </li>
           <li>
             <span>
-              <mp-rate rateValue="3" rateClass="mission-list-item-star"></mp-rate>
+              <mp-rate :rateValue="item.credit/20" rateClass="mission-list-item-star"></mp-rate>
             </span>
           </li>
           <li>
@@ -62,14 +62,7 @@ export default {
       missionlist: this.list,
       task_state: this.task_state,
       show_list: [],
-      map: {
-        已接收: "joining",
-        待完成: "doing",
-        已完成: "finished",
-        已发布: "publishing",
-        已确认: "verified",
-        已结束: "ended"
-      }
+      map: {"已接收":'joining',"待完成":'todo',"已结束":'ended',"已发布":'publishing', "完成中":'doing', "已结束":'finished'}
     };
   },
   watch: {
@@ -106,7 +99,9 @@ export default {
 
 <style>
 .mission-list {
-  margin: 30rpx;
+  margin-top: 30rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
 }
 
 .mission-list-item {
@@ -115,14 +110,15 @@ export default {
 }
 
 .mission-list-item-image {
-  width: 20%;
-  max-height: 200rpx;
+  width: 25%;
+  height: 75rpx;
   float: left;
+  margin: 2%;
 }
 
 .mission-list-item-word {
-  margin: 0rpx 0rpx 0rpx 20rpx;
-  width: 70%;
+  margin-left: 1%;
+  width: 69%;
   float: right;
   font-size: 35rpx;
 }
