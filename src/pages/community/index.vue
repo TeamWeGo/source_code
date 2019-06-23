@@ -240,6 +240,9 @@ export default {
             this.Task.description = "";
             this.init();
             this.Task.location = "广东省,广州市,番禺区";
+            prevPage.setData({
+              quesID: undefined
+            })
           })
           .catch(rej => {
             console.warn(rej);
@@ -254,6 +257,9 @@ export default {
             this.Task.description = "";
             this.init();
             this.Task.location = "广东省,广州市,番禺区";
+            prevPage.setData({
+              quesID: undefined
+            })
           });
       }
     },
