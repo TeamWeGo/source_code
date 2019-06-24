@@ -6,7 +6,7 @@
       :key="index"
       v-on:click="goto(index)"
     >
-      <img class="mission-list-item-image" :src="item.avatarId"  mode="widthFix">
+      <img class="mission-list-item-image" :src="item.avatarId" mode="widthFix">
       <div class="mission-list-item-word">
         <ul>
           <li>
@@ -62,7 +62,14 @@ export default {
       missionlist: this.list,
       task_state: this.task_state,
       show_list: [],
-      map: {"已接收":'joining',"待完成":'todo',"已结束":'ended',"已发布":'publishing', "完成中":'doing', "已结束":'finished'}
+      map: {
+        已接收: "joining",
+        待完成: "todo",
+        已结束: "ended",
+        已发布: "publishing",
+        完成中: "doing",
+        已结束: "finished"
+      }
     };
   },
   watch: {
@@ -87,7 +94,7 @@ export default {
   methods: {
     goto(index) {
       // console.log(index);
-      this.mission = this.missionlist[index];
+      this.mission = this.show_list[index];
       //  console.log(this.mission);
       var obj = JSON.stringify(this.mission);
       let url = "../community/taskDetails/main?obj=" + obj;
