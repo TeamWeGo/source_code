@@ -115,7 +115,7 @@ export default {
       curuser: {},
       Task: {
         title: "",
-        avatarId: '',
+        avatarId: "",
         maxJoiner: 0,
         payment: 0,
         description: "",
@@ -170,23 +170,23 @@ export default {
     publishTask() {
       let pages = getCurrentPages();
       let prevPage = pages[pages.length - 1];
-      console.log(prevPage.data.quesID);
-      var image = ''
-      switch(this.index){
+      //  console.log(prevPage.data.quesID);
+      var image = "";
+      switch (this.index) {
         case 0:
-          image = '/static/images/study.png'
-          break
+          image = "/static/images/study.png";
+          break;
         case 1:
-          image = '/static/images/play.png'
-          break
+          image = "/static/images/play.png";
+          break;
         case 2:
-          image = '/static/images/live.png'
-          break
+          image = "/static/images/live.png";
+          break;
         case 4:
-          image = '/static/images/info.png'
-          break
+          image = "/static/images/info.png";
+          break;
         default:
-          break
+          break;
       }
       let task = {
         title: this.Task.title,
@@ -211,14 +211,18 @@ export default {
         isQuestionnaire: false,
         questionnaireID: ""
       };
-      if (prevPage.data.quesID == undefined) {
+      if (prevPage.data.quesID == undefined || prevPage.data.quesID == "") {
         task.isQuestionnaire = false;
         task.questionnaireID = "";
       } else {
         task.isQuestionnaire = true;
         task.questionnaireID = prevPage.data.quesID;
       }
-      if (task.publish.publisher == undefined) {
+      if (
+        task.publish.publisher == undefined ||
+        task.title == "" ||
+        task.maxJoiner == 0
+      ) {
         wx.showToast({
           title: "创建任务失败",
           icon: "success",
@@ -228,7 +232,7 @@ export default {
         api
           .publishOneTask(task)
           .then(res => {
-            console.log(res);
+            //  console.log(res);
             wx.showToast({
               title: "创建任务成功",
               icon: "success",
@@ -241,8 +245,8 @@ export default {
             this.init();
             this.Task.location = "广东省,广州市,番禺区";
             prevPage.setData({
-              quesID: undefined
-            })
+              quesID: ""
+            });
           })
           .catch(rej => {
             console.warn(rej);
@@ -258,8 +262,8 @@ export default {
             this.init();
             this.Task.location = "广东省,广州市,番禺区";
             prevPage.setData({
-              quesID: undefined
-            })
+              quesID: ""
+            });
           });
       }
     },
@@ -290,15 +294,15 @@ export default {
     addQues: function() {
       let pages = getCurrentPages();
       let prevPage = pages[pages.length - 1];
-      console.log(prevPage.data.quesID);
-      if (prevPage.data.quesID == undefined) {
+      //  console.log(prevPage.data.quesID);
+      if (prevPage.data.quesID == undefined || prevPage.data.quesID == "") {
         let url = "./createQuestionnaire/main";
         wx.navigateTo({ url });
       } else {
         api.queryOneById("questionnaires", prevPage.data.quesID).then(res => {
           var obj = JSON.stringify(res);
           let url = "./createQuestionnaire/main?obj=" + obj;
-          console.log(url);
+          //   console.log(url);
           wx.navigateTo({ url });
         });
       }
@@ -334,6 +338,7 @@ export default {
 }
 input {
   width: 500rpx;
+  padding-left: 20rpx;
   border-radius: 5rpx;
   padding-left: 5rpx;
   background-color: #efeff4;

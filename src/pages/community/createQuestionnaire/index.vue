@@ -3,14 +3,14 @@
   <div>
     <qContainer :temDatas="temDatas"></qContainer>
     <questionnaire @confirmSend="addQues"></questionnaire>
-    
+
     <!-- <qContainer :temDatas="temDatas"></qContainer>
     <button @click="deleteQues">Delete</button>
     <qEdit
       @addMultiSelectQues="addMultiSelect"
       @addSingleSelectQues="addSingleSelect"
       @addInputQues="addInput"
-    ></qEdit> -->
+    ></qEdit>-->
     <button @click="deleteQues">删除问题</button>
     <button @click="publish">发布问卷</button>
   </div>
@@ -18,7 +18,7 @@
 <script>
 import { api } from "../../../utils/api.js";
 import qContainer from "@/components/qContainer";
-import questionnaire from '@/components/logs/questionnaire'
+import questionnaire from "@/components/logs/questionnaire";
 import qEdit from "@/components/qEdit";
 import store from "../../../components/store";
 export default {
@@ -41,8 +41,8 @@ export default {
     },
     addQues: function(val) {
       this.temDatas.push(val);
-      console.log('addQues')
-      console.log(this.temDatas)
+      //  console.log('addQues')
+      //  console.log(this.temDatas)
     },
     publish: function() {
       if (this.temDatas.length != 0) {
@@ -65,7 +65,7 @@ export default {
               this.temDatas = [];
               let pages = getCurrentPages();
               let prevPage = pages[pages.length - 2];
-              console.log("insert");
+              //    console.log("insert");
               prevPage.setData({
                 quesID: res.result
               });
@@ -89,7 +89,7 @@ export default {
             .then(res => {
               let pages = getCurrentPages();
               let prevPage = pages[pages.length - 2];
-              console.log("update");
+              //  console.log("update");
               this.temDatas = [];
               wx.navigateBack({
                 delta: 1
@@ -104,7 +104,7 @@ export default {
             });
         }
       } else {
-        console.log("nothing");
+        // console.log("nothing");
         wx.navigateBack({
           delta: 1
         });
@@ -113,11 +113,11 @@ export default {
     }
   },
   onLoad(options) {
-    if(Object.keys(options).length!=0){
+    if (Object.keys(options).length != 0) {
       var obj = JSON.parse(decodeURIComponent(options.obj));
       this.temDatas = obj.result[0].template;
       this.id = obj.result[0]._id;
-      console.log(this.id);
+      //  console.log(this.id);
     }
   },
   onUnload: function() {

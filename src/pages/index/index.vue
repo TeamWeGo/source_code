@@ -124,7 +124,7 @@ export default {
                 this.curCity = store.state.curCity;
                 //console.log(this.curCity);
               } else {
-                console.log("地址获取失败");
+                // console.log("地址获取失败");
               }
             }
           });
@@ -143,7 +143,7 @@ export default {
           let curNum = 0;
           let curType = "";
           for (let i in tempList) {
-            if (curNum >= 2) break;
+            if (curNum >= 1) break;
             let li = tempList[i];
             if (String(li["location"]).includes(this.curCity)) {
               curType = li["type"];
@@ -160,9 +160,9 @@ export default {
                     a["endTime"] = li["work"]["endTime"];
                     a["address"] = li["location"];
                     a["account"] = li["payment"];
-                    a["title"] = li["description"];
+                    a["title"] = li["title"];
                     a["task"] = li;
-                    if (this.menuInfo.length < 2) {
+                    if (this.menuInfo.length < 1) {
                       this.menuInfo.push(a);
                     }
                     curNum += 1;
@@ -176,35 +176,34 @@ export default {
           }
           //this.missionlist = res.result;
 
-          if (this.menuInfo.length > 0) {
-          } else {
-            let li = tempList[0];
-            let curType = li["type"];
-            if (curType == "咨询") {
-              a["imgSrc"] = "/static/images/info.png";
-            } else if (curType == "学习") {
-              a["imgSrc"] = "/static/images/study.png";
-            } else if (curType == "生活") {
-              a["imgSrc"] = "/static/images/live.png";
-            } else {
-              a["imgSrc"] = "/static/images/play.png";
-            }
-            var date = new Date(li["work"]["beginTime"]);
-            // a["time"] = date.Format("yyyy-MM-dd");
-            console.warn(date);
-            a["time"] = li["work"]["beginTime"];
-            a["endTime"] = li["work"]["endTime"];
-            a["address"] = li["location"];
-            a["account"] = li["payment"];
-            a["title"] = li["description"];
-            a["task"] = li;
-            this.menuInfo.push(a);
-          }
-          console.log(this.menuInfo);
+          // if (this.menuInfo.length != 0) {
+          // } else {
+          //   let li = tempList[0];
+          //   let curType = li["type"];
+          //   if (curType == "咨询") {
+          //     a["imgSrc"] = "/static/images/info.png";
+          //   } else if (curType == "学习") {
+          //     a["imgSrc"] = "/static/images/study.png";
+          //   } else if (curType == "生活") {
+          //     a["imgSrc"] = "/static/images/live.png";
+          //   } else {
+          //     a["imgSrc"] = "/static/images/play.png";
+          //   }
+          //   var date = new Date(li["work"]["beginTime"]);
+          //   // a["time"] = date.Format("yyyy-MM-dd");
+          //   //  console.warn(date);
+          //   a["time"] = li["work"]["beginTime"];
+          //   a["endTime"] = li["work"]["endTime"];
+          //   a["address"] = li["location"];
+          //   a["account"] = li["payment"];
+          //   a["title"] = li["description"];
+          //   a["task"] = li;
+          //   this.menuInfo.push(a);
+          // }
+          // console.log(this.menuInfo);
         })
         .catch(rej => {
           console.warn(rej);
-          //console.log("NOOOOOO");
         });
     }
   },
@@ -219,15 +218,15 @@ export default {
     this.curCity = store.state.curCity;
     this.getTasks();
 
-    console.log("this is index");
+    // console.log("this is index");
     // wx.navigateBack({
     //     delta:1
     // })
 
     if (store.state.isAuthorized) {
-      console.log("already authorized");
+      //   console.log("already authorized");
     } else {
-      console.log("not authorized");
+      //  console.log("not authorized");
       wx.navigateBack({
         delta: -1
       });

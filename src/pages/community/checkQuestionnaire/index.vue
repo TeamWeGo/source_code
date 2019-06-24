@@ -31,15 +31,11 @@ export default {
   onLoad(options) {
     if (Object.keys(options).length != 0) {
       var obj = JSON.parse(decodeURIComponent(options.obj));
-      console.log(obj);
-<<<<<<< HEAD
-      this.temDatas = obj.results;
-=======
+      // console.log(obj);
       this.temDatas = obj.result[0].results[0];
->>>>>>> upstream/master
-      console.log(this.temDatas);
+      //  console.log(this.temDatas);
       this.id = obj._id;
-      console.log(this.id);
+      //  console.log(this.id);
     }
   }
 };

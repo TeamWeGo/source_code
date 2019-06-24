@@ -59,7 +59,7 @@ export default {
       return fmt;
     };
 
-    if(this.type == "问卷"){
+    if (this.type == "问卷") {
       api
         .querySomeByModel("tasks", {
           isQuestionnaire: true
@@ -68,13 +68,11 @@ export default {
           let tempList = res.result;
           for (let i in tempList) {
             let li = tempList[i];
-            if (
-              String(li["state"]).includes("publishing")
-            ) {
+            if (String(li["state"]).includes("publishing")) {
               this.missionlist.push(li);
             }
           }
-          console.log(this.missionlist);
+          //  console.log(this.missionlist);
           this.missionlist.forEach(element => {
             var date = new Date(element.publish.beginTime);
             element.publish.beginTime = date.Format("yyyy-MM-dd");
@@ -84,7 +82,7 @@ export default {
         .catch(rej => {
           console.warn(rej);
         });
-    }else if(this.type == "search"){
+    } else if (this.type == "search") {
       let detail = options.detail;
       api
         .querySomeByModel("tasks", {})
@@ -99,7 +97,7 @@ export default {
               this.missionlist.push(li);
             }
           }
-          console.log(this.missionlist);
+          //  console.log(this.missionlist);
           this.missionlist.forEach(element => {
             var date = new Date(element.publish.beginTime);
             element.publish.beginTime = date.Format("yyyy-MM-dd");
@@ -109,7 +107,7 @@ export default {
         .catch(rej => {
           console.warn(rej);
         });
-    }else {
+    } else {
       api
         .querySomeByModel("tasks", {
           type: this.type
@@ -126,7 +124,7 @@ export default {
               this.missionlist.push(li);
             }
           }
-          console.log(this.missionlist);
+          //  console.log(this.missionlist);
           this.missionlist.forEach(element => {
             var date = new Date(element.publish.beginTime);
             element.publish.beginTime = date.Format("yyyy-MM-dd");

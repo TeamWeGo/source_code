@@ -146,19 +146,19 @@ export default {
     typeclick(index) {
       this.title = "";
       this.selections = [];
-      console.log(this.types[index].text);
+     //console.log(this.types[index].text);
       this.type = this.types[index].text;
       this.question = {};
       this.show();
     },
     addselection() {
       this.selections.push("");
-      console.log(this.selections);
+      // console.log(this.selections);
     },
     deleteselection(e) {
-      console.log(e);
+      // console.log(e);
       this.selections.splice(e, 1);
-      console.log(this.selections);
+      // console.log(this.selections);
     }
   }
 };
