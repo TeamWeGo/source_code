@@ -137,7 +137,7 @@ export default {
   methods: {
     updateUserInfo() {
       if (!this.isEditing) {
-        console.log("Editing...");
+        //console.log("Editing...");
         this.isEditing = true;
         this.visibility = "visible";
         this.disabled = false;
@@ -147,12 +147,12 @@ export default {
     },
 
     saveChanges() {
-      console.log("Save changes.");
+      //console.log("Save changes.");
       this.isEditing = false;
       this.visibility = "invisible";
       this.disabled = true;
 
-      console.log(this.userInfo);
+      //console.log(this.userInfo);
       api
         .updateOneById("users", this.userInfo._id, {
           personalStatement: this.userInfo.personalStatement,
@@ -162,7 +162,7 @@ export default {
           }
         })
         .then(result => {
-          console.log(result);
+          //console.log(result);
         })
         .catch(error => {
           console.warn(error);
@@ -173,10 +173,10 @@ export default {
       if (this.isEditing) {
         if (this.userInfo.tags.flag[index] == "chosen") {
           this.userInfo.tags.flag[index] = "unchosen";
-          console.log(this.userInfo.tags.flag[index]);
+          //console.log(this.userInfo.tags.flag[index]);
         } else {
           this.userInfo.tags.flag[index] = "chosen";
-          console.log(this.userInfo.tags.flag[index]);
+          //console.log(this.userInfo.tags.flag[index]);
         }
         this.isEditing = false;
         this.isEditing = true;
@@ -192,13 +192,13 @@ export default {
         content: "是否授权登陆",
         success(res) {
           if (res.confirm) {
-            console.log("用户点击确定");
+            //console.log("用户点击确定");
 
             //获取信息
             wx.getUserInfo({
               success: res => {
                 //get userInfo incluing nickname, avatar and gender
-                console.log(res.userInfo);
+                //console.log(res.userInfo);
 
                 that.userInfo.userName = res.userInfo.nickName;
                 that.userInfo.avatarUrl = res.userInfo.avatarUrl;
@@ -212,7 +212,7 @@ export default {
                 api
                   .getOpenId()
                   .then(res => {
-                    console.log(res);
+                    //console.log(res);
                     that.userInfo.wechatopenid = res.result;
 
                     let user = {
@@ -240,14 +240,14 @@ export default {
                       credit: that.userInfo.credit
                     };
                     store.commit("changeUser", user);
-                    console.log("globalUser is :");
-                    console.log(store.state.user);
+                    //console.log("globalUser is :");
+                    //console.log(store.state.user);
 
                     //insert the new user if not existed
                     api
                       .insertOneUser(user)
                       .then(res => {
-                        console.log(res);
+                        //console.log(res);
                         let temuser = user;
                         temuser._id = res.result;
                         store.commit("changeUser", temuser);
@@ -261,7 +261,7 @@ export default {
                             wechatopenid: that.userInfo.wechatopenid
                           })
                           .then(result => {
-                            console.log(result);
+                            //console.log(result);
 
                             that.userInfo._id = result.result[0]._id;
                             that.userInfo.userName = result.result[0].nickName;
@@ -322,8 +322,8 @@ export default {
                               credit: that.userInfo.credit
                             };
                             store.commit("changeUser", user);
-                            // console.log("globalUser is :");
-                            // console.log(store.state.user);
+                            // //console.log("globalUser is :");
+                            // //console.log(store.state.user);
                           })
                           .catch(error => {
                             console.warn(error);
@@ -336,7 +336,7 @@ export default {
               }
             });
           } else if (res.cancel) {
-            console.log("用户点击取消");
+            //console.log("用户点击取消");
             store.commit("changeAuthorized", false);
           }
         }
@@ -346,22 +346,22 @@ export default {
 
   created() {
     // let app = getApp()
-    //  console.log(this.userInfo.nickName);
+    //console.log(this.userInfo.nickName);
     this.getUserInfo();
   },
 
   onShow() {
-    console.log("this is user page");
+    //console.log("this is user page");
     var that = this;
     if (that.userInfo.wechatopenid == 1) {
-      console.log("return");
+      //console.log("return");
     } else {
       api
         .querySomeByModel("users", {
           wechatopenid: that.userInfo.wechatopenid
         })
         .then(result => {
-          console.log(result);
+          //console.log(result);
 
           that.userInfo._id = result.result[0]._id;
           that.userInfo.userName = result.result[0].nickName;
@@ -409,8 +409,8 @@ export default {
             credit: that.userInfo.credit
           };
           store.commit("changeUser", user);
-          console.log("globalUser is :");
-          console.log(store.state.user);
+          //console.log("globalUser is :");
+          //console.log(store.state.user);
         })
         .catch(error => {
           console.warn(error);

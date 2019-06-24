@@ -121,7 +121,7 @@ export default {
         return fmt;
       };
       let curuser = store.state.user;
-      console.log(curuser);
+      // console.log(curuser);
       this.missionlist = [];
       api
         .querySomeByModel("tasks", {
@@ -130,10 +130,10 @@ export default {
           }
         })
         .then(res => {
-          console.log(curuser._id);
-          console.log("query publish");
+          //    console.log(curuser._id);
+          //    console.log("query publish");
           this.result = res.result;
-          console.log(res.result);
+          //     console.log(res.result);
           //  console.log(this.missionlist);
           this.result.forEach(element => {
             if (element.publish.publisher != curuser._id) {
@@ -172,8 +172,8 @@ export default {
           }
         })
         .then(res => {
-          console.log("query joinning");
-          console.log(res);
+          // console.log("query joinning");
+          //  console.log(res);
           this.result = res.result;
           this.result.forEach(element => {
             if (element.state == "publishing") {

@@ -26,12 +26,12 @@ export default {
   },
 
   methods: {
-    radioChecked: function(val){
-      console.log(this.temData.content)
-      if(this.temData.content[val].result == true){
-        this.temData.content[val].result = false
-      }else{
-        this.temData.content[val].result = true
+    radioChecked: function(val) {
+      //  console.log(this.temData.content)
+      if (this.temData.content[val].result == true) {
+        this.temData.content[val].result = false;
+      } else {
+        this.temData.content[val].result = true;
       }
     }
   },

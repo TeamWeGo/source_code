@@ -53,7 +53,7 @@ export default {
   watch: {
     alphabet (newer, older) {
       let target = this.$refs.newer;
-      console.log(target);
+     // console.log(target);
       this.setData({
         toView: target
       })
