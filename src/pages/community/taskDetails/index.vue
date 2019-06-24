@@ -158,8 +158,6 @@ export default {
         .queryOneById("questionnaires", this.Task.questionnaireID)
         .then(res => {
           console.log(res);
-          res = res.result[0];
-          res.state = this.Task.state;
           var obj = JSON.stringify(res);
           let url = "../checkQuestionnaire/main?obj=" + obj;
           console.log(url);
