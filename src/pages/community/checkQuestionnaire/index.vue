@@ -1,24 +1,23 @@
 <template>
   <div>
-    <p class="commiunitytitle">问卷总数：{{temDatas}}</p>
-    <qContainer :temDatas="temDatas"></qContainer>
-    <view v-for="(item, index) in results" :key="index">
-      <view v-if="item.type == 'baseInput'">
-        <view>{{item.description}}</view>
+    <p class="commiunitytitle">问卷总数：{{temDatas.length}}</p>
+    <view class='quesResult' v-for="(item, index) in results" :key="index">
+      <view class='input' v-if="item.type == 'baseInput'">
+        <view class='description'>{{"★ " + item.description}}</view>
         <view v-for="(re, i) in item.content" :key="i">
           <view>{{ re.result }}</view>
         </view>
       </view>
-      <view v-if="item.type == 'baseSingleSelect'">
-        <view>{{item.description}}</view>
+      <view class='singleSelect' v-if="item.type == 'baseSingleSelect'">
+        <view class='description'>{{"☆ " + item.description}}</view>
         <view v-for="(re, i) in item.content" :key="i">
-          <view>{{ re.label+re.number }}</view>
+          <view><span class='content'>{{re.label}}</span><span class='number'>{{re.number}}</span></view>
         </view>
       </view>
-      <view v-if="item.type == 'baseMultiSelect'">
-        <view>{{item.description}}</view>
+      <view class='multiSelect' v-if="item.type == 'baseMultiSelect'">
+        <view class='description'>{{"▲ " + item.description}}</view>
         <view v-for="(re, i) in item.content" :key="i">
-          <view>{{ re.label+re.number }}</view>
+          <view><span class='content'>{{re.label}}</span><span class='number'>{{re.number}}</span></view>
         </view>
       </view>
     </view>
@@ -52,7 +51,7 @@ export default {
     if (Object.keys(options).length != 0) {
       var obj = JSON.parse(decodeURIComponent(options.obj));
       // console.log(obj);
-      this.temDatas = obj.result[0].results
+      this.temDatas = obj.result[0].results[0]
       //  console.log(this.temDatas);
       this.id = obj.result[0]._id;
       console.log(this.id);
@@ -60,10 +59,11 @@ export default {
       console.log(this.results);
       var size = this.results.length
       for(var index = 0;index < this.temDatas.length;index+=size){
+        console.log(index)
         for(var i = 0;i < size;i++){
           if(this.results[i].type == 'baseInput'){
-
-            this.results[i].content.push(this.temDatas[index*size+i].content)
+            if(this.temDatas[index*size+i].content[0].result!='')
+            this.results[i].content.push(this.temDatas[index*size+i].content[0])
           }
           else if(this.results[i].type == 'baseSingleSelect'){
             if(index == 0){
@@ -112,6 +112,30 @@ button {
   font-size: 12pt;
   margin: 8px 15px 8px 15px;
   border-radius: 5px;
-  width: 600rpx;
+  width: 700rpx;
+}
+.quesResult{
+  margin: 8px 15px 8px 15px;
+  padding: 10rpx;
+  width: 700rpx;
+}
+.description{
+  height: 20pt;
+  font-size: 14pt;
+  margin: 8rpx 0rpx 8rpx 0rpx;
+}
+.input, .singleSelect, .multiSelect{
+  padding-left: 8px;
+  padding-right: 8px;
+  margin: 0rpx;
+  background-color: gainsboro;
+  border-radius: 10rpx;
+}
+.content{
+  text-align: center;
+  color: blue;
+}
+.number{
+  text-align: right;
 }
 </style>

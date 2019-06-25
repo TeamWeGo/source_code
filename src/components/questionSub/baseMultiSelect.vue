@@ -1,6 +1,6 @@
 <template>
   <div id="base-multiSelect">
-    <label class="base_multiSelect_one" for="check_one">{{"*"+temData.description}}</label>
+    <label class="base_multiSelect_one" for="check_one">{{"▲ "+temData.description}}</label>
     <div>
       <checkbox
         name="check_one"

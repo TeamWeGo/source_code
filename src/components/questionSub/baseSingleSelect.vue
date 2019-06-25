@@ -1,7 +1,7 @@
 <template>
   <div id="base-singleSelect">
     <radio-group class="radio-group" @change="radioChange">
-      <label class="base_singleSelect_one" for="radio_one">{{"*"+temData.description}}</label>
+      <label class="base_singleSelect_one" for="radio_one">{{"☆ "+temData.description}}</label>
       <div class="base_singleSelect_radio">
         <radio
           name="radio_one"
