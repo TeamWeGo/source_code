@@ -212,11 +212,13 @@ export default {
     this.getLocation();
   },
 
-  onLoad() {},
+  onLoad() {
+     this.getTasks();
+  },
   onShow() {
     //console.log(this.curCity);
     this.curCity = store.state.curCity;
-    this.getTasks();
+   
 
     // console.log("this is index");
     // wx.navigateBack({

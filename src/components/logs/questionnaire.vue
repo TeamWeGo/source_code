@@ -122,7 +122,7 @@ export default {
         var options = this.selections;
         for (var i = 0; i < options.length; i++) {
           if (options[i] != "") {
-            this.question.content.push({ label: options[i], result: false });
+            this.question.content.push({ label: options[i], result: false, number: 0 });
           }
         }
       }
@@ -133,7 +133,7 @@ export default {
         var options = this.selections;
         for (var i = 0; i < options.length; i++) {
           if (options[i] != "") {
-            this.question.content.push({ label: options[i], result: false });
+            this.question.content.push({ label: options[i], result: false, number: 0 });
           }
         }
       }
