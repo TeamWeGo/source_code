@@ -29,7 +29,7 @@ export default {
         .then(res => {
           let pages = getCurrentPages();
           let prevPage = pages[pages.length - 2];
-          console.log("update");
+          // console.log("update");
           this.temDatas = [];
           this.results = [];
           wx.navigateBack({
@@ -46,12 +46,12 @@ export default {
   },
   onLoad(options) {
     var obj = JSON.parse(decodeURIComponent(options.obj));
-    console.log(obj);
+    //  console.log(obj);
     this.temDatas = obj.template;
-    console.log(this.temDatas);
+    //   console.log(this.temDatas);
     this.results = obj.results;
     this.id = obj._id;
-    console.log(this.id);
+    //   console.log(this.id);
   }
 };
 </script>

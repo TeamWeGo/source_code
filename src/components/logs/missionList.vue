@@ -6,11 +6,11 @@
       :key="index"
       v-on:click="goto(index)"
     >
-      <img class="mission-list-item-image" :src="item.avatarId"  mode="widthFix">
+      <img class="mission-list-item-image" :src="item.avatarId" mode="widthFix">
       <div class="mission-list-item-word">
         <ul>
           <li>
-            <span class="mission-list-item-title">{{item.title}}</span>
+            <span class="mission-list-item-title">{{"标题："+item.title}}</span>
             <span class="mission-list-item-location">{{item.location}}</span>
           </li>
           <li>
@@ -21,9 +21,9 @@
           <li>
             <span
               class="mission-list-item-time"
-            >{{item.publish.beginTime}} - {{item.publish.endTime}}</span>
+            >{{item.publish.beginTime +'---'+ item.publish.endTime}}</span>
           </li>
-          <li class="mission-list-item-intro">{{item.description}}</li>
+          <li class="mission-list-item-intro">{{"描述："+item.description}}</li>
           <li class="mission-list-item-price">
             <span>CNY￥</span>
             <span>{{item.payment}}</span>
@@ -62,7 +62,14 @@ export default {
       missionlist: this.list,
       task_state: this.task_state,
       show_list: [],
-      map: {"已接收":'joining',"待完成":'todo',"已结束":'ended',"已发布":'publishing', "完成中":'doing', "已结束":'finished'}
+      map: {
+        已接收: "joining",
+        待完成: "todo",
+        已结束: "ended",
+        已发布: "publishing",
+        完成中: "doing",
+        已结束: "finished"
+      }
     };
   },
   watch: {
@@ -141,15 +148,16 @@ export default {
 .mission-list-item-location {
   color: white;
   float: right;
-  border: 2rpx solid green;
+  border: 1rpx solid green;
   background-color: green;
   border-radius: 5rpx;
   text-align: center;
   margin-top: 10rpx;
-  width: 100rpx;
+  max-width: 400rpx;
   height: 50rpx;
   font-size: 25rpx;
   line-height: 50rpx;
+  padding: 4rpx;
 }
 
 .mission-list-item-star {

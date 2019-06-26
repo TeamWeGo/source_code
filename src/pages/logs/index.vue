@@ -91,7 +91,7 @@ export default {
         this.tabs_index = e;
       }
     },
-    getData(){
+    getData() {
       this.load1 = 0;
       this.load2 = 0;
       Date.prototype.Format = function(fmt) {
@@ -121,8 +121,8 @@ export default {
         return fmt;
       };
       let curuser = store.state.user;
-      console.log(curuser)
-      this.missionlist = []
+      // console.log(curuser);
+      this.missionlist = [];
       api
         .querySomeByModel("tasks", {
           publish: {
@@ -130,10 +130,10 @@ export default {
           }
         })
         .then(res => {
-          console.log(curuser._id)
-          console.log("query publish")
+          //    console.log(curuser._id);
+          //    console.log("query publish");
           this.result = res.result;
-          console.log(res.result)
+          //     console.log(res.result);
           //  console.log(this.missionlist);
           this.result.forEach(element => {
             if (element.publish.publisher != curuser._id) {
@@ -148,12 +148,12 @@ export default {
           });
           this.missionlist.push(...this.result);
           this.load1 = 1;
-          if(this.load1 == 1 && this.load2 ==1){
-            wx.hideLoading()
+          if (this.load1 == 1 && this.load2 == 1) {
+            wx.hideLoading();
             wx.showToast({
-              title: '加载成功',
+              title: "加载成功",
               duration: 2000
-            })
+            });
           }
         })
         .catch(rej => {
@@ -168,23 +168,20 @@ export default {
       api
         .querySomeByModel("tasks", {
           joiners: {
-              $regex:'.*'+curuser._id+'.*'
-            }
+            $regex: ".*" + curuser._id + ".*"
+          }
         })
         .then(res => {
-          console.log("query joinning")
-          console.log(res)
+          // console.log("query joinning");
+          //  console.log(res);
           this.result = res.result;
           this.result.forEach(element => {
-            if(element.state == 'publishing')
-            {
-              element.state = 'joining'
-            }else if(element.state == 'doing')
-            {
-              element.state = 'todo'
-            }else if(element.state == 'finished')
-            {
-              element.state = 'ended'
+            if (element.state == "publishing") {
+              element.state = "joining";
+            } else if (element.state == "doing") {
+              element.state = "todo";
+            } else if (element.state == "finished") {
+              element.state = "ended";
             }
             var date = new Date(element.publish.beginTime);
             element.publish.beginTime = date.Format("yyyy-MM-dd");
@@ -192,12 +189,12 @@ export default {
           });
           this.missionlist.push(...this.result);
           this.load2 = 1;
-          if(this.load1 == 1 && this.load2 ==1){
-            wx.hideLoading()
+          if (this.load1 == 1 && this.load2 == 1) {
+            wx.hideLoading();
             wx.showToast({
-              title: '加载成功',
+              title: "加载成功",
               duration: 2000
-            })
+            });
           }
         })
         .catch(rej => {
@@ -210,7 +207,7 @@ export default {
           //   duration: 2000
           // })
         });
-    },
+    }
     // 打开模态框
   },
 
@@ -298,7 +295,7 @@ page {
   background-color: orangered;
 }
 
-.mark{
-  background-color: rgba(0, 128, 0, 0.466)
+.mark {
+  background-color: rgba(0, 128, 0, 0.466);
 }
 </style>

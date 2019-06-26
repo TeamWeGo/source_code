@@ -107,9 +107,9 @@ export default {
   },
   onLoad(options) {
     var obj = JSON.parse(decodeURIComponent(options.obj));
-    // console.log(obj);
+    // //console.log(obj);
     this.Task = obj;
-    console.log(this.Task.questionnaireID);
+    //console.log(this.Task.questionnaireID);
     this.userID = store.state.user._id;
     if (this.Task.publish.publisher == this.userID) {
       if (this.Task.state == "publishing") {
@@ -129,27 +129,27 @@ export default {
   },
   methods: {
     // acceptTask() {
-    //   console.log(this.Task);
+    //   //console.log(this.Task);
     //   api
     //     .joinOneTask(this.Task, this.userID)
     //     .then(result => {
-    //       console.log("success");
+    //       //console.log("success");
     //     })
     //     .catch(error => {
     //       console.warn(error);
     //     });
     // },
     fillQuestionnaire() {
-      console.log(this.Task.questionnaireID);
+      //console.log(this.Task.questionnaireID);
       api
         .queryOneById("questionnaires", this.Task.questionnaireID)
         .then(res => {
-          console.log(res);
+          //console.log(res);
           res = res.result[0];
           res.state = this.Task.state;
           var obj = JSON.stringify(res);
           let url = "../fillQuestionnaire/main?obj=" + obj;
-          console.log(url);
+          //console.log(url);
           wx.navigateTo({ url });
         });
     },
@@ -157,12 +157,10 @@ export default {
       api
         .queryOneById("questionnaires", this.Task.questionnaireID)
         .then(res => {
-          console.log(res);
-          res = res.result[0];
-          res.state = this.Task.state;
+          //console.log(res);
           var obj = JSON.stringify(res);
           let url = "../checkQuestionnaire/main?obj=" + obj;
-          console.log(url);
+          //console.log(url);
           wx.navigateTo({ url });
         });
     },
@@ -172,7 +170,7 @@ export default {
           api
             .verifyOneTask(this.Task, store.state.user)
             .then(res => {
-              console.log("verify" + res);
+              //console.log("verify" + res);
               wx.showToast({
                 title: "奶牛确认任务成功",
                 icon: "none",
@@ -191,7 +189,7 @@ export default {
           api
             .endOneTask(this.Task, store.state.user)
             .then(res => {
-              console.log("end" + res);
+              //console.log("end" + res);
               wx.showToast({
                 title: "奶牛结束任务成功",
                 icon: "none",
@@ -213,7 +211,7 @@ export default {
           api
             .joinOneTask(this.Task, store.state.user)
             .then(res => {
-              console.log("join" + res);
+              //console.log("join" + res);
               wx.showToast({
                 title: "用户加入任务成功",
                 icon: "none",

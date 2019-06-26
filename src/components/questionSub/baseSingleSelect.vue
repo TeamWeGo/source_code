@@ -1,16 +1,16 @@
 <template>
   <div id="base-singleSelect">
     <radio-group class="radio-group" @change="radioChange">
-      <label class="base_singleSelect_one" for="radio_one">{{"*"+temData.description}}</label>
+      <label class="base_singleSelect_one" for="radio_one">{{"☆ "+temData.description}}</label>
       <div class="base_singleSelect_radio">
         <radio
           name="radio_one"
           id="radio_one"
-          value="true"
-          v-for="it in temData.content"
-          :key="it"
-          v-model="it.result"
-        >{{it.label}}</radio>
+          v-for="(item, index) in temData.content"
+          :key="index"
+          :checked="item.result"
+          @click="radioChecked(index)"
+        >{{item.label}}</radio>
       </div>
     </radio-group>
   </div>
@@ -26,7 +26,15 @@ export default {
     };
   },
 
-  methods: {},
+  methods: {
+    radioChecked: function(val) {
+      //  console.log(this.temData.content);
+      for (var i = 0; i < this.temData.content.length; i++) {
+        this.temData.content[i].result = false;
+      }
+      this.temData.content[val].result = true;
+    }
+  },
   computed: {}
 };
 </script>
