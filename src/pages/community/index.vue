@@ -130,8 +130,7 @@ export default {
         tag: [
           { id: 0, name: "学习" },
           { id: 1, name: "娱乐" },
-          { id: 2, name: "生活" },
-          { id: 3, name: "咨询" }
+          { id: 2, name: "生活" }
         ]
       },
       publish: "发布"
