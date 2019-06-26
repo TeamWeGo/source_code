@@ -6,20 +6,20 @@
     <view class="Task-basicInfo">
       <view class="name">
         <label>标题</label>
-        <input type="text" id="name" v-model="Task.title">
+        <input type="text" id="name" v-model="Task.title" placeholder='请输入标题'>
       </view>
       <view class="participatorNum">
         <label>人数</label>
-        <input type="number" id="participatorNum" v-model="Task.maxJoiner">
+        <input type="number" id="participatorNum" v-model="Task.maxJoiner" placeholder='请输入人数'>
       </view>
       <view class="payment">
         <label>报酬</label>
-        <input type="number" id="payment" v-model="Task.payment">
+        <input type="number" id="payment" v-model="Task.payment" placeholder='请输入报酬'>
       </view>
     </view>
     <view class="Task-description">
       <label>任务描述</label>
-      <textarea type="text" id="description" v-model="Task.description"/>
+      <textarea type="text" id="description" v-model="Task.description" placeholder='请输入任务描述'/>
     </view>
     <view class="Task-time">
       <view class="startDate">
@@ -116,8 +116,8 @@ export default {
       Task: {
         title: "",
         avatarId: "",
-        maxJoiner: 0,
-        payment: 0,
+        maxJoiner: '',
+        payment: '',
         description: "",
         joiners: [],
         startDate: "2019-04-25",
@@ -171,7 +171,7 @@ export default {
       let prevPage = pages[pages.length - 1];
       //  console.log(prevPage.data.quesID);
       var image = "";
-      switch (this.index) {
+      switch (parseInt(this.index)) {
         case 0:
           image = "/static/images/study.png";
           break;
@@ -180,9 +180,6 @@ export default {
           break;
         case 2:
           image = "/static/images/live.png";
-          break;
-        case 4:
-          image = "/static/images/info.png";
           break;
         default:
           break;
