@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="commiunitytitle">问卷总数：{{temDatas.length}}</p>
+    <p class="commiunitytitle">问卷总数：{{temDatas.length/results.length}}</p>
     <view class='quesResult' v-for="(item, index) in results" :key="index">
       <view class='input' v-if="item.type == 'baseInput'">
         <view class='description'>{{"★ " + item.description}}</view>
@@ -11,13 +11,13 @@
       <view class='singleSelect' v-if="item.type == 'baseSingleSelect'">
         <view class='description'>{{"☆ " + item.description}}</view>
         <view v-for="(re, i) in item.content" :key="i">
-          <view><span class='content'>{{re.label}}</span><span class='number'>{{re.number}}</span></view>
+          <view><span class='content'>{{re.label}}</span><span class='number'>{{re.number+"%"}}</span></view>
         </view>
       </view>
       <view class='multiSelect' v-if="item.type == 'baseMultiSelect'">
         <view class='description'>{{"▲ " + item.description}}</view>
         <view v-for="(re, i) in item.content" :key="i">
-          <view><span class='content'>{{re.label}}</span><span class='number'>{{re.number}}</span></view>
+          <view><span class='content'>{{re.label}}</span><span class='number'>{{re.number+"%"}}</span></view>
         </view>
       </view>
     </view>
@@ -91,6 +91,11 @@ export default {
           }
         }
       }
+      for(var i = 0;i < size;i++){
+        for(var j = 0;j < this.results[i].content.length;j++){
+          this.results[i].content[j].number = parseFloat(this.results[i].content[j].number).toFixed(2)*100
+        }
+      }
       console.log(this.results)
     }
   }
@@ -116,26 +121,23 @@ button {
 }
 .quesResult{
   margin: 8px 15px 8px 15px;
-  padding: 10rpx;
   width: 700rpx;
 }
 .description{
   height: 20pt;
   font-size: 14pt;
-  margin: 8rpx 0rpx 8rpx 0rpx;
 }
 .input, .singleSelect, .multiSelect{
   padding-left: 8px;
   padding-right: 8px;
-  margin: 0rpx;
   background-color: gainsboro;
   border-radius: 10rpx;
 }
 .content{
   text-align: center;
-  color: blue;
 }
 .number{
-  text-align: right;
+  float: right;
+  margin-right: 20px;
 }
 </style>
