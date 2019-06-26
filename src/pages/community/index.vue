@@ -235,8 +235,8 @@ export default {
               duration: 2000
             });
             this.Task.title = "";
-            this.Task.maxJoiner = 0;
-            this.Task.payment = 0;
+            this.Task.maxJoiner = '';
+            this.Task.payment = '';
             this.Task.description = "";
             this.init();
             this.Task.location = "广东省,广州市,番禺区";

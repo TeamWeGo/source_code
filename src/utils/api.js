@@ -502,6 +502,9 @@ export var api = {
               let publishing = publisher.tasks.publishing;
               let i = publishing.indexOf(task._id);
               publishing.splice(i, 1);
+              let b = parseInt(publisher.balance);
+              let t = parseInt(task.payment);
+              let l = parseInt(task.joiners.length)
               wx.cloud
                 .callFunction({
                   name: "updateOne",
@@ -510,7 +513,7 @@ export var api = {
                     _id: publisher._id,
                     updateInfo: {
                       balance:
-                        publisher.balance - task.payment * task.joiners.length,
+                        b - t * l,
                       tasks: {
                         verified: verified,
                         publishing: publishing
@@ -742,6 +745,8 @@ export var api = {
                       doing.splice(i, 1);
                       finished.push(task._id);
 
+                      let b = parseInt(temUser.balance);
+                      let t = parseInt(task.payment)
                       wx.cloud
                         .callFunction({
                           name: "updateOne",
@@ -749,7 +754,7 @@ export var api = {
                             colName: "users",
                             _id: temUser._id,
                             updateInfo: {
-                              balance: temUser.balance + task.payment,
+                              balance: b + t,
                               tasks: {
                                 doing: doing,
                                 finished: finished

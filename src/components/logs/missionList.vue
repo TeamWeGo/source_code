@@ -65,7 +65,7 @@ export default {
       map: {
         已接收: "joining",
         待完成: "todo",
-        已结束: "ended",
+        已完成: "ended",
         已发布: "publishing",
         完成中: "doing",
         已结束: "finished"
