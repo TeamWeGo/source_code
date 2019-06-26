@@ -138,7 +138,7 @@ api
     'avatarId':'',//upload the avatar to server and get an id from the callback
     'type':'学习|生活|娱乐|',//String task type
     'description':'XXX',//String task detail description
-    'state':'publishing|verifying|doing|finished',//String task state 任务发布中，任务确认中，任务执行中，任务完成
+    'state':'publishing|doing|finished',//String task state 任务发布中，任务确认中，任务执行中，任务完成
     'maxJoiner':1,//Number Max Nubmer of joiners
     'joiners':['x'],//String Array the joiners _id array
     'location':'x'

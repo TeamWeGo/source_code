@@ -158,7 +158,7 @@ export default {
         })
         .catch(rej => {
           console.warn(rej);
-          wx.hideLoading();
+          wx.hideLoading()
           // wx.showToast({
           //   title: '加载失败',
           //   icon: 'none',
@@ -199,27 +199,32 @@ export default {
         })
         .catch(rej => {
           console.warn(rej);
-          wx.hideLoading();
+          wx.hideLoading()
           // wx.showToast({
-          //   title: "加载失败",
-          //   icon: "none",
+          //   title: '加载失败',
+          //   icon: 'none',
           //   mask: true,
           //   duration: 2000
-          // });
+          // })
         });
     }
     // 打开模态框
   },
 
-  onLoad() {},
-  onShow() {
-    //返回显示页面状态函数
-    wx.showLoading({
-      title: "加载中",
-      mask: true
-    });
-    this.getData();
-  }
+  onLoad() {
+    this.getData()
+  },
+  onPullDownRefresh:function()
+  {
+    wx.showNavigationBarLoading() //在标题栏中显示加载
+    //加载
+    this.getData()
+    setTimeout(function(){
+      // complete
+      wx.hideNavigationBarLoading() //完成停止加载
+      wx.stopPullDownRefresh() //停止下拉刷新
+      },1500);
+  },
 };
 </script>
 
