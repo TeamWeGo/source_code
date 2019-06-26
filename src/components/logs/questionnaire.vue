@@ -262,7 +262,7 @@ export default {
 .icon {
   height: 50rpx;
   width: 60rpx;
-   margin: 8rpx auto 8rpx auto;
+  margin: 8rpx auto 8rpx auto;
 }
 
 .selectionList {

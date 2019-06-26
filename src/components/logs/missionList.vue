@@ -87,7 +87,7 @@ export default {
   methods: {
     goto(index) {
       // console.log(index);
-      this.mission = this.missionlist[index];
+      this.mission = this.show_list[index];
       //  console.log(this.mission);
       var obj = JSON.stringify(this.mission);
       let url = "../community/taskDetails/main?obj=" + obj;
